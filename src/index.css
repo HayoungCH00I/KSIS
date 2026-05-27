@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./fonts/PretendardVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Pretendard", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-navy: #002147;
+  --color-warm-gray: #8E9299;
+  --color-beige: #F5F2ED;
+  --color-gold: #A68B5B;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-slate-900 antialiased;
+    background-color: #FAF9F6;
+  }
+}
+
+@layer components {
+  .container-wide {
+    @apply max-w-7xl mx-auto px-6;
+  }
+}

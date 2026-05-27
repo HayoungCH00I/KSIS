@@ -1,0 +1,172 @@
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { motion } from 'motion/react';
+import { Menu, X, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { COLORS, ROUTES } from '../constants';
+import symbolLogo from '../images/logo/symbol.png';
+import typoLogo from '../images/logo/typo.png';
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navItems = [
+    { name: '홈', path: ROUTES.HOME },
+    { name: '협회소개', path: ROUTES.ABOUT },
+    { name: '역량 아카이브', path: ROUTES.ARCHIVE },
+    { name: '소식', path: ROUTES.COMMUNITY },
+  ];
+
+  return (
+    <nav 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white shadow-sm py-3' : 'bg-transparent py-5'
+      }`}
+    >
+      <div className="max-w-[1720px] mx-auto px-6 md:px-12 lg:px-16 xl:px-20 flex justify-between items-center">
+        <Link to="/" className="flex items-center gap-3">
+          <img src={symbolLogo} alt="KSEA" className="h-10 w-auto object-contain" />
+          <img 
+            src={typoLogo} 
+            alt="한국시니어교류협회" 
+            className="h-10 w-auto object-contain hidden sm:block" 
+          />
+        </Link>
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-8">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`text-sm font-medium transition-colors hover:opacity-100 ${
+                location.pathname === item.path ? 'opacity-100' : 'opacity-60'
+              }`}
+              style={{ color: COLORS.navy }}
+            >
+              {item.name}
+              {location.pathname === item.path && (
+                <motion.div
+                  layoutId="underline"
+                  className="h-0.5 mt-0.5"
+                  style={{ backgroundColor: COLORS.gold }}
+                />
+              )}
+            </Link>
+          ))}
+          <a 
+            href="https://cafe.naver.com/ksis1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2 rounded-full text-xs font-semibold text-white transition-transform hover:scale-105"
+            style={{ backgroundColor: COLORS.navy }}
+          >
+            네이버 카페
+          </a>
+        </div>
+
+        {/* Mobile Toggle */}
+        <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X color={COLORS.navy} /> : <Menu color={COLORS.navy} />}
+        </button>
+      </div>
+
+      {/* Mobile Nav */}
+      {isOpen && (
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute top-full left-0 right-0 bg-white border-t p-6 flex flex-col gap-4 md:hidden"
+        >
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setIsOpen(false)}
+              className="text-lg font-medium py-2 border-b border-slate-100"
+              style={{ color: COLORS.navy }}
+            >
+              {item.name}
+            </Link>
+          ))}
+          <a 
+            href="https://cafe.naver.com/ksis1"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setIsOpen(false)}
+            className="w-full py-4 rounded-xl text-center font-bold text-white mt-4 block"
+            style={{ backgroundColor: COLORS.navy }}
+          >
+            네이버 카페 바로가기
+          </a>
+        </motion.div>
+      )}
+    </nav>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="py-16 px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: COLORS.navy, color: COLORS.beige }}>
+      <div className="max-w-[1720px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="space-y-6">
+          <div className="flex items-center gap-2">
+            <img src={symbolLogo} alt="KSEA" className="h-8 w-auto object-contain" />
+            <span className="font-bold text-lg">한국시니어교류협회</span>
+          </div>
+          <p className="text-sm opacity-60 leading-relaxed max-w-sm">
+            사단법인 한국시니어교류협회는 은퇴 후에도 빛나는 시니어 전문가들의 지혜와 역량을 연결하여, 지속 가능한 내일을 만들어갑니다.
+          </p>
+        </div>
+        
+        <div>
+          <h4 className="font-bold mb-6 text-sm uppercase tracking-widest opacity-40">Contact</h4>
+          <ul className="space-y-4 text-sm opacity-70">
+            <li>서울특별시 (상세주소 안내 예정)</li>
+            <li>대표번호: 02-XXXX-XXXX</li>
+            <li>이메일: contact@ksea.org</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-bold mb-6 text-sm uppercase tracking-widest opacity-40">Quick Links</h4>
+          <ul className="space-y-4 text-sm opacity-70">
+            <li><Link to={ROUTES.HOME} className="hover:opacity-100 transition-opacity">홈</Link></li>
+            <li><Link to={ROUTES.ABOUT} className="hover:opacity-100 transition-opacity">협회소개</Link></li>
+            <li><Link to={ROUTES.ARCHIVE} className="hover:opacity-100 transition-opacity">역량 아카이브</Link></li>
+            <li><Link to={ROUTES.COMMUNITY} className="hover:opacity-100 transition-opacity">네이버 카페</Link></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div className="max-w-[1720px] mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-40">
+        <p>© 2026 사단법인 한국시니어교류협회. All Rights Reserved.</p>
+        <div className="flex gap-6">
+          <span>개인정보처리방침</span>
+          <span>이용약관</span>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export const Layout = () => {
+  return (
+    <div className="min-h-screen flex flex-col font-sans" style={{ backgroundColor: COLORS.offWhite }}>
+      <Navbar />
+      <main className="flex-grow pt-20">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
+};
