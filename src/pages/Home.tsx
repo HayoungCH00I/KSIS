@@ -11,6 +11,13 @@ import CalendarSection from './Calendar';
 
 const heroImages = [heroImg1, heroImg2, heroImg3, heroImg4];
 
+const heroImagePositions = [
+  'object-[75%_center]', // 1번 슬라이드
+  'object-[90%_center]', // 2번 슬라이드
+  'object-[75%_center]', // 3번 슬라이드
+  'object-[90%_center]', // 4번 슬라이드
+];
+
 const slideContents = [
   {
     heading: (
@@ -21,8 +28,15 @@ const slideContents = [
     ),
     description: (
       <>
-        시니어의 노하우와 주니어의 혁신이 만나 새로운 가능성을 엽니다. <br />
-        경험이 자신이 되고 꿈이 비즈니스가 되는 이곳에서 당신의 다음 장을 설계하세요.
+        <span className="inline-block mr-1">시니어의 노하우와</span>
+        <span className="inline-block mr-1">주니어의 혁신이 만나</span>
+        <span className="inline-block">새로운 가능성을 엽니다.</span>{" "}
+        <br className="hidden md:block" />
+        <span className="inline-block mr-1">경험이 자신이 되고</span>
+        <span className="inline-block mr-1">꿈이 비즈니스가 되는</span>
+        <span className="inline-block mr-1">이곳에서</span>
+        <span className="inline-block mr-1">당신의 다음 장을</span>
+        <span className="inline-block">설계하세요.</span>
       </>
     )
   },
@@ -35,8 +49,12 @@ const slideContents = [
     ),
    description: (
       <>
-        전 세대를 아우르는 전문가 네트워크를 통해 서로의 역량을 자산화하고 <br />
-        동반 성장의 기회를 설계합니다.
+        <span className="inline-block mr-1">전 세대를 아우르는</span>
+        <span className="inline-block mr-1">전문가 네트워크를 통해</span>
+        <span className="inline-block">서로의 역량을 자산화하고</span>{" "}
+        <br className="hidden md:block" />
+        <span className="inline-block mr-1">동반 성장의 기회를</span>
+        <span className="inline-block">설계합니다.</span>
       </>
     )
   },
@@ -49,8 +67,14 @@ const slideContents = [
     ),
     description: (
       <>
-        개인이 보유한 무형의 지식을 측정 가능한 비즈니스 자산으로 전환하며 <br />
-        모두가 동반 성장하는 강력한 파트너십을 구축합니다.
+        <span className="inline-block mr-1">개인이 보유한</span>
+        <span className="inline-block mr-1">무형의 지식을</span>
+        <span className="inline-block mr-1">측정 가능한</span>
+        <span className="inline-block">비즈니스 자산으로 전환하며</span>{" "}
+        <br className="hidden md:block" />
+        <span className="inline-block mr-1">모두가 동반 성장하는</span>
+        <span className="inline-block mr-1">강력한 파트너십을</span>
+        <span className="inline-block">구축합니다.</span>
       </>
     )
   },
@@ -63,8 +87,11 @@ const slideContents = [
     ),
     description: (
       <>
-        시니어의 숙련된 노하우와 청년 전문가의 에너지가 융합하여 <br />
-        실질적인 비즈니스 해법과 경제적 가치를 창출합니다.
+        <span className="inline-block mr-1">시니어의 숙련된 노하우와</span>
+        <span className="inline-block">청년 전문가의 에너지가 융합하여</span>{" "}
+        <br className="hidden md:block" />
+        <span className="inline-block mr-1">실질적인 비즈니스 해법과</span>
+        <span className="inline-block">경제적 가치를 창출합니다.</span>
       </>
     )
   }
@@ -154,11 +181,11 @@ export default function Home() {
               <img 
                 src={img} 
                 alt={`Hero Background ${idx + 1}`} 
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover ${heroImagePositions[idx]} md:object-center`}
               />
             </motion.div>
           ))}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/70 to-transparent z-1" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 md:from-slate-900 via-slate-900/10 to-transparent md:via-slate-900/70 z-1" />
         </div>
 
         {/* Carousel Navigation Buttons on ends */}
@@ -214,7 +241,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-[16px]] md:text-2xl text-white/70 font-light leading-relaxed max-w-2xl"
+              className="text-[16px] md:text-2xl text-white/70 font-light leading-relaxed max-w-2xl"
             >
               {slideContents[currentSlide].description}
             </motion.p>
