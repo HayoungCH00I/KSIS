@@ -38,7 +38,7 @@ const Navbar = () => {
           <img 
             src={typoLogo} 
             alt="한국시니어교류협회" 
-            className="h-10 w-auto object-contain hidden sm:block" 
+            className="h-10 w-auto object-contain" 
           />
         </Link>
 

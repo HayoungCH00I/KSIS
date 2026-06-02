@@ -79,7 +79,7 @@ const slideContents = [
 const programs = [
   {
     id: 1,
-    name: '시니어 전문가 융합 비즈니스 포럼',
+    name: '비즈니스 포럼',
     title: '비즈니스 네트워킹 / 역량 강화',
     description: '정기적인 비즈니스 포럼을 통해 회원 간 전문성을 교류하고, 실전 비즈니스 역량을 함께 강화합니다.',
     category: 'Forum'
@@ -93,7 +93,7 @@ const programs = [
   },
   {
     id: 3,
-    name: '회원 상품 판매 플랫폼',
+    name: '쇼핑몰',
     title: '커머스 구축 / 수익화 지원',
     description: '회원들의 상품과 서비스를 소개하고 판매할 수 있는 쇼핑몰 기반 플랫폼을 구축하여 수익화를 지원합니다.',
     category: 'Platform'
@@ -225,7 +225,6 @@ export default function Home() {
             />
           ))}
         </div>
-
         <div className="max-w-[1720px] mx-auto w-full relative z-10 h-full md:h-auto flex flex-col justify-between md:block py-4 md:py-0 self-stretch md:self-auto">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -233,22 +232,18 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="max-w-3xl h-full md:h-auto flex flex-col justify-between md:justify-start md:block"
           >
-
-            <motion.h1 
-              key={`h1-${currentSlide}`}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="font-bold text-white tracking-tight leading-[1.4] md:leading-[1.2] text-[29px] md:text-[65px] pt-60 md:pt-0 relative -top-[150px] md:top-0"
-            >
-              {slideContents[currentSlide].heading}
-            </motion.h1>
-            
-            <div className="relative h-[170px] md:h-auto pb-20 md:pb-0 md:mt-8">
-              {/* Vertical line touching bottom of h1 and top of p (mobile only) */}
-              <div
-                className="absolute left-[-5px] -top-[150px] w-[1px] h-[150px] bg-white opacity-[0.35] md:hidden"
-              />
+            <div className="relative -top-[60px] md:top-0">
+          <motion.h1 
+            key={`h1-${currentSlide}`}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="font-bold text-white tracking-tight leading-[1.4] md:leading-[1.2] text-[29px] md:text-[65px] pt-60 md:pt-0"
+          >
+            {slideContents[currentSlide].heading}
+          </motion.h1>
+  
+          <div className="relative h-[170px] md:h-auto pb-20 md:pb-0 mt-[15px] md:mt-8">
 
               <motion.p 
                 key={`p-${currentSlide}`}
@@ -261,7 +256,7 @@ export default function Home() {
               </motion.p>
 
               {/* Mobile bottom-pinned button inline with text, centered below paragraph */}
-               <div className="absolute left-0 right-0 top-[84px] flex md:hidden justify-center">
+               <div className="absolute left-0 right-0 top-[130px] flex md:hidden justify-center">
                 <a
                   href="https://cafe.naver.com/ksis1"
                   target="_blank"
@@ -280,8 +275,9 @@ export default function Home() {
                 </a>
               </div>
             </div>
+          </div>
 
-            <div className="hidden md:flex flex-col sm:flex-row gap-4 mt-8">
+          <div className="hidden md:flex flex-col sm:flex-row gap-4 mt-8">
               <a
                 href="https://cafe.naver.com/ksis1"
                 target="_blank"
@@ -302,9 +298,7 @@ export default function Home() {
         <div className="max-w-[1200px] mx-auto w-full text-center space-y-6">
 
           {/* Heading */}
-          <h2 className="text-3xl md:text-[45px] font-bold text-slate-900" id="about-title" style={{ lineHeight: '1.3', letterSpacing: '-0.02em' }}>
-            세대를 넘은 경험의 연결, 새로운 도전이 시작되는 <span style={{ color: '#0d34a6' }}>비즈니스 플랫폼</span> 
-          </h2>
+          <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>CORE VALUES</h2>
 
           {/* Description Text underneath */}
           <div className="space-y-4 md:space-y-5 text-slate-700 max-w-4xl mx-auto" style={{ marginTop: '18px' }}>
@@ -324,7 +318,7 @@ export default function Home() {
           <div className="flex justify-center pt-2 md:pt-3">
             <Link 
               to={ROUTES.ABOUT} 
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[#0d34a6] font-medium border-2 border-[#0d34a6] bg-transparent hover:bg-[#0d34a6] hover:text-white" 
+              className="group inline-flex items-center gap-2 pb-1 text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:hover:border-[#0d34a6] transition-colors"
             >
               <span>Read more</span>
               <ChevronRight className="w-4 h-4" />
@@ -346,20 +340,24 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.2 }}
-                className="group flex flex-col items-start text-left w-full md:w-[420px] border-t border-slate-200 pt-4"
-                style={{ maxWidth: '100%', backgroundColor: idx === 0 ? '#f6f8fc' : idx === 1 ? '#f8f7f2' : '#f5f9f7', padding: '40px', borderRadius: '15px' }}
+                className="group flex flex-col items-start text-left w-full md:w-[420px] border-t border-slate-200 pt-[33px] md:pt-4"
+                style={{ maxWidth: '100%' }}
               >
-                <div className="text-[36px] md:text-[80px] font-bold leading-none text-[#0d34a6]/60 tracking-wide mb-6">
-                  0{idx + 1}
-                </div>
+                {/* Header layout: side-by-side on mobile, stacked on desktop */}
+                <div className="flex flex-row items-end gap-2.5 w-full mb-4 md:mb-0 md:block">
+                  <div className="text-[36px] md:text-[80px] font-bold leading-none text-[#0d34a6]/60 tracking-wide mb-0 md:mb-6">
+                    0{idx + 1}
+                  </div>
 
-                <div className="w-full -mt-1">
-                  <h3 className="font-bold mb-4 text-[20px] md:text-[40px]" style={{ color: COLORS.navy }}>
+                  <h3 className="font-bold text-[20px] md:text-[40px] mb-0 md:mb-4" style={{ color: COLORS.navy }}>
                     {value.title}
                     <span className="text-[15px] md:text-[20px] font-medium opacity-60">
                       {' '}· {idx === 1 ? 'Assetize' : (idx === 2 ? 'Growth' : 'Connect')}
                     </span>
-                  </h3> 
+                  </h3>
+                </div>
+
+                <div className="w-full">
                   <p className="text-[16px] md:text-[17px] font-medium opacity-60 leading-[22px] md:leading-[1.8]">
                     {value.description}
                   </p>
@@ -373,24 +371,21 @@ export default function Home() {
       {/* Competency Archive Section */}
       <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: COLORS.offWhite }}>
         <div className="max-w-[1720px] mx-auto space-y-16">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="space-y-4">
+          <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-6 text-center md:text-left">
+            <div className="space-y-4 flex flex-col items-center md:items-start">
 
-              <h2 className="text-4xl font-bold tracking-tight text-slate-900 leading-tight text-left" style={{ color: '#002147', opacity: 0.5, fontSize: '50px' }}>
-                PROGRAM
-              </h2>
-              <p className="text-lg text-slate-500 max-w-2xl font-medium text-left">
+              <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>PROGRAM</h2>
+              <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl font-medium text-center md:text-left" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
                KISIS가 운영하는 포럼, 프로젝트, 플랫폼, 교육 프로그램을 통해 교류와 수익화, 성장을 함께 만들어갑니다.
               </p>
             </div>
             
             <Link 
               to={ROUTES.ARCHIVE} 
-              className="inline-flex items-center gap-2 text-sm font-bold border-b border-transparent hover:border-navy transition-all pb-1 h-fit"
-              style={{ color: '#0d34a6' }}
+              className="group inline-flex items-center gap-2 pb-1 text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:hover:border-[#0d34a6] transition-colors h-fit"
             >
               <span>전체 프로그램 보기</span>
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4 transition-transform md:group-hover:translate-x-1" />
             </Link>
           </div>
 
@@ -407,7 +402,7 @@ export default function Home() {
                 <div>
 
                   <h3 className="text-xl font-bold mb-2 text-slate-950">{program.name}</h3>
-                  <p className="text-sm font-medium mb-4 opacity-70" style={{ color: '#0d34a6' }}>{program.title}</p>
+                  <p className="text-[16px] md:text-[17px] font-medium opacity-60 leading-[22px] md:leading-[1.8]">{program.title}</p>
                   <div className="space-y-2 mb-8">
                     <p className="text-sm text-slate-500 leading-relaxed line-clamp-4">
                       {program.description}
@@ -430,8 +425,8 @@ export default function Home() {
       <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20 bg-white">
         <div className="max-w-[1720px] mx-auto">
           <div className="mb-16 text-center max-w-2xl mx-auto space-y-4">
-            <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>CALENDER</h2>
-            <p className="text-lg text-slate-500 font-medium">우리와 함께하는 다양한 공식 포럼과 교육 행사 일정을 확인하고 간편히 참가 신청해보세요.</p>
+            <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>CALENDAR</h2>
+            <p className="text-[14px] md:text-lg text-slate-700 font-medium" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>우리와 함께하는 다양한 공식 포럼과 교육 행사 일정을 확인하고 간편히 참가 신청해보세요.</p>
           </div>
           <CalendarSection />
         </div>
@@ -481,11 +476,11 @@ export default function Home() {
           <Link
             key={i}
             to={item.link}
-            className="group bg-white border border-slate-100 rounded-[24px] p-8 min-h-[240px] shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
+            className="group bg-white border border-slate-100 rounded-[24px] p-8 min-h-[240px] shadow-sm md:hover:shadow-xl transition-all flex flex-col justify-between"
           >
             <div>
               <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-8">
-                <Icon className="w-6 h-6 text-slate-400 group-hover:text-[#0d34a6] transition-colors" />
+                <Icon className="w-6 h-6 text-slate-400 md:group-hover:text-[#0d34a6] transition-colors" />
               </div>
 
               <h3 className="text-2xl font-bold mb-3" style={{ color: COLORS.navy }}>
@@ -497,9 +492,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-[#0d34a6]">
+            <div className="mt-8 inline-flex items-center gap-2 pb-1 text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:group-hover:border-[#0d34a6] transition-colors w-fit">
               바로가기
-              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <ChevronRight className="w-4 h-4 transition-transform md:group-hover:translate-x-1" />
             </div>
           </Link>
         );
