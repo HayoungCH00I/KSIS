@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight, ChevronLeft, Archive, Users, BarChart3, ArrowUpRight, Handshake, ChartNoAxesCombined, UsersRound, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -22,76 +22,55 @@ const slideContents = [
   {
     heading: (
       <>
-        가장 빛나는 커리어의 완성, <br />
-        <span style={{ color: COLORS.gold }}>인생 2막</span> 플랫폼
+        가장 빛나는 커리어의 완성 <br />
+        <span className="text-[#dcb46a] md:text-[#A68B5B]">인생 2막</span> 플랫폼
       </>
     ),
     description: (
       <>
-        <span className="inline-block mr-1">시니어의 노하우와</span>
-        <span className="inline-block mr-1">주니어의 혁신이 만나</span>
-        <span className="inline-block">새로운 가능성을 엽니다.</span>{" "}
-        <br className="hidden md:block" />
-        <span className="inline-block mr-1">경험이 자신이 되고</span>
-        <span className="inline-block mr-1">꿈이 비즈니스가 되는</span>
-        <span className="inline-block mr-1">이곳에서</span>
-        <span className="inline-block mr-1">당신의 다음 장을</span>
-        <span className="inline-block">설계하세요.</span>
+        경험이 자신이 되고 꿈이 비즈니스가 되는 이곳에서 당신의 다음 장을 설계하세요.
       </>
     )
   },
   {
     heading: (
       <>
-        <span style={{ color: COLORS.gold }}>세대</span>를 넘어 <span style={{ color: COLORS.gold }}>경험</span>을 연결하는 <br />
+        <span className="text-[#dcb46a] md:text-[#A68B5B]">세대</span>를 넘어 <span className="text-[#dcb46a] md:text-[#A68B5B]">경험</span>을 연결하는 <br />
         비즈니스 플랫폼
       </>
     ),
    description: (
       <>
-        <span className="inline-block mr-1">전 세대를 아우르는</span>
-        <span className="inline-block mr-1">전문가 네트워크를 통해</span>
-        <span className="inline-block">서로의 역량을 자산화하고</span>{" "}
-        <br className="hidden md:block" />
-        <span className="inline-block mr-1">동반 성장의 기회를</span>
-        <span className="inline-block">설계합니다.</span>
+        전 세대를 아우르는 전문가 네트워크를 통해 서로의 역량을 자산화하고 <br className="hidden md:block" />
+        동반 성장의 기회를 설계합니다.
       </>
     )
   },
   {
     heading: (
       <>
-        지식을 <span style={{ color: COLORS.gold }}>자산</span>으로, <br />
-        네트워크를 <span style={{ color: COLORS.gold }}>성공</span>으로
+        지식을 <span className="text-[#dcb46a] md:text-[#A68B5B]">자산</span>으로 <br />
+        네트워크를 <span className="text-[#dcb46a] md:text-[#A68B5B]">성공</span>으로
       </>
     ),
     description: (
       <>
-        <span className="inline-block mr-1">개인이 보유한</span>
-        <span className="inline-block mr-1">무형의 지식을</span>
-        <span className="inline-block mr-1">측정 가능한</span>
-        <span className="inline-block">비즈니스 자산으로 전환하며</span>{" "}
-        <br className="hidden md:block" />
-        <span className="inline-block mr-1">모두가 동반 성장하는</span>
-        <span className="inline-block mr-1">강력한 파트너십을</span>
-        <span className="inline-block">구축합니다.</span>
+        개인이 보유한 무형의 지식을 측정 가능한 비즈니스 자산으로 전환하며 <br className="hidden md:block" />
+        모두가 동반 성장하는 강력한 파트너십을 구축합니다.
       </>
     )
   },
   {
     heading: (
       <>
-        <span style={{ color: COLORS.gold }}>경륜</span>의 지혜와 <span style={{ color: COLORS.gold }}>젊은</span> 감각이 <br />
+        <span className="text-[#dcb46a] md:text-[#A68B5B]">경륜</span>의 지혜와 <span className="text-[#dcb46a] md:text-[#A68B5B]">젊은</span> 감각이 <br />
         만나는 혁신의 무대
       </>
     ),
     description: (
       <>
-        <span className="inline-block mr-1">시니어의 숙련된 노하우와</span>
-        <span className="inline-block">청년 전문가의 에너지가 융합하여</span>{" "}
-        <br className="hidden md:block" />
-        <span className="inline-block mr-1">실질적인 비즈니스 해법과</span>
-        <span className="inline-block">경제적 가치를 창출합니다.</span>
+        시니어의 깊은 노하우와 청년 전문가의 협업으로 <br className="hidden md:block" />
+        실질적인 해법과 새로운 가치를 창출합니다.
       </>
     )
   }
@@ -130,6 +109,8 @@ const programs = [
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number>(0);
+  const [touchEndX, setTouchEndX] = useState<number>(0);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % heroImages.length);
@@ -137,6 +118,28 @@ export default function Home() {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX) return;
+    const distance = touchStartX - touchEndX;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
   };
 
   useEffect(() => {
@@ -167,7 +170,12 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[560px] md:min-h-[85vh] flex items-center px-6 md:px-12 lg:px-16 xl:px-20 py-20 bg-slate-900 overflow-hidden">
+      <section 
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        className="relative h-[calc(100dvh-80px)] md:h-auto min-h-[560px] md:min-h-[85vh] flex items-center px-6 md:px-12 lg:px-16 xl:px-20 py-12 md:py-20 bg-slate-900 overflow-hidden"
+      >
         {/* Background Carousel with crossfade */}
         <div className="absolute inset-0 z-0">
           {heroImages.map((img, idx) => (
@@ -218,12 +226,12 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="max-w-[1720px] mx-auto w-full relative z-10">
+        <div className="max-w-[1720px] mx-auto w-full relative z-10 h-full md:h-auto flex flex-col justify-between md:block py-4 md:py-0 self-stretch md:self-auto">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-3xl space-y-8"
+            className="max-w-3xl h-full md:h-auto flex flex-col justify-between md:justify-start md:block"
           >
 
             <motion.h1 
@@ -231,22 +239,49 @@ export default function Home() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="font-bold text-white tracking-tight leading-[1.2] text-[26px] md:text-[65px]"
+              className="font-bold text-white tracking-tight leading-[1.4] md:leading-[1.2] text-[29px] md:text-[65px] pt-60 md:pt-0 relative -top-[150px] md:top-0"
             >
               {slideContents[currentSlide].heading}
             </motion.h1>
             
-            <motion.p 
-              key={`p-${currentSlide}`}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-[16px] md:text-2xl text-white/70 font-light leading-relaxed max-w-2xl"
-            >
-              {slideContents[currentSlide].description}
-            </motion.p>
+            <div className="relative h-[170px] md:h-auto pb-20 md:pb-0 md:mt-8">
+              {/* Vertical line touching bottom of h1 and top of p (mobile only) */}
+              <div
+                className="absolute left-[-5px] -top-[150px] w-[1px] h-[150px] bg-white opacity-[0.35] md:hidden"
+              />
 
-            <div className="mt-8 md:mt-4 flex flex-col sm:flex-row gap-4 pt-4">
+              <motion.p 
+                key={`p-${currentSlide}`}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="min-h-[74px] md:min-h-0 text-[15px] md:text-2xl text-white/60 md:text-white/70 font-light leading-relaxed max-w-2xl break-keep"
+              >
+                {slideContents[currentSlide].description}
+              </motion.p>
+
+              {/* Mobile bottom-pinned button inline with text, centered below paragraph */}
+               <div className="absolute left-0 right-0 top-[84px] flex md:hidden justify-center">
+                <a
+                  href="https://cafe.naver.com/ksis1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-[220px] px-4 py-3 rounded-[30px] flex items-center justify-center gap-2 text-sm font-bold backdrop-blur-sm"
+                  style={{ 
+                    color: COLORS.white,
+                    border: '0.8px solid transparent',
+                    backgroundImage: 'linear-gradient(rgba(2, 6, 23, 0.4), rgba(2, 6, 23, 0.4)), linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 35%, rgba(255, 255, 255, 0.3) 70%, rgba(255, 255, 255, 0.02) 100%)',
+                    backgroundOrigin: 'border-box',
+                    backgroundClip: 'padding-box, border-box'
+                  }}
+                >
+                  네이버 카페 바로가기
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+
+            <div className="hidden md:flex flex-col sm:flex-row gap-4 mt-8">
               <a
                 href="https://cafe.naver.com/ksis1"
                 target="_blank"
