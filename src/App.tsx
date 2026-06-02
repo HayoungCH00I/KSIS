@@ -1,9 +1,4 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -14,7 +9,7 @@ import { ROUTES } from './constants';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route path={ROUTES.HOME} element={<Home />} />
@@ -24,6 +19,6 @@ export default function App() {
           <Route path={ROUTES.COMMUNITY} element={<Community />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }

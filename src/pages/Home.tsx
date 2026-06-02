@@ -87,7 +87,7 @@ const programs = [
   {
     id: 2,
     name: '소모임 프로젝트',
-    title: '식문화 · 북클럽 · 로컬탐방',
+    title: '식문화 / 북클럽 / 로컬탐방',
     description: '관심사 기반의 소모임 활동을 통해 자연스러운 관계 형성과 비즈니스 교류의 기회를 만듭니다.',
     category: 'Project'
   },
@@ -302,14 +302,14 @@ export default function Home() {
 
           {/* Description Text underneath */}
           <div className="space-y-4 md:space-y-5 text-slate-700 max-w-4xl mx-auto" style={{ marginTop: '18px' }}>
-            <p className="text-[14px] md:text-xl text-slate-700" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
-              한국시니어교류협회(KISIS)는 나이와 세대의 경계를 허물고,  <br className="hidden md:block" />
+            <p className="text-[14px] md:text-xl text-slate-700 break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
+              한국시니어교류협회(KSIS)는 나이와 세대의 경계를 허물고,  <br className="hidden md:block" />
               전 세대를 아우르는 전문가 네트워크를 통해 서로의 역량을 자산화하는 오픈 플랫폼입니다.
             </p>
-            <p className="text-[14px] md:text-xl text-slate-700 md:whitespace-nowrap" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
+            <p className="text-[14px] md:text-xl text-slate-700 md:whitespace-nowrap break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
               시니어의 완숙한 경륜과 젊은 세대의 혁신적인감각을 융합하여 단순한 교류를 넘어선 실질적인 비즈니스 기회를 창출합니다.
             </p>
-            <p className="text-[14px] md:text-xl text-slate-700 mx-auto" style={{ lineHeight: '1.6', width: '960px', maxWidth: '100%', marginLeft: 'auto', marginRight: 'auto', letterSpacing: '-0.02em' }}>
+            <p className="text-[14px] md:text-xl text-slate-700 mx-auto break-keep" style={{ lineHeight: '1.6', width: '960px', maxWidth: '100%', marginLeft: 'auto', marginRight: 'auto', letterSpacing: '-0.02em' }}>
               서로의 역량을 신뢰하고 함께 성장하는 상생의 생태계, 가장 프로페셔널한 인생 2막의 미래를 설계해 드립니다.
             </p>
           </div>
@@ -332,38 +332,40 @@ export default function Home() {
         <div className="max-w-[1720px] mx-auto">
 
 
-          <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-[10px] md:gap-[80px] flex-wrap">
-            {coreValues.map((value, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.2 }}
-                className="group flex flex-col items-start text-left w-full md:w-[420px] border-t border-slate-200 pt-[33px] md:pt-4"
-                style={{ maxWidth: '100%' }}
-              >
-                {/* Header layout: side-by-side on mobile, stacked on desktop */}
-                <div className="flex flex-row items-end gap-2.5 w-full mb-4 md:mb-0 md:block">
-                  <div className="text-[36px] md:text-[80px] font-bold leading-none text-[#0d34a6]/60 tracking-wide mb-0 md:mb-6">
-                    0{idx + 1}
+          <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-0 md:gap-[80px] flex-wrap">
+            {coreValues.map((value, idx) => {
+              const mobileBg = idx === 1 ? 'bg-white' : 'bg-[#f4f8ff]';
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.2 }}
+                  className={`group flex flex-col items-start text-left w-screen md:w-[420px] relative left-1/2 -translate-x-1/2 md:static md:translate-x-0 border-t-0 md:border-t border-slate-200 ${mobileBg} md:bg-transparent px-6 md:px-0 pt-[40px] pb-[40px] md:pt-4 md:pb-0`}
+                >
+                  {/* Header layout: side-by-side on mobile, stacked on desktop */}
+                  <div className="flex flex-row items-end gap-2.5 w-full mb-4 md:mb-0 md:block">
+                    <div className="text-[36px] md:text-[80px] font-bold leading-none text-[#0d34a6]/60 tracking-wide mb-0 md:mb-6">
+                      0{idx + 1}
+                    </div>
+
+                    <h3 className="font-bold text-[20px] md:text-[40px] mb-0 md:mb-4" style={{ color: COLORS.navy }}>
+                      {value.title}
+                      <span className="text-[15px] md:text-[20px] font-medium opacity-60">
+                        {' '}· {idx === 1 ? 'Assetize' : (idx === 2 ? 'Growth' : 'Connect')}
+                      </span>
+                    </h3>
                   </div>
 
-                  <h3 className="font-bold text-[20px] md:text-[40px] mb-0 md:mb-4" style={{ color: COLORS.navy }}>
-                    {value.title}
-                    <span className="text-[15px] md:text-[20px] font-medium opacity-60">
-                      {' '}· {idx === 1 ? 'Assetize' : (idx === 2 ? 'Growth' : 'Connect')}
-                    </span>
-                  </h3>
-                </div>
-
-                <div className="w-full">
-                  <p className="text-[16px] md:text-[17px] font-medium opacity-60 leading-[22px] md:leading-[1.8]">
-                    {value.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="w-full">
+                    <p className="text-[16px] md:text-[17px] font-medium opacity-60 leading-[22px] md:leading-[1.8] break-keep">
+                      {value.description}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -375,8 +377,8 @@ export default function Home() {
             <div className="space-y-4 flex flex-col items-center md:items-start">
 
               <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>PROGRAM</h2>
-              <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl font-medium text-center md:text-left" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
-               KISIS가 운영하는 포럼, 프로젝트, 플랫폼, 교육 프로그램을 통해 교류와 수익화, 성장을 함께 만들어갑니다.
+              <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl font-medium text-center md:text-left break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
+               KSIS가 운영하는 포럼, 프로젝트, 플랫폼, 교육 프로그램을 통해 교류와 수익화, 성장을 함께 만들어갑니다.
               </p>
             </div>
             
@@ -390,33 +392,66 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {programs.map((program, i) => (
-              <motion.div
-                key={program.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 group hover:shadow-xl transition-all flex flex-col justify-between text-left"
-              >
-                <div>
+            {programs.map((program, i) => {
+              const styles = [
+                {
+                  bgColor: 'bg-[#3a6182]',
+                  textColor: 'text-white',
+                  titleColor: 'text-white',
+                  descColor: 'text-white/85',
+                  buttonClass: 'bg-white/10 hover:bg-white/20 text-white border-white/20'
+                },
+                {
+                  bgColor: 'bg-[#98b7a5]',
+                  textColor: 'text-white',
+                  titleColor: 'text-white',
+                  descColor: 'text-white/85',
+                  buttonClass: 'bg-white/10 hover:bg-white/20 text-white border-white/20'
+                },
+                {
+                  bgColor: 'bg-[#e6be6c]',
+                  textColor: 'text-slate-900',
+                  titleColor: 'text-slate-950',
+                  descColor: 'text-slate-800/85',
+                  buttonClass: 'bg-black/5 hover:bg-black/10 text-slate-950 border-black/10'
+                },
+                {
+                  bgColor: 'bg-[#d2833d]',
+                  textColor: 'text-white',
+                  titleColor: 'text-white',
+                  descColor: 'text-white/85',
+                  buttonClass: 'bg-white/10 hover:bg-white/20 text-white border-white/20'
+                },
+              ];
+              const currentStyle = styles[i % styles.length];
 
-                  <h3 className="text-xl font-bold mb-2 text-slate-950">{program.name}</h3>
-                  <p className="text-[16px] md:text-[17px] font-medium opacity-60 leading-[22px] md:leading-[1.8]">{program.title}</p>
-                  <div className="space-y-2 mb-8">
-                    <p className="text-sm text-slate-500 leading-relaxed line-clamp-4">
-                      {program.description}
-                    </p>
+              return (
+                <motion.div
+                  key={program.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className={`${currentStyle.bgColor} p-8 rounded-[32px] shadow-sm border border-transparent group md:hover:shadow-xl transition-all flex flex-col justify-between text-left`}
+                >
+                  <div>
+                    <h3 className={`text-2xl font-extrabold mb-1 tracking-tight ${currentStyle.titleColor}`}>{program.name}</h3>
+                    <p className={`text-[15px] font-semibold leading-snug break-keep mb-4 ${currentStyle.descColor}`}>{program.title}</p>
+                    <div className="space-y-2 mb-8">
+                      <p className={`text-sm leading-relaxed line-clamp-4 break-keep ${currentStyle.descColor}`}>
+                        {program.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <Link to={ROUTES.ARCHIVE} className="block w-full">
-                  <button className="w-full py-4 rounded-xl border border-slate-100 bg-slate-50 text-sm font-bold flex items-center justify-center gap-2 group-hover:bg-[#0d34a6] group-hover:text-white transition-all cursor-pointer">
-                    프로그램 자세히 보기
-                    <FileText className="w-4 h-4" />
-                  </button>
-                </Link>
-              </motion.div>
-            ))}
+                  <Link to={ROUTES.ARCHIVE} className="block w-full">
+                    <button className={`w-full py-4 rounded-xl border ${currentStyle.buttonClass} text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer`}>
+                      프로그램 자세히 보기
+                      <FileText className="w-4 h-4" />
+                    </button>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -426,7 +461,7 @@ export default function Home() {
         <div className="max-w-[1720px] mx-auto">
           <div className="mb-16 text-center max-w-2xl mx-auto space-y-4">
             <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>CALENDAR</h2>
-            <p className="text-[14px] md:text-lg text-slate-700 font-medium" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>우리와 함께하는 다양한 공식 포럼과 교육 행사 일정을 확인하고 간편히 참가 신청해보세요.</p>
+            <p className="text-[14px] md:text-lg text-slate-700 font-medium break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>우리와 함께하는 다양한 공식 포럼과 교육 행사 일정을 확인하고 간편히 참가 신청해보세요.</p>
           </div>
           <CalendarSection />
         </div>
@@ -436,20 +471,17 @@ export default function Home() {
 <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20 md:pt-[150px] border-t border-slate-200 bg-white">
   <div className="max-w-[1720px] mx-auto space-y-12">
     <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-      <div className="space-y-4">
-        <h2
-          className="text-4xl font-bold tracking-tight"
-          style={{ color: '#002147', opacity: 0.5, fontSize: '50px' }}
-        >
+      <div className="space-y-4 text-center md:text-left flex flex-col items-center md:items-start">
+        <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>
           BOARD
         </h2>
-        <p className="text-lg text-slate-500 max-w-2xl font-medium">
-          협회의 주요 소식과 인사이트, 현장 활동을 한눈에 확인해 보세요.
+        <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl font-medium break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
+          협회의 주요 소식을 한눈에 확인해 보세요.
         </p>
       </div>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-3 md:grid-cols-3 gap-3 md:gap-6">
       {[
         {
           label: '공지사항',
@@ -476,23 +508,23 @@ export default function Home() {
           <Link
             key={i}
             to={item.link}
-            className="group bg-white border border-slate-100 rounded-[24px] p-8 min-h-[240px] shadow-sm md:hover:shadow-xl transition-all flex flex-col justify-between"
+            className="group bg-white border border-slate-100 rounded-[16px] md:rounded-[24px] p-4 md:p-8 min-h-[120px] md:min-h-[240px] shadow-sm md:hover:shadow-xl transition-all flex flex-col items-center md:items-start text-center md:text-left justify-center md:justify-between"
           >
-            <div>
-              <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-8">
-                <Icon className="w-6 h-6 text-slate-400 md:group-hover:text-[#0d34a6] transition-colors" />
+            <div className="flex flex-col items-center md:items-start w-full">
+              <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-slate-50 flex items-center justify-center mb-3 md:mb-8">
+                <Icon className="w-5 h-5 md:w-6 h-6 text-slate-400 md:group-hover:text-[#0d34a6] transition-colors" />
               </div>
 
-              <h3 className="text-2xl font-bold mb-3" style={{ color: COLORS.navy }}>
+              <h3 className="text-sm sm:text-base md:text-2xl font-bold mb-0 md:mb-3" style={{ color: COLORS.navy }}>
                 {item.label}
               </h3>
 
-              <p className="text-sm text-slate-500 leading-relaxed">
+              <p className="hidden md:block text-sm text-slate-500 leading-relaxed">
                 {item.description}
               </p>
             </div>
 
-            <div className="mt-8 inline-flex items-center gap-2 pb-1 text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:group-hover:border-[#0d34a6] transition-colors w-fit">
+            <div className="hidden md:inline-flex mt-8 items-center gap-2 pb-1 text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:group-hover:border-[#0d34a6] transition-colors w-fit">
               바로가기
               <ChevronRight className="w-4 h-4 transition-transform md:group-hover:translate-x-1" />
             </div>
