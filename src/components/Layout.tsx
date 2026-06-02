@@ -131,8 +131,8 @@ const Footer = () => {
         <div>
           <h4 className="font-bold mb-6 text-sm uppercase tracking-widest opacity-40">Contact</h4>
           <ul className="space-y-4 text-sm opacity-70">
-            <li>서울특별시 (상세주소 안내 예정)</li>
-            <li>대표번호: 02-XXXX-XXXX</li>
+            <li>서울특별시 서울시 마포구 신촌로 200-1</li>
+            <li>대표번호: 02-363-8777</li>
             <li>이메일: contact@ksea.org</li>
           </ul>
         </div>
