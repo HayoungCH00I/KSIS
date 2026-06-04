@@ -182,7 +182,7 @@ export default function Home() {
             <motion.div
               key={idx}
               initial={{ opacity: 0 }}
-              animate={{ opacity: idx === currentSlide ? 0.5 : 0 }}
+              animate={{ opacity: idx === currentSlide ? 0.7 : 0 }}
               transition={{ duration: 0.8 }}
               className="absolute inset-0"
             >
@@ -193,7 +193,7 @@ export default function Home() {
               />
             </motion.div>
           ))}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 md:from-slate-900 via-slate-900/10 to-transparent md:via-slate-900/70 z-1" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 md:from-slate-900 via-slate-900/10 to-transparent md:via-slate-900/60 z-1" />
         </div>
 
         {/* Carousel Navigation Buttons on ends */}
@@ -232,7 +232,7 @@ export default function Home() {
             href="https://cafe.naver.com/ksis1"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-[220px] px-4 py-3 rounded-[30px] flex items-center justify-center gap-2 text-sm font-bold backdrop-blur-sm"
+            className="w-[220px] px-4 py-3 rounded-[35px] flex items-center justify-center gap-2 text-sm font-bold backdrop-blur-sm"
             style={{ 
               color: COLORS.white,
               border: '0.8px solid transparent',
@@ -282,8 +282,14 @@ export default function Home() {
                 href="https://cafe.naver.com/ksis1"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-[220px] mx-auto md:w-auto md:mx-0 px-4 py-3 md:px-8 md:py-5 rounded-[30px] md:rounded-2xl flex items-center justify-center gap-2 md:gap-3 text-sm md:text-lg font-bold border-2 transition-all hover:bg-white/10"
-                style={{ borderColor: COLORS.white, color: COLORS.white }}
+                className="w-[220px] mx-auto md:w-auto md:mx-0 px-4 py-3 md:px-[35px] md:py-5 rounded-[35px] md:rounded-[35px] flex items-center justify-center gap-2 md:gap-3 text-sm md:text-lg font-bold backdrop-blur-sm transition-all hover:bg-white/5"
+                style={{ 
+                  color: COLORS.white,
+                  border: '0.8px solid transparent',
+                  backgroundImage: 'linear-gradient(rgba(2, 6, 23, 0.4), rgba(2, 6, 23, 0.4)), linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 35%, rgba(255, 255, 255, 0.3) 70%, rgba(255, 255, 255, 0.02) 100%)',
+                  backgroundOrigin: 'border-box',
+                  backgroundClip: 'padding-box, border-box'
+                }}
               >
                 네이버 카페 바로가기
                 <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5" />
@@ -302,14 +308,14 @@ export default function Home() {
 
           {/* Description Text underneath */}
           <div className="space-y-4 md:space-y-5 text-slate-700 max-w-4xl mx-auto" style={{ marginTop: '18px' }}>
-            <p className="text-[14px] md:text-xl text-slate-700 break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
+            <p className="text-[14px] md:text-lg text-slate-700 font-medium break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
               한국시니어교류협회(KSIS)는 나이와 세대의 경계를 허물고,  <br className="hidden md:block" />
               전 세대를 아우르는 전문가 네트워크를 통해 서로의 역량을 자산화하는 오픈 플랫폼입니다.
             </p>
-            <p className="text-[14px] md:text-xl text-slate-700 md:whitespace-nowrap break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
+            <p className="text-[14px] md:text-lg text-slate-700 md:whitespace-nowrap font-medium break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
               시니어의 완숙한 경륜과 젊은 세대의 혁신적인감각을 융합하여 단순한 교류를 넘어선 실질적인 비즈니스 기회를 창출합니다.
             </p>
-            <p className="text-[14px] md:text-xl text-slate-700 mx-auto break-keep" style={{ lineHeight: '1.6', width: '960px', maxWidth: '100%', marginLeft: 'auto', marginRight: 'auto', letterSpacing: '-0.02em' }}>
+            <p className="text-[14px] md:text-lg text-slate-700 font-medium mx-auto break-keep" style={{ lineHeight: '1.6', width: '960px', maxWidth: '100%', marginLeft: 'auto', marginRight: 'auto', letterSpacing: '-0.02em' }}>
               서로의 역량을 신뢰하고 함께 성장하는 상생의 생태계, 가장 프로페셔널한 인생 2막의 미래를 설계해 드립니다.
             </p>
           </div>
@@ -332,7 +338,7 @@ export default function Home() {
         <div className="max-w-[1720px] mx-auto">
 
 
-          <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-0 md:gap-[80px] flex-wrap">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full">
             {coreValues.map((value, idx) => {
               const mobileBg = idx === 1 ? 'bg-white' : 'bg-[#F1F3F5]';
               return (
@@ -342,29 +348,30 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.2 }}
-                  className={`group flex flex-col items-start justify-center md:justify-between text-left w-screen h-[300px] md:w-[420px] md:h-auto relative left-1/2 -translate-x-1/2 md:static md:translate-x-0 border-0 md:border-t md:border-slate-200 ${mobileBg} md:bg-transparent px-8 py-8 md:px-0 md:pt-4 md:pb-0 rounded-none`}
+                  className={`group flex flex-col items-center md:items-start justify-center md:justify-between text-center md:text-left w-screen h-[300px] md:w-full md:h-[350px] relative left-1/2 -translate-x-1/2 md:static md:translate-x-0 border-0 ${mobileBg} px-8 py-8 md:p-10 rounded-none md:rounded-none ${idx === 1 ? 'md:border md:border-[#f1f3f5] md:border-solid' : ''}`}
                 >
                   <div className="flex flex-col gap-[2px] w-full md:contents">
-                    {/* Header layout: side-by-side on mobile, stacked on desktop */}
-                    <div className="flex flex-row items-end gap-[7px] w-full mb-0 md:block">
-                      <div className="text-[70px] md:text-[80px] font-bold leading-none text-[#4E5968] md:text-[#0d34a6]/60 tracking-tighter md:tracking-wide mb-0 md:mb-6">
+                    {/* Header layout: stacked on mobile, ordered as div -> h3 -> span via flex order; ordered as div -> span -> h3 on desktop */}
+                    <div className="flex flex-col items-center md:items-start gap-[6px] w-full mb-0 md:block">
+                      {/* Number Div */}
+                      <div className="text-[19px] md:text-[24px] font-bold leading-none text-[#4E5968]/40 tracking-tighter md:tracking-wide mb-0 md:mb-6 order-1 text-center md:text-left">
                         0{idx + 1}
                       </div>
 
-                      <div className="flex flex-col items-start gap-[3px] md:block">
-                        <span className="text-[23px] md:text-[40px] font-semibold md:font-bold text-[#191F28] md:text-[#0d34a6]/40 uppercase tracking-tight block leading-none md:my-0 self-start">
-                          {idx === 1 ? 'Assetization' : (idx === 2 ? 'Growth' : 'Connect')}
-                        </span>
+                      {/* English Tag (span) - comes next in DOM so it shows first on desktop after Number and before Title */}
+                      <span className="text-[13px] md:text-[15px] font-semibold md:font-bold text-[#191F28]/80 uppercase tracking-tight block leading-none md:my-0 self-center md:self-start order-3 md:order-none text-center md:text-left">
+                        {idx === 1 ? 'Assetization' : (idx === 2 ? 'Growth' : 'Connect')}
+                      </span>
 
-                        <h3 className="font-bold text-[23px] md:text-[40px] mb-0 md:mb-4 text-[#4E5968] md:text-[#002147]">
-                          {value.title}
-                        </h3>
-                      </div>
+                      {/* Korean Title (h3) - ordered second on mobile, last in DOM so shows last on desktop */}
+                      <h3 className="font-bold text-[32px] md:text-[32px] tracking-[0.03em] md:tracking-normal leading-none mb-0 md:mb-4 text-[#4E5968] order-2 md:order-none text-center md:text-left">
+                        {value.title}
+                      </h3>
                     </div>
                   </div>
 
                   <div className="w-full mt-[45px] md:mt-0">
-                    <p className="text-[14px] md:text-[17px] text-[#191F28] md:text-slate-700 font-medium md:leading-[1.8] break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
+                    <p className="text-[14px] md:text-[15px] text-[#191F28] font-medium md:leading-[1.8] break-keep text-center md:text-left" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
                       {value.description}
                     </p>
                   </div>
@@ -378,18 +385,18 @@ export default function Home() {
       {/* Competency Archive Section */}
       <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: COLORS.offWhite }}>
         <div className="max-w-[1720px] mx-auto space-y-16">
-          <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-6 text-center md:text-left w-full">
-            <div className="space-y-4 flex flex-col items-center md:items-start w-full">
+          <div className="flex flex-col items-center justify-center gap-6 text-center w-full">
+            <div className="space-y-4 flex flex-col items-center w-full">
 
-              <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 md:left-0 w-full md:w-auto text-center md:text-left self-center md:self-start mb-0">PROJECT</h2>
-              <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl font-medium text-center md:text-left break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
+              <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 w-full text-center self-center mb-0">PROJECT</h2>
+              <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl md:max-w-none md:whitespace-nowrap font-medium text-center mx-auto break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
                KSIS가 운영하는 포럼, 프로젝트, 플랫폼, 교육 프로그램을 통해 교류와 수익화, 성장을 함께 만들어갑니다.
               </p>
             </div>
             
             <Link 
               to={ROUTES.ARCHIVE} 
-              className="group inline-flex items-center gap-2 pb-1 text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:hover:border-[#0d34a6] transition-colors h-fit"
+              className="group inline-flex items-center gap-2 pb-1 text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:hover:border-[#0d34a6] transition-colors h-fit mx-auto"
             >
               <span>전체 프로그램 보기</span>
               <ChevronRight className="w-4 h-4 transition-transform md:group-hover:translate-x-1" />
@@ -477,12 +484,12 @@ export default function Home() {
       {/* Board Section */}
 <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20 md:pt-[150px] border-t border-slate-200 bg-white">
   <div className="max-w-[1720px] mx-auto space-y-12">
-    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 w-full">
-      <div className="space-y-4 text-center md:text-left flex flex-col items-center md:items-start w-full">
-        <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 md:left-0 w-full md:w-auto text-center md:text-left self-center md:self-start mb-0">
+    <div className="flex flex-col items-center justify-center gap-6 text-center w-full">
+      <div className="space-y-4 flex flex-col items-center w-full">
+        <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 w-full text-center self-center mb-0">
           BOARD
         </h2>
-        <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl font-medium break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
+        <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl md:max-w-none md:whitespace-nowrap font-medium text-center mx-auto break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
           협회의 주요 소식을 한눈에 확인해 보세요.
         </p>
       </div>
