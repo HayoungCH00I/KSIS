@@ -20,11 +20,11 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { name: '홈', path: ROUTES.HOME },
-    { name: '소개', path: ROUTES.ABOUT },
-    { name: '프로그램', path: ROUTES.ARCHIVE },
-    { name: '일정', path: ROUTES.CALENDAR },
-    { name: '소식', path: ROUTES.COMMUNITY },
+    { name: 'HOME', path: ROUTES.HOME },
+    { name: 'ABOUT', path: ROUTES.ABOUT },
+    { name: 'PROJECT', path: ROUTES.ARCHIVE },
+    { name: 'CALENDAR', path: ROUTES.CALENDAR },
+    { name: 'BOARD', path: ROUTES.COMMUNITY },
   ];
 
   return (

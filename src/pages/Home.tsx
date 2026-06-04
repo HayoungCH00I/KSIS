@@ -348,7 +348,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.2 }}
-                  className={`group flex flex-col items-center md:items-start justify-center md:justify-between text-center md:text-left w-screen h-[300px] md:w-full md:h-[350px] relative left-1/2 -translate-x-1/2 md:static md:translate-x-0 border-0 ${mobileBg} px-8 py-8 md:p-10 rounded-none md:rounded-none ${idx === 1 ? 'md:border md:border-[#f1f3f5] md:border-solid' : ''}`}
+                  className={`group flex flex-col items-center md:items-start justify-center md:justify-between text-center md:text-left w-screen h-[300px] md:w-full md:h-[350px] relative left-1/2 -translate-x-1/2 md:static md:translate-x-0 border-0 ${mobileBg} px-8 py-8 md:p-10 rounded-none md:rounded-[32px] ${idx === 1 ? 'md:border md:border-[#f1f3f5] md:border-solid' : ''}`}
                 >
                   <div className="flex flex-col gap-[2px] w-full md:contents">
                     {/* Header layout: stacked on mobile, ordered as div -> h3 -> span via flex order; ordered as div -> span -> h3 on desktop */}
@@ -358,15 +358,15 @@ export default function Home() {
                         0{idx + 1}
                       </div>
 
-                      {/* English Tag (span) - comes next in DOM so it shows first on desktop after Number and before Title */}
-                      <span className="text-[13px] md:text-[15px] font-semibold md:font-bold text-[#191F28]/80 uppercase tracking-tight block leading-none md:my-0 self-center md:self-start order-3 md:order-none text-center md:text-left">
-                        {idx === 1 ? 'Assetization' : (idx === 2 ? 'Growth' : 'Connect')}
-                      </span>
-
-                      {/* Korean Title (h3) - ordered second on mobile, last in DOM so shows last on desktop */}
-                      <h3 className="font-bold text-[32px] md:text-[32px] tracking-[0.03em] md:tracking-normal leading-none mb-0 md:mb-4 text-[#4E5968] order-2 md:order-none text-center md:text-left">
+                      {/* Korean Title (h3) - ordered second on mobile, comes before span on PC */}
+                      <h3 className="font-bold text-[32px] md:text-[45px] tracking-[0.03em] md:tracking-normal leading-none mb-0 md:mb-2 text-[#4E5968] order-2 md:order-none text-center md:text-left">
                         {value.title}
                       </h3>
+
+                      {/* English Tag (span) - ordered third on mobile, comes after h3 on PC */}
+                      <span className="text-[13px] md:text-[15px] font-semibold md:font-bold text-[#191F28]/80 uppercase tracking-tight block leading-none md:mt-0 md:mb-4 md:pl-[3px] self-center md:self-start order-3 md:order-none text-center md:text-left">
+                        {idx === 1 ? 'Assetization' : (idx === 2 ? 'Growth' : 'Connect')}
+                      </span>
                     </div>
                   </div>
 
