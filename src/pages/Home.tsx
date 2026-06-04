@@ -157,7 +157,7 @@ export default function Home() {
     },
     {
       title: '자산화',
-      description: '개인의 경험과 암묵지를 구체화된 비즈니스 모델로 변환하여 실질적인 수익 창출을 돕습니다.',
+      description: '개인의 오랜 실무 경험과 핵심 노하우를 구체적인 비즈니스 모델로 전환하여, 실질적인 수익과 가치 창출을 지원합니다.',
       icon: ChartNoAxesCombined,
     },
     {
@@ -225,59 +225,59 @@ export default function Home() {
             />
           ))}
         </div>
-        <div className="max-w-[1720px] mx-auto w-full relative z-10 h-full md:h-auto flex flex-col justify-between md:block py-4 md:py-0 self-stretch md:self-auto">
+
+        {/* Mobile bottom-pinned button: persistently aligned right above the dot indicators */}
+        <div className="absolute bottom-16 left-0 right-0 flex md:hidden justify-center z-20">
+          <a
+            href="https://cafe.naver.com/ksis1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-[220px] px-4 py-3 rounded-[30px] flex items-center justify-center gap-2 text-sm font-bold backdrop-blur-sm"
+            style={{ 
+              color: COLORS.white,
+              border: '0.8px solid transparent',
+              backgroundImage: 'linear-gradient(rgba(2, 6, 23, 0.4), rgba(2, 6, 23, 0.4)), linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 35%, rgba(255, 255, 255, 0.3) 70%, rgba(255, 255, 255, 0.02) 100%)',
+              backgroundOrigin: 'border-box',
+              backgroundClip: 'padding-box, border-box'
+            }}
+          >
+            네이버 카페 바로가기
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
+        </div>
+
+        <div className="max-w-[1720px] mx-auto w-full relative z-10 h-auto py-4 md:py-0">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-3xl h-full md:h-auto flex flex-col justify-between md:justify-start md:block"
+            className="max-w-3xl h-auto md:h-auto md:block translate-y-24 md:translate-y-0"
           >
-            <div className="relative -top-[60px] md:top-0">
-          <motion.h1 
-            key={`h1-${currentSlide}`}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="font-bold text-white tracking-tight leading-[1.4] md:leading-[1.2] text-[29px] md:text-[65px] pt-60 md:pt-0"
-          >
-            {slideContents[currentSlide].heading}
-          </motion.h1>
-  
-          <div className="relative h-[170px] md:h-auto pb-20 md:pb-0 mt-[15px] md:mt-8">
-
-              <motion.p 
-                key={`p-${currentSlide}`}
+            <div className="relative md:top-0">
+              <motion.h1 
+                key={`h1-${currentSlide}`}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="min-h-[74px] md:min-h-0 text-[15px] md:text-2xl text-white/60 md:text-white/70 font-light leading-relaxed max-w-2xl break-keep"
+                transition={{ duration: 0.5 }}
+                className="font-bold text-white tracking-tight leading-[1.4] md:leading-[1.2] text-[clamp(24px,7.5vw,34px)] md:text-[65px]"
               >
-                {slideContents[currentSlide].description}
-              </motion.p>
-
-              {/* Mobile bottom-pinned button inline with text, centered below paragraph */}
-               <div className="absolute left-0 right-0 top-[130px] flex md:hidden justify-center">
-                <a
-                  href="https://cafe.naver.com/ksis1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-[220px] px-4 py-3 rounded-[30px] flex items-center justify-center gap-2 text-sm font-bold backdrop-blur-sm"
-                  style={{ 
-                    color: COLORS.white,
-                    border: '0.8px solid transparent',
-                    backgroundImage: 'linear-gradient(rgba(2, 6, 23, 0.4), rgba(2, 6, 23, 0.4)), linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 35%, rgba(255, 255, 255, 0.3) 70%, rgba(255, 255, 255, 0.02) 100%)',
-                    backgroundOrigin: 'border-box',
-                    backgroundClip: 'padding-box, border-box'
-                  }}
+                {slideContents[currentSlide].heading}
+              </motion.h1>
+       
+              <div className="relative md:h-auto mt-[15px] md:mt-8">
+                <motion.p 
+                  key={`p-${currentSlide}`}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="min-h-[74px] md:min-h-0 text-[clamp(13px,3.8vw,16px)] md:text-2xl text-white/60 md:text-white/70 font-light leading-relaxed max-w-2xl break-keep"
                 >
-                  네이버 카페 바로가기
-                  <ArrowUpRight className="w-4 h-4" />
-                </a>
+                  {slideContents[currentSlide].description}
+                </motion.p>
               </div>
             </div>
-          </div>
 
-          <div className="hidden md:flex flex-col sm:flex-row gap-4 mt-8">
+            <div className="hidden md:flex flex-col sm:flex-row gap-4 mt-8">
               <a
                 href="https://cafe.naver.com/ksis1"
                 target="_blank"
@@ -298,7 +298,7 @@ export default function Home() {
         <div className="max-w-[1200px] mx-auto w-full text-center space-y-6">
 
           {/* Heading */}
-          <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>CORE VALUES</h2>
+          <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 md:left-0 w-full md:w-auto text-center md:text-center mb-0">ABOUT</h2>
 
           {/* Description Text underneath */}
           <div className="space-y-4 md:space-y-5 text-slate-700 max-w-4xl mx-auto" style={{ marginTop: '18px' }}>
@@ -327,14 +327,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Core Values Section */}
+      {/* CORE VALUE Section */}
       <section className="pt-24 pb-[150px] px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: '#ffffff', paddingTop: '0px' }}>
         <div className="max-w-[1720px] mx-auto">
 
 
           <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-0 md:gap-[80px] flex-wrap">
             {coreValues.map((value, idx) => {
-              const mobileBg = idx === 1 ? 'bg-white' : 'bg-[#f4f8ff]';
+              const mobileBg = idx === 1 ? 'bg-white' : 'bg-[#F1F3F5]';
               return (
                 <motion.div
                   key={idx}
@@ -342,24 +342,29 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.2 }}
-                  className={`group flex flex-col items-start text-left w-screen md:w-[420px] relative left-1/2 -translate-x-1/2 md:static md:translate-x-0 border-t-0 md:border-t border-slate-200 ${mobileBg} md:bg-transparent px-6 md:px-0 pt-[40px] pb-[40px] md:pt-4 md:pb-0`}
+                  className={`group flex flex-col items-start justify-center md:justify-between text-left w-screen h-[300px] md:w-[420px] md:h-auto relative left-1/2 -translate-x-1/2 md:static md:translate-x-0 border-0 md:border-t md:border-slate-200 ${mobileBg} md:bg-transparent px-8 py-8 md:px-0 md:pt-4 md:pb-0 rounded-none`}
                 >
-                  {/* Header layout: side-by-side on mobile, stacked on desktop */}
-                  <div className="flex flex-row items-end gap-2.5 w-full mb-4 md:mb-0 md:block">
-                    <div className="text-[36px] md:text-[80px] font-bold leading-none text-[#0d34a6]/60 tracking-wide mb-0 md:mb-6">
-                      0{idx + 1}
-                    </div>
+                  <div className="flex flex-col gap-[2px] w-full md:contents">
+                    {/* Header layout: side-by-side on mobile, stacked on desktop */}
+                    <div className="flex flex-row items-end gap-[7px] w-full mb-0 md:block">
+                      <div className="text-[70px] md:text-[80px] font-bold leading-none text-[#4E5968] md:text-[#0d34a6]/60 tracking-tighter md:tracking-wide mb-0 md:mb-6">
+                        0{idx + 1}
+                      </div>
 
-                    <h3 className="font-bold text-[20px] md:text-[40px] mb-0 md:mb-4" style={{ color: COLORS.navy }}>
-                      {value.title}
-                      <span className="text-[15px] md:text-[20px] font-medium opacity-60">
-                        {' '}· {idx === 1 ? 'Assetize' : (idx === 2 ? 'Growth' : 'Connect')}
-                      </span>
-                    </h3>
+                      <div className="flex flex-col items-start gap-[3px] md:block">
+                        <span className="text-[23px] md:text-[40px] font-semibold md:font-bold text-[#191F28] md:text-[#0d34a6]/40 uppercase tracking-tight block leading-none md:my-0 self-start">
+                          {idx === 1 ? 'Assetization' : (idx === 2 ? 'Growth' : 'Connect')}
+                        </span>
+
+                        <h3 className="font-bold text-[23px] md:text-[40px] mb-0 md:mb-4 text-[#4E5968] md:text-[#002147]">
+                          {value.title}
+                        </h3>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="w-full">
-                    <p className="text-[16px] md:text-[17px] font-medium opacity-60 leading-[22px] md:leading-[1.8] break-keep">
+                  <div className="w-full mt-[45px] md:mt-0">
+                    <p className="text-[14px] md:text-[17px] text-[#191F28] md:text-slate-700 font-medium md:leading-[1.8] break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
                       {value.description}
                     </p>
                   </div>
@@ -373,10 +378,10 @@ export default function Home() {
       {/* Competency Archive Section */}
       <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: COLORS.offWhite }}>
         <div className="max-w-[1720px] mx-auto space-y-16">
-          <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-6 text-center md:text-left">
-            <div className="space-y-4 flex flex-col items-center md:items-start">
+          <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-6 text-center md:text-left w-full">
+            <div className="space-y-4 flex flex-col items-center md:items-start w-full">
 
-              <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>PROGRAM</h2>
+              <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 md:left-0 w-full md:w-auto text-center md:text-left self-center md:self-start mb-0">PROJECT</h2>
               <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl font-medium text-center md:text-left break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
                KSIS가 운영하는 포럼, 프로젝트, 플랫폼, 교육 프로그램을 통해 교류와 수익화, 성장을 함께 만들어갑니다.
               </p>
@@ -409,11 +414,11 @@ export default function Home() {
                   buttonClass: 'bg-white/10 hover:bg-white/20 text-white border-white/20'
                 },
                 {
-                  bgColor: 'bg-[#e6be6c]',
-                  textColor: 'text-slate-900',
-                  titleColor: 'text-slate-950',
-                  descColor: 'text-slate-800/85',
-                  buttonClass: 'bg-black/5 hover:bg-black/10 text-slate-950 border-black/10'
+                  bgColor: 'bg-[#D19D34]',
+                  textColor: 'text-white',
+                  titleColor: 'text-white',
+                  descColor: 'text-white',
+                  buttonClass: 'bg-white/10 hover:bg-white/20 text-white border-white/20'
                 },
                 {
                   bgColor: 'bg-[#d2833d]',
@@ -459,9 +464,11 @@ export default function Home() {
       {/* Calendar Section */}
       <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20 bg-white">
         <div className="max-w-[1720px] mx-auto">
-          <div className="mb-16 text-center max-w-2xl mx-auto space-y-4">
-            <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>CALENDAR</h2>
-            <p className="text-[14px] md:text-lg text-slate-700 font-medium break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>우리와 함께하는 다양한 공식 포럼과 교육 행사 일정을 확인하고 간편히 참가 신청해보세요.</p>
+          <div className="mb-16 space-y-4">
+            <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 md:left-0 w-full md:w-auto text-center md:text-center mb-0">CALENDAR</h2>
+            <div className="max-w-2xl mx-auto text-center">
+              <p className="text-[14px] md:text-lg text-slate-700 font-medium break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>우리와 함께하는 다양한 공식 포럼과 교육 행사 일정을 확인하고 간편히 참가 신청해보세요.</p>
+            </div>
           </div>
           <CalendarSection />
         </div>
@@ -470,9 +477,9 @@ export default function Home() {
       {/* Board Section */}
 <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20 md:pt-[150px] border-t border-slate-200 bg-white">
   <div className="max-w-[1720px] mx-auto space-y-12">
-    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-      <div className="space-y-4 text-center md:text-left flex flex-col items-center md:items-start">
-        <h2 className="text-4xl font-bold tracking-tight" style={{ color: '#002147', opacity: 0.5 }}>
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 w-full">
+      <div className="space-y-4 text-center md:text-left flex flex-col items-center md:items-start w-full">
+        <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 md:left-0 w-full md:w-auto text-center md:text-left self-center md:self-start mb-0">
           BOARD
         </h2>
         <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl font-medium break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>

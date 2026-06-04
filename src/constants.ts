@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 export const COLORS = {
   navy: '#002147',
   warmGray: '#8E9299',
@@ -16,6 +11,7 @@ export const ROUTES = {
   HOME: '/',
   ABOUT: '/about',
   ARCHIVE: '/archive',
+  CALENDAR: '/calendar',
   ACTIVITIES: '/activities',
   COMMUNITY: '/community',
 };

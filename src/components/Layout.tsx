@@ -21,8 +21,9 @@ const Navbar = () => {
 
   const navItems = [
     { name: '홈', path: ROUTES.HOME },
-    { name: '협회소개', path: ROUTES.ABOUT },
-    { name: '역량 아카이브', path: ROUTES.ARCHIVE },
+    { name: '소개', path: ROUTES.ABOUT },
+    { name: '프로그램', path: ROUTES.ARCHIVE },
+    { name: '일정', path: ROUTES.CALENDAR },
     { name: '소식', path: ROUTES.COMMUNITY },
   ];
 
@@ -141,8 +142,9 @@ const Footer = () => {
           <h4 className="font-bold mb-6 text-sm uppercase tracking-widest opacity-40">Quick Links</h4>
           <ul className="space-y-4 text-sm opacity-70">
             <li><Link to={ROUTES.HOME} className="hover:opacity-100 transition-opacity">홈</Link></li>
-            <li><Link to={ROUTES.ABOUT} className="hover:opacity-100 transition-opacity">협회소개</Link></li>
-            <li><Link to={ROUTES.ARCHIVE} className="hover:opacity-100 transition-opacity">역량 아카이브</Link></li>
+            <li><Link to={ROUTES.ABOUT} className="hover:opacity-100 transition-opacity">소개</Link></li>
+            <li><Link to={ROUTES.ARCHIVE} className="hover:opacity-100 transition-opacity">프로그램</Link></li>
+            <li><Link to={ROUTES.CALENDAR} className="hover:opacity-100 transition-opacity">일정</Link></li>
             <li><Link to={ROUTES.COMMUNITY} className="hover:opacity-100 transition-opacity">네이버 카페</Link></li>
           </ul>
         </div>
