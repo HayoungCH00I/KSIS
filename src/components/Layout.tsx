@@ -125,7 +125,7 @@ const Footer = () => {
             <span className="font-bold text-lg">한국시니어교류협회</span>
           </div>
           <p className="hidden md:block text-sm opacity-60 leading-relaxed max-w-sm">
-            사단법인 한국시니어교류협회는 은퇴 후에도 빛나는 시니어 전문가들의 지혜와 역량을 연결하여, 지속 가능한 내일을 만들어갑니다.
+            한국시니어교류협회는 은퇴 후에도 빛나는 시니어 전문가들의 지혜와 역량을 연결하여, 지속 가능한 내일을 만들어갑니다.
           </p>
         </div>
         

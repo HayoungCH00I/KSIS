@@ -7,7 +7,7 @@ import heroImg1 from '../images/hero-01.webp';
 import heroImg2 from '../images/hero-02.webp';
 import heroImg3 from '../images/hero-03.webp';
 import heroImg4 from '../images/hero-04.webp';
-import CalendarSection from './Calendar';
+import CalendarSection from '../components/calendar/CalendarSection';
 
 const heroImages = [heroImg1, heroImg2, heroImg3, heroImg4];
 
@@ -324,7 +324,7 @@ export default function Home() {
           <div className="flex justify-center pt-2 md:pt-3">
             <Link 
               to={ROUTES.ABOUT} 
-              className="group inline-flex items-center gap-2 pb-1 text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:hover:border-[#0d34a6] transition-colors"
+              className="group inline-flex items-center gap-2 pb-[2px] md:pb-[4px] text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:hover:border-[#0d34a6] transition-colors"
             >
               <span>Read more</span>
               <ChevronRight className="w-4 h-4" />
@@ -334,11 +334,11 @@ export default function Home() {
       </section>
 
       {/* CORE VALUE Section */}
-      <section className="pt-24 pb-[150px] px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: '#ffffff', paddingTop: '0px' }}>
+      <section className="pt-24 pb-0 md:pb-[150px] px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: '#ffffff', paddingTop: '0px' }}>
         <div className="max-w-[1720px] mx-auto">
 
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-8 w-full">
             {coreValues.map((value, idx) => {
               const mobileBg = idx === 1 ? 'bg-white' : 'bg-[#F1F3F5]';
               return (
@@ -383,12 +383,12 @@ export default function Home() {
       </section>
 
       {/* Competency Archive Section */}
-      <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: COLORS.offWhite }}>
+      <section className="pt-12 pb-24 md:py-24 px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: COLORS.offWhite }}>
         <div className="max-w-[1720px] mx-auto space-y-16">
           <div className="flex flex-col items-center justify-center gap-6 text-center w-full">
             <div className="space-y-4 flex flex-col items-center w-full">
 
-              <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 w-full text-center self-center mb-0">PROJECT</h2>
+              <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 pt-[40px] md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 w-full text-center self-center mb-0">PROJECT</h2>
               <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl md:max-w-none md:whitespace-nowrap font-medium text-center mx-auto break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
                KSIS가 운영하는 포럼, 프로젝트, 플랫폼, 교육 프로그램을 통해 교류와 수익화, 성장을 함께 만들어갑니다.
               </p>
@@ -396,7 +396,7 @@ export default function Home() {
             
             <Link 
               to={ROUTES.ARCHIVE} 
-              className="group inline-flex items-center gap-2 pb-1 text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:hover:border-[#0d34a6] transition-colors h-fit mx-auto"
+              className="group inline-flex items-center gap-2 pb-[2px] md:pb-[4px] text-[#0d34a6] font-medium border-b border-[#0d34a6] md:border-transparent md:hover:border-[#0d34a6] transition-colors h-fit mx-auto"
             >
               <span>전체 프로그램 보기</span>
               <ChevronRight className="w-4 h-4 transition-transform md:group-hover:translate-x-1" />
@@ -469,15 +469,15 @@ export default function Home() {
       </section>
 
       {/* Calendar Section */}
-      <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20 bg-white">
+      <section className="pt-12 pb-24 md:py-24 px-6 md:px-12 lg:px-16 xl:px-20 bg-white">
         <div className="max-w-[1720px] mx-auto">
           <div className="mb-16 space-y-4">
             <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 md:left-0 w-full md:w-auto text-center md:text-center mb-0">CALENDAR</h2>
             <div className="max-w-2xl mx-auto text-center">
-              <p className="text-[14px] md:text-lg text-slate-700 font-medium break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>우리와 함께하는 다양한 공식 포럼과 교육 행사 일정을 확인하고 간편히 참가 신청해보세요.</p>
+              <p className="text-[14px] md:text-lg text-slate-700 font-medium break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>다양한 공식 포럼과 교육 행사 일정을 확인하고 간편히 참가 신청해보세요.</p>
             </div>
           </div>
-          <CalendarSection />
+          <CalendarSection forceGridView={true} />
         </div>
       </section>
 
@@ -510,7 +510,7 @@ export default function Home() {
           icon: BarChart3
         },
         {
-          label: '활동갤러리',
+          label: '갤러리',
           description: '포럼, 소모임, 교육 등 협회 활동 현장을 기록합니다.',
           link: ROUTES.ACTIVITIES,
           icon: Users

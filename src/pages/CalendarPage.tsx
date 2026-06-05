@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import CalendarSection from './Calendar';
+import CalendarSection from '../components/calendar/CalendarSection';
 import { COLORS } from '../constants';
 
 export default function CalendarPage() {
