@@ -116,14 +116,104 @@ import local4 from '../../images/project/community/local/4.webp';
 // Community Bookclub custom WebP images
 import bookclub1 from '../../images/project/community/bookclub/1.webp';
 
-export default function ProjectComponent() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+interface ExpertCardProps {
+  exp: any;
+  categories: Array<{ id: string; name: string; icon: any; color: string }>;
+  setSelectedExpert: (exp: any) => void;
+  key?: string;
+}
+
+function ExpertCard({ exp, categories, setSelectedExpert }: ExpertCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const catInfo = categories.find((c) => c.id === exp.category);
+  const Icon = catInfo ? catInfo.icon : Users;
+  const iconColor = catInfo ? catInfo.color : '#64748B';
+
+  return (
+    <motion.div
+      layout
+      key={`desktop-${exp.id}`}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9, y: 10 }}
+      transition={{ duration: 0.25 }}
+      onClick={() => setSelectedExpert(exp)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="bg-white p-8 rounded-[32px] shadow-sm border transition-all flex flex-col justify-between cursor-pointer"
+      style={{
+        borderColor: isHovered ? iconColor : '#F1F5F9',
+        boxShadow: isHovered ? `0 20px 25px -5px ${iconColor}15, 0 8px 10px -6px ${iconColor}15` : undefined,
+      }}
+    >
+      <div>
+        <div className="flex justify-between items-start mb-6">
+          <div 
+            className="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300"
+            style={{ 
+              backgroundColor: isHovered ? `${iconColor}25` : `${iconColor}15`,
+              transform: isHovered ? 'scale(1.05)' : 'none'
+            }}
+          >
+            <Icon className="w-6 h-6 animate-none" style={{ color: iconColor }} />
+          </div>
+          <span 
+            className="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase transition-colors duration-300"
+            style={{ 
+              backgroundColor: isHovered ? `${iconColor}15` : '#F1F5F9',
+              color: isHovered ? iconColor : '#64748B'
+            }}
+          >
+            {exp.categoryName}
+          </span>
+        </div>
+        <h3 
+          className="text-xl font-bold mb-2 leading-normal break-keep transition-colors duration-300"
+          style={{ color: isHovered ? iconColor : '#002147' }}
+        >
+          {exp.name}
+        </h3>
+        <p 
+          className="text-sm font-bold mb-4 transition-colors duration-300" 
+          style={{ color: isHovered ? iconColor : COLORS.gold }}
+        >
+          {exp.specialty}
+        </p>
+        <p className="text-sm text-slate-500 leading-relaxed min-h-[72px] line-clamp-3 mb-8">
+          {exp.desc}
+        </p>
+      </div>
+      <button 
+        className="w-full py-4 rounded-xl border text-sm font-bold flex items-center justify-center gap-2 transition-all duration-300"
+        style={{
+          backgroundColor: isHovered ? iconColor : '#F8FAFC',
+          borderColor: isHovered ? iconColor : '#F1F5F9',
+          color: isHovered ? '#FFFFFF' : '#0F172A',
+        }}
+      >
+        더보기
+        <FileText className="w-4 h-4" />
+      </button>
+    </motion.div>
+  );
+}
+
+export default function ProjectComponent({
+  selectedCategory: propCategory,
+  setSelectedCategory: propSetSelectedCategory
+}: {
+  selectedCategory?: string | null;
+  setSelectedCategory?: (cat: string | null) => void;
+}) {
+  const [internalCategory, setInternalCategory] = useState<string | null>(null);
+  const selectedCategory = propCategory !== undefined ? propCategory : internalCategory;
+  const setSelectedCategory = propSetSelectedCategory || setInternalCategory;
   const [selectedExpert, setSelectedExpert] = useState<any | null>(null);
 
   const categories = [
-    { id: 'food', name: '식문화', icon: Soup, color: COLORS.navy },
-    { id: 'book', name: '북클럽', icon: BookOpen, color: '#4F46E5' },
-    { id: 'local', name: '로컬탐방', icon: Compass, color: '#0891B2' },
+    { id: 'food', name: '식문화', icon: Soup, color: '#98b7a5' },
+    { id: 'book', name: '북클럽', icon: BookOpen, color: '#D19D34' },
+    { id: 'local', name: '로컬탐방', icon: Compass, color: '#d2833d' },
   ];
 
   const experts = [
@@ -490,38 +580,40 @@ export default function ProjectComponent() {
   return (
     <div className="bg-slate-50 min-h-[500px]">
       {/* Category Chips */}
-      <div className="flex flex-nowrap md:flex-wrap items-center gap-2 md:gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-6 no-scrollbar">
-        <button
-          onClick={() => setSelectedCategory(null)}
-          className={`whitespace-nowrap px-3.5 py-2 md:px-6 md:py-3 rounded-full border transition-all md:hover:translate-y-[-2px] text-xs md:text-sm font-bold flex items-center gap-1.5 cursor-pointer shrink-0 shadow-sm ${
-            selectedCategory === null
-              ? 'bg-[#002147] text-white border-[#002147]'
-              : 'bg-white text-[#002147] border-slate-200 hover:border-[#002147]'
-          }`}
-        >
-          전체 보기
-        </button>
+      {propCategory === undefined && (
+        <div className="flex flex-nowrap md:flex-wrap items-center gap-2 md:gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-6 no-scrollbar">
+          <button
+            onClick={() => setSelectedCategory(null)}
+            className={`whitespace-nowrap px-3.5 py-2 md:px-6 md:py-3 rounded-full border transition-all md:hover:translate-y-[-2px] text-xs md:text-sm font-bold flex items-center gap-1.5 cursor-pointer shrink-0 shadow-sm ${
+              selectedCategory === null
+                ? 'bg-[#002147] text-white border-[#002147]'
+                : 'bg-white text-[#002147] border-slate-200 hover:border-[#002147]'
+            }`}
+          >
+            전체 보기
+          </button>
 
-        {categories.map((cat) => {
-          const Icon = cat.icon;
-          const isActive = selectedCategory === cat.id;
-          return (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(isActive ? null : cat.id)}
-              className="whitespace-nowrap px-3.5 py-2 md:px-6 md:py-3 rounded-full border shadow-sm flex items-center gap-2 text-xs md:text-sm font-bold transition-all md:hover:translate-y-[-2px] cursor-pointer shrink-0"
-              style={{
-                backgroundColor: isActive ? cat.color : '#FFFFFF',
-                color: isActive ? '#FFFFFF' : COLORS.navy,
-                borderColor: isActive ? cat.color : '#E2E8F0',
-              }}
-            >
-              <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
-              {cat.name}
-            </button>
-          );
-        })}
-      </div>
+          {categories.map((cat) => {
+            const Icon = cat.icon;
+            const isActive = selectedCategory === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(isActive ? null : cat.id)}
+                className="whitespace-nowrap px-3.5 py-2 md:px-6 md:py-3 rounded-full border shadow-sm flex items-center gap-2 text-xs md:text-sm font-bold transition-all md:hover:translate-y-[-2px] cursor-pointer shrink-0"
+                style={{
+                  backgroundColor: isActive ? cat.color : '#FFFFFF',
+                  color: isActive ? '#FFFFFF' : COLORS.navy,
+                  borderColor: isActive ? cat.color : '#E2E8F0',
+                }}
+              >
+                <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                {cat.name}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Grid Content */}
       <div className="mt-4">
@@ -531,47 +623,14 @@ export default function ProjectComponent() {
           className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <AnimatePresence mode="popLayout">
-            {filteredExperts.map((exp) => {
-              const catInfo = categories.find((c) => c.id === exp.category);
-              const Icon = catInfo ? catInfo.icon : Users;
-              const iconColor = catInfo ? catInfo.color : '#64748B';
-
-              return (
-                <motion.div
-                  layout
-                  key={`desktop-${exp.id}`}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                  transition={{ duration: 0.25 }}
-                  onClick={() => setSelectedExpert(exp)}
-                  className="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 group hover:shadow-xl transition-all flex flex-col justify-between cursor-pointer"
-                >
-                  <div>
-                    <div className="flex justify-between items-start mb-6">
-                      <div 
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center transition-colors"
-                        style={{ backgroundColor: `${iconColor}15` }}
-                      >
-                        <Icon className="w-6 h-6" style={{ color: iconColor }} />
-                      </div>
-                      <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest bg-slate-100 text-slate-500 uppercase">
-                        {exp.categoryName}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 text-[#002147] leading-normal break-keep">{exp.name}</h3>
-                    <p className="text-sm font-bold mb-4" style={{ color: COLORS.gold }}>{exp.specialty}</p>
-                    <p className="text-sm text-slate-500 leading-relaxed min-h-[72px] line-clamp-3 mb-8">
-                      {exp.desc}
-                    </p>
-                  </div>
-                  <button className="w-full py-4 rounded-xl border border-slate-100 bg-slate-50 text-sm font-bold flex items-center justify-center gap-2 group-hover:bg-[#002147] group-hover:text-white transition-all">
-                    더보기
-                    <FileText className="w-4 h-4" />
-                  </button>
-                </motion.div>
-              );
-            })}
+            {filteredExperts.map((exp) => (
+              <ExpertCard 
+                key={`desktop-${exp.id}`}
+                exp={exp} 
+                categories={categories} 
+                setSelectedExpert={setSelectedExpert} 
+              />
+            ))}
           </AnimatePresence>
         </motion.div>
 

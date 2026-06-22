@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { COLORS } from '../../constants';
 import { Store, ArrowUpRight, User, Tag, Globe, ExternalLink } from 'lucide-react';
 import callimHero from '../../images/project/shopping-mall/callim.webp';
+import callimLogo from '../../images/project/shopping-mall/callim_logo.png';
 
 export default function ShoppingComponent() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-  const categories = [
-    { id: 'all', name: '기타소품/디자인', color: COLORS.navy },
-    { id: 'craft', name: '공예품/도자기', color: '#4F46E5' },
-    { id: 'food', name: '식음료/먹거리', color: '#0891B2' },
-  ];
-
   const companies = [
     {
       id: 1,
@@ -23,16 +16,13 @@ export default function ShoppingComponent() {
       tagline: '일상의 작은 순간에 특별한 가치를 더하는 감성 디자인 기업, 캘리엠(Calli-M)입니다.',
       descParagraphs: [
         `캘리엠(Calli-M)은 감성 디자인 콘텐츠를 기반으로 문구, 굿즈, 관광기념품을 기획·제작하는 디자인 전문기업입니다. 'Little Things, More Precious'라는 brand 철학 아래, 일상의 작은 경험과 이야기를 상품과 콘텐츠로 재해석하여 새로운 가치를 만들어가고 있습니다.`,
-        `자체 브랜드 상품 개발은 물론 기업·기관의 브랜드 굿즈, 홍보물, 관광상품 개발 등 다양한 프로젝트를 수행하고 있으며, 디자인을 통해 사람과 지역, 그리고 비즈니스를 연결하는 역할을 지향합니다. 함께 성장할 수 있는 다양한 협업과 네트워크를 기대합니다.`
+        `자체 브랜드 상품 개발은 물론 기업·기관의 브랜드 굿즈, 홍보물, 관광상품 개발 등 다양한 프로젝트를 수행하고 있으며, 디자인을 통해 사람과 지역, 그리고 비즈니스를 연결하는 역할을 지향합니다.`
       ],
       image: callimHero,
+      logo: callimLogo,
       link: 'https://smartstore.naver.com/callim1014'
     }
   ];
-
-  const filteredCompanies = selectedCategory
-    ? companies.filter((c) => c.category === selectedCategory)
-    : companies;
 
   const handleOpenStore = (url: string) => {
     window.open(url, '_blank', 'noopener,noreferrer');
@@ -51,42 +41,10 @@ export default function ShoppingComponent() {
         </p>
       </div>
 
-      {/* Category Selection Chips */}
-      <div className="flex flex-nowrap md:flex-wrap items-center gap-2 md:gap-3 overflow-x-auto md:overflow-x-visible pb-6 md:pb-8 no-scrollbar">
-        <button
-          onClick={() => setSelectedCategory(null)}
-          className={`whitespace-nowrap px-4 py-2.5 rounded-full border transition-all text-xs md:text-sm font-bold flex items-center gap-1.5 cursor-pointer shrink-0 shadow-3xs ${
-            selectedCategory === null
-              ? 'bg-[#002147] text-white border-[#002147]'
-              : 'bg-white text-[#002147] border-slate-200 hover:border-[#002147]'
-          }`}
-        >
-          전체 보기
-        </button>
-
-        {categories.map((cat) => {
-          const isActive = selectedCategory === cat.id;
-          return (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(isActive ? null : cat.id)}
-              className="whitespace-nowrap px-4 py-2.5 rounded-full border shadow-3xs flex items-center gap-2 text-xs md:text-sm font-bold transition-all cursor-pointer shrink-0 animate-fade-in"
-              style={{
-                backgroundColor: isActive ? cat.color : '#FFFFFF',
-                color: isActive ? '#FFFFFF' : COLORS.navy,
-                borderColor: isActive ? cat.color : '#E2E8F0',
-              }}
-            >
-              {cat.name}
-            </button>
-          );
-        })}
-      </div>
-
       {/* Simplified, elegant horizontal design flow */}
       <div className="space-y-12">
         <AnimatePresence mode="popLayout">
-          {filteredCompanies.map((com, index) => (
+          {companies.map((com, index) => (
             <motion.div
               layout
               key={com.id}
@@ -116,12 +74,24 @@ export default function ShoppingComponent() {
                     </span>
                   </div>
 
-                  <div className="absolute bottom-6 left-6 lg:hidden">
-                    <h3 className="text-2xl font-black text-white drop-shadow-sm mb-1">{com.name}</h3>
-                    <p className="text-white/85 text-xs font-semibold flex items-center gap-1.5">
-                      <User className="w-3.5 h-3.5 text-amber-400" />
-                      {com.representative}
-                    </p>
+                  <div className="absolute bottom-6 left-6 right-6 lg:hidden flex justify-between items-end">
+                    <div>
+                      <h3 className="text-2xl font-black text-white drop-shadow-sm mb-1">{com.name}</h3>
+                      <p className="text-white/85 text-xs font-semibold flex items-center gap-1.5">
+                        <User className="w-3.5 h-3.5 text-amber-400" />
+                        {com.representative}
+                      </p>
+                    </div>
+                    {com.logo && (
+                      <div className="w-12 h-12 shrink-0 rounded-xl overflow-hidden bg-white/95 flex items-center justify-center p-1.5">
+                        <img 
+                          src={com.logo} 
+                          alt={`${com.name} 로고`}
+                          className="w-full h-full object-contain"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -141,14 +111,26 @@ export default function ShoppingComponent() {
                     </div>
 
                     {/* Company Name & Representative */}
-                    <div className="hidden lg:block space-y-1.5">
-                      <h3 className="text-3xl font-extrabold text-[#002147] tracking-tight">
-                        {com.name}
-                      </h3>
-                      <div className="flex items-center gap-2 text-slate-500 text-sm font-bold">
-                        <span className="px-2.5 py-0.5 bg-slate-100 rounded text-xs text-slate-600 font-extrabold">대표</span>
-                        <span>{com.representative}</span>
+                    <div className="hidden lg:flex items-center justify-between gap-4 w-full">
+                      <div className="space-y-1.5">
+                        <h3 className="text-3xl font-extrabold text-[#002147] tracking-tight">
+                          {com.name}
+                        </h3>
+                        <div className="flex items-center gap-2 text-slate-500 text-sm font-bold">
+                          <span className="px-2.5 py-0.5 bg-slate-100 rounded text-xs text-slate-600 font-extrabold">대표</span>
+                          <span>{com.representative}</span>
+                        </div>
                       </div>
+                      {com.logo && (
+                        <div className="w-[58px] h-[58px] shrink-0 rounded-2xl overflow-hidden bg-white flex items-center justify-center p-1">
+                          <img 
+                            src={com.logo} 
+                            alt={`${com.name} 로고`} 
+                            className="w-full h-full object-contain"
+                            referrerPolicy="no-referrer"
+                          />
+                        </div>
+                      )}
                     </div>
 
                     <hr className="hidden lg:block border-slate-100" />
@@ -197,7 +179,7 @@ export default function ShoppingComponent() {
           ))}
         </AnimatePresence>
 
-        {filteredCompanies.length === 0 && (
+        {companies.length === 0 && (
           <div className="text-center py-20 bg-white rounded-3xl border border-slate-100 text-slate-400">
             해당 업종 카테고리의 기업 리스트가 존재하지 않습니다.
           </div>

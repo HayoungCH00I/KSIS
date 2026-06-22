@@ -8,20 +8,19 @@ export default function EducationComponent() {
   const [selectedClass, setSelectedClass] = useState<any | null>(null);
 
   const categories = [
-    { id: 'digital', name: '디지털/AI', icon: BookOpen, color: COLORS.navy },
-    { id: 'marketing', name: '마케팅/수익화', icon: Layers, color: '#4F46E5' },
-    { id: 'all', name: '창업경영', icon: Award, color: '#0891B2' },
+    { id: 'digital', name: '실무 교육', icon: BookOpen, color: '#0d9488' },
+    { id: 'marketing', name: '디지털 역량 강화', icon: Layers, color: '#4F46E5' }
   ];
 
   const classes = [
     {
       id: 1,
       name: '[AI 아카데미] 시니어를 위한 생성형 AI 프롬프트 엔지니어링 실무',
-      category: 'digital',
+      category: 'marketing',
       specialty: '최현우 AI 솔루션 아키텍트 (전 카카오 팀장)',
       duration: '4주 과정 (매주 토요일)',
       desc: '복잡한 코딩 지식 없이도 ChatGPT, Claude 등 생성형 AI를 활용하여 일상 기획, 이메일 초안 작성, 발표자료 일러스트 생성 등 실물 비즈니스 도구를 연계 장악해 냅니다.',
-      categoryName: '디지털 교육',
+      categoryName: '디지털 역량 강화',
       image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800',
       date: '2026.06.14 대개강',
       contentBlocks: [
@@ -46,17 +45,17 @@ export default function EducationComponent() {
     {
       id: 2,
       name: '[1인 매체 스쿨] 퍼스널 브랜딩을 위한 네이버 블로그 & 유튜브 개설',
-      category: 'marketing',
+      category: 'digital',
       specialty: '정은아 매체 컨설팅 그룹 대표',
       duration: '6주 완료 (매주 목요일)',
       desc: '개인의 축적된 완숙 경륜 노하우를 글, 영상 콘텐츠로 포맷화하여 내 채널에 올리고, 진성 팬덤을 형성해 나가며 수익까지 창출해내는 1인 미디어 창작 핵심 워크숍.',
-      categoryName: '마케팅 교육',
+      categoryName: '실무교육',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800',
       date: '2026.06.28 개강',
       contentBlocks: [
         {
           type: 'text',
-          text: '소규모 자본과 내 지식만으로 스스로 영향력 있는 미디어가 되는 기초 체력을 다집니다.\n네이버 블로그 알고리즘 지식부터 스마트폰 하나로 시작하는 고화질 유튜브 촬영 및 컷편집, 썸네일 핵심 제작 이론까지 현업 최고 미디어 대가가 체계적으로 설명합니다.'
+          text: '소규모 자본 and 내 지식만으로 스스로 영향력 있는 미디어가 되는 기초 체력을 다집니다.\n네이버 블로그 알고리즘 지식부터 스마트폰 하나로 시작하는 고화질 유튜브 촬영 및 컷편집, 썸네일 핵심 제작 이론까지 현업 최고 미디어 대가가 체계적으로 설명합니다.'
         },
         {
           type: 'heading',
@@ -70,48 +69,92 @@ export default function EducationComponent() {
     }
   ];
 
+const categoryLabels: Record<string, string> = {
+  digital: 'PRACTICAL TRAINING',
+  marketing: 'DIGITAL CAPACITY',
+};
+
   const filteredClasses = selectedCategory
     ? classes.filter((c) => c.category === selectedCategory)
     : classes;
 
   return (
     <div className="bg-slate-50 min-h-[500px]">
-      {/* Category Chips */}
-      <div className="flex flex-nowrap md:flex-wrap items-center gap-2 md:gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-6 no-scrollbar">
+      {/* Category Cards */}
+      <div className="flex flex-row items-center gap-2 overflow-x-auto pb-4 sm:pb-10 sm:grid sm:grid-cols-3 sm:gap-4 md:gap-5 scrollbar-none">
         <button
           onClick={() => setSelectedCategory(null)}
-          className={`whitespace-nowrap px-3.5 py-2 md:px-6 md:py-3 rounded-full border transition-all md:hover:translate-y-[-2px] text-xs md:text-sm font-bold flex items-center gap-1.5 cursor-pointer shrink-0 shadow-sm ${
+          className={`group rounded-full sm:rounded-2xl border px-4 py-2 sm:px-6 sm:pt-6 sm:pb-7 h-auto sm:h-[154px] flex flex-row sm:flex-col items-center sm:items-start justify-center sm:justify-start shrink-0 transition-all duration-300 cursor-pointer select-none ${
             selectedCategory === null
-              ? 'bg-[#002147] text-white border-[#002147]'
-              : 'bg-white text-[#002147] border-slate-200 hover:border-[#002147]'
+              ? 'bg-[#3a6182] text-white border-[#3a6182] shadow-sm sm:shadow-lg shadow-slate-300/60'
+              : 'bg-white text-[#002147] border-slate-200 hover:border-[#3a6182] sm:hover:-translate-y-1'
           }`}
         >
-          전체 보기
+          <div
+            className={`w-12 h-12 rounded-xl hidden sm:flex items-center justify-center mb-5 transition-colors ${
+              selectedCategory === null ? 'bg-white/15' : 'bg-slate-50'
+            }`}
+          >
+            <BookOpen
+              className="w-6 h-6"
+              style={{ color: selectedCategory === null ? '#FFFFFF' : '#3a6182' }}
+            />
+          </div>
+
+          <div
+            className={`text-[11px] font-extrabold tracking-wider uppercase mb-1 hidden sm:block ${
+              selectedCategory === null ? 'text-white/70' : 'text-slate-400'
+            }`}
+          >
+            ALL VIEWS
+          </div>
+
+          <div className="text-xs sm:text-lg font-extrabold leading-tight break-keep font-sans">전체 보기</div>
         </button>
 
         {categories.map((cat) => {
           const Icon = cat.icon;
           const isActive = selectedCategory === cat.id;
+
           return (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(isActive ? null : cat.id)}
-              className="whitespace-nowrap px-3.5 py-2 md:px-6 md:py-3 rounded-full border shadow-sm flex items-center gap-2 text-xs md:text-sm font-bold transition-all md:hover:translate-y-[-2px] cursor-pointer shrink-0"
+              className="group rounded-full sm:rounded-2xl border px-4 py-2 sm:px-6 sm:pt-6 sm:pb-7 h-auto sm:h-[154px] flex flex-row sm:flex-col items-center sm:items-start justify-center sm:justify-start shrink-0 transition-all duration-300 cursor-pointer sm:hover:-translate-y-1 select-none"
               style={{
                 backgroundColor: isActive ? cat.color : '#FFFFFF',
-                color: isActive ? '#FFFFFF' : COLORS.navy,
                 borderColor: isActive ? cat.color : '#E2E8F0',
+                color: isActive ? '#FFFFFF' : COLORS.navy,
+                boxShadow: isActive ? `0 16px 30px ${cat.color}25` : undefined,
               }}
             >
-              <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
-              {cat.name}
+              <div
+                className="w-12 h-12 rounded-xl hidden sm:flex items-center justify-center mb-5 transition-colors"
+                style={{
+                  backgroundColor: isActive ? 'rgba(255,255,255,0.16)' : `${cat.color}10`,
+                }}
+              >
+                <Icon
+                  className="w-6 h-6"
+                  style={{ color: isActive ? '#FFFFFF' : cat.color }}
+                />
+              </div>
+
+              <div
+                className="text-[11px] font-extrabold tracking-wider uppercase mb-1 hidden sm:block"
+                style={{ color: isActive ? 'rgba(255,255,255,0.72)' : '#CBD5E1' }}
+              >
+                {categoryLabels[cat.id]}
+              </div>
+
+              <div className="text-xs sm:text-lg font-extrabold leading-tight break-keep font-sans">{cat.name}</div>
             </button>
           );
         })}
       </div>
 
       {/* Grid Content */}
-      <div className="mt-4">
+      <div className="mt-1.5 sm:mt-4">
         {/* Desktop/Tablet Grid */}
         <motion.div 
           layout
@@ -185,7 +228,8 @@ export default function EducationComponent() {
                 >
                   <div className="flex-1 min-w-0 space-y-1.5">
                     <span 
-                      className="text-[11px] font-bold underline underline-offset-4 decoration-1 tracking-wider uppercase inline-block text-[#4F46E5]"
+                      className="text-[11px] font-bold underline underline-offset-4 decoration-1 tracking-wider uppercase inline-block"
+                      style={{ color: iconColor, textDecorationColor: `${iconColor}50` }}
                     >
                       {clas.categoryName}
                     </span>

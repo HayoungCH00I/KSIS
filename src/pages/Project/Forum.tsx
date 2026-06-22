@@ -3,14 +3,95 @@ import { motion, AnimatePresence } from 'motion/react';
 import { COLORS } from '../../constants';
 import { Users, FileText, Calendar, MapPin, X, Landmark, GraduationCap } from 'lucide-react';
 
+interface ForumCardProps {
+  forum: any;
+  categories: Array<{ id: string; name: string; icon: any; color: string }>;
+  setSelectedForum: (forum: any) => void;
+  key?: string;
+}
+
+function ForumCard({ forum, categories, setSelectedForum }: ForumCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const catInfo = categories.find((c) => c.id === forum.category);
+  const Icon = catInfo ? catInfo.icon : Users;
+  const iconColor = catInfo ? catInfo.color : '#64748B';
+
+  return (
+    <motion.div
+      layout
+      key={`desktop-${forum.id}`}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9, y: 10 }}
+      transition={{ duration: 0.25 }}
+      onClick={() => setSelectedForum(forum)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="bg-white p-8 rounded-[32px] shadow-sm border transition-all flex flex-col justify-between cursor-pointer"
+      style={{
+        borderColor: isHovered ? iconColor : '#F1F5F9',
+        boxShadow: isHovered ? `0 20px 25px -5px ${iconColor}15, 0 8px 10px -6px ${iconColor}15` : undefined,
+      }}
+    >
+      <div>
+        <div className="flex justify-between items-start mb-6">
+          <div 
+            className="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300"
+            style={{ 
+              backgroundColor: isHovered ? `${iconColor}25` : `${iconColor}15`,
+              transform: isHovered ? 'scale(1.05)' : 'none'
+            }}
+          >
+            <Icon className="w-6 h-6" style={{ color: iconColor }} />
+          </div>
+          <span 
+            className="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase transition-colors duration-300"
+            style={{ 
+              backgroundColor: isHovered ? `${iconColor}15` : '#F1F5F9',
+              color: isHovered ? iconColor : '#64748B'
+            }}
+          >
+            {forum.categoryName}
+          </span>
+        </div>
+        <h3 
+          className="text-xl font-bold mb-2 leading-normal break-keep transition-colors duration-300"
+          style={{ color: isHovered ? iconColor : '#002147' }}
+        >
+          {forum.name}
+        </h3>
+        <p 
+          className="text-sm font-bold mb-4 transition-colors duration-300" 
+          style={{ color: isHovered ? iconColor : COLORS.gold }}
+        >
+          {forum.specialty}
+        </p>
+        <p className="text-sm text-slate-500 leading-relaxed min-h-[72px] line-clamp-3 mb-8">
+          {forum.desc}
+        </p>
+      </div>
+      <button 
+        className="w-full py-4 rounded-xl border text-sm font-bold flex items-center justify-center gap-2 transition-all duration-300"
+        style={{
+          backgroundColor: isHovered ? iconColor : '#F8FAFC',
+          borderColor: isHovered ? iconColor : '#F1F5F9',
+          color: isHovered ? '#FFFFFF' : '#0F172A',
+        }}
+      >
+        포럼 참관기 및 보기
+        <FileText className="w-4 h-4" />
+      </button>
+    </motion.div>
+  );
+}
+
 export default function ForumComponent() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedForum, setSelectedForum] = useState<any | null>(null);
 
   const categories = [
-    { id: 'regular', name: '정기포럼', icon: Landmark, color: COLORS.navy },
-    { id: 'special', name: '특별강연', icon: GraduationCap, color: '#4F46E5' },
-    { id: '交流', name: '교류회', icon: Users, color: '#0891B2' },
+    { id: 'regular', name: '비즈니스 네트워킹', icon: Landmark, color: '#0d9488' },
+    { id: 'special', name: '역량강화', icon: GraduationCap, color: '#7950F2' }
   ];
 
   const forums = [
@@ -20,7 +101,7 @@ export default function ForumComponent() {
       category: 'regular',
       specialty: '김진원 박사 (전 글로벌 IT 디렉터)',
       desc: 'AI 마이크로 디지털 도구와 수십 년간 축적된 시니어 경륜을 융합하여 새로운 세대와의 협력을 이끄는 실전 비즈니스 가이드를 나눕니다.',
-      categoryName: '정기포럼',
+      categoryName: '비즈니스 네트워킹',
       image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1200',
       date: '2026.06.20',
       contentBlocks: [
@@ -56,7 +137,7 @@ export default function ForumComponent() {
       category: 'special',
       specialty: '이석우 대표 (사회적기업 리더)',
       desc: '단순한 친목이나 단기 계약을 넘어, 개인의 전문 지식을 반영구적인 공익형 비즈니스 플랫폼과 매칭하는 시스템 설계 방안을 연구합니다.',
-      categoryName: '특별강연',
+      categoryName: '역량강화',
       image: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=1200',
       date: '2026.07.11',
       contentBlocks: [
@@ -80,95 +161,106 @@ export default function ForumComponent() {
     }
   ];
 
+const categoryLabels: Record<string, string> = {
+  regular: 'BUSINESS NETWORKING',
+  special: 'CAPACITY BUILDING',
+};
+
   const filteredForums = selectedCategory
     ? forums.filter((f) => f.category === selectedCategory)
     : forums;
 
   return (
     <div className="bg-slate-50 min-h-[500px]">
-      {/* Category Chips */}
-      <div className="flex flex-nowrap md:flex-wrap items-center gap-2 md:gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-6 no-scrollbar">
+      {/* Category Cards */}
+      <div className="flex flex-row items-center gap-2 overflow-x-auto pb-4 sm:pb-10 sm:grid sm:grid-cols-3 sm:gap-4 md:gap-5 scrollbar-none">
         <button
           onClick={() => setSelectedCategory(null)}
-          className={`whitespace-nowrap px-3.5 py-2 md:px-6 md:py-3 rounded-full border transition-all md:hover:translate-y-[-2px] text-xs md:text-sm font-bold flex items-center gap-1.5 cursor-pointer shrink-0 shadow-sm ${
+          className={`group rounded-full sm:rounded-2xl border px-4 py-2 sm:px-6 sm:pt-6 sm:pb-7 h-auto sm:h-[154px] flex flex-row sm:flex-col items-center sm:items-start justify-center sm:justify-start shrink-0 transition-all duration-300 cursor-pointer select-none ${
             selectedCategory === null
-              ? 'bg-[#002147] text-white border-[#002147]'
-              : 'bg-white text-[#002147] border-slate-200 hover:border-[#002147]'
+              ? 'bg-[#3a6182] text-white border-[#3a6182] shadow-sm sm:shadow-lg shadow-slate-300/60'
+              : 'bg-white text-[#002147] border-slate-200 hover:border-[#3a6182] sm:hover:-translate-y-1'
           }`}
         >
-          전체 보기
+          <div
+            className={`w-12 h-12 rounded-xl hidden sm:flex items-center justify-center mb-5 transition-colors ${
+              selectedCategory === null ? 'bg-white/15' : 'bg-slate-50'
+            }`}
+          >
+             <Landmark
+               className="w-6 h-6"
+               style={{ color: selectedCategory === null ? '#FFFFFF' : '#3a6182' }}
+             />
+          </div>
+
+          <div
+            className={`text-[11px] font-extrabold tracking-wider uppercase mb-1 hidden sm:block ${
+              selectedCategory === null ? 'text-white/70' : 'text-slate-400'
+            }`}
+          >
+            ALL VIEWS
+          </div>
+
+          <div className="text-xs sm:text-lg font-extrabold leading-tight break-keep font-sans">전체 보기</div>
         </button>
 
         {categories.map((cat) => {
           const Icon = cat.icon;
           const isActive = selectedCategory === cat.id;
+
           return (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(isActive ? null : cat.id)}
-              className="whitespace-nowrap px-3.5 py-2 md:px-6 md:py-3 rounded-full border shadow-sm flex items-center gap-2 text-xs md:text-sm font-bold transition-all md:hover:translate-y-[-2px] cursor-pointer shrink-0"
+              className="group rounded-full sm:rounded-2xl border px-4 py-2 sm:px-6 sm:pt-6 sm:pb-7 h-auto sm:h-[154px] flex flex-row sm:flex-col items-center sm:items-start justify-center sm:justify-start shrink-0 transition-all duration-300 cursor-pointer sm:hover:-translate-y-1 select-none"
               style={{
                 backgroundColor: isActive ? cat.color : '#FFFFFF',
-                color: isActive ? '#FFFFFF' : COLORS.navy,
                 borderColor: isActive ? cat.color : '#E2E8F0',
+                color: isActive ? '#FFFFFF' : COLORS.navy,
+                boxShadow: isActive ? `0 12px 24px ${cat.color}20` : undefined,
               }}
             >
-              <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
-              {cat.name}
+              <div
+                className="w-12 h-12 rounded-xl hidden sm:flex items-center justify-center mb-5 transition-colors"
+                style={{
+                  backgroundColor: isActive ? 'rgba(255,255,255,0.16)' : `${cat.color}10`,
+                }}
+              >
+                 <Icon
+                  className="w-6 h-6"
+                  style={{ color: isActive ? '#FFFFFF' : cat.color }}
+                 />
+              </div>
+
+              <div
+                className="text-[11px] font-extrabold tracking-wider uppercase mb-1 hidden sm:block"
+                style={{ color: isActive ? 'rgba(255,255,255,0.72)' : '#CBD5E1' }}
+              >
+                {categoryLabels[cat.id]}
+              </div>
+
+              <div className="text-xs sm:text-lg font-extrabold leading-tight break-keep font-sans">{cat.name}</div>
             </button>
           );
         })}
       </div>
 
       {/* Grid Content */}
-      <div className="mt-4">
+      <div className="mt-1.5 sm:mt-4">
         {/* Desktop/Tablet Grid */}
         <motion.div 
           layout
           className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <AnimatePresence mode="popLayout">
-            {filteredForums.map((forum) => {
-              const catInfo = categories.find((c) => c.id === forum.category);
-              const Icon = catInfo ? catInfo.icon : Users;
-              const iconColor = catInfo ? catInfo.color : '#64748B';
-
-              return (
-                <motion.div
-                  layout
-                  key={`desktop-${forum.id}`}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                  transition={{ duration: 0.25 }}
-                  onClick={() => setSelectedForum(forum)}
-                  className="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 group hover:shadow-xl transition-all flex flex-col justify-between cursor-pointer"
-                >
-                  <div>
-                    <div className="flex justify-between items-start mb-6">
-                      <div 
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center transition-colors"
-                        style={{ backgroundColor: `${iconColor}15` }}
-                      >
-                        <Icon className="w-6 h-6" style={{ color: iconColor }} />
-                      </div>
-                      <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest bg-slate-100 text-slate-500 uppercase">
-                        {forum.categoryName}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 text-[#002147] leading-normal break-keep">{forum.name}</h3>
-                    <p className="text-sm font-bold mb-4" style={{ color: COLORS.gold }}>{forum.specialty}</p>
-                    <p className="text-sm text-slate-500 leading-relaxed min-h-[72px] line-clamp-3 mb-8">
-                      {forum.desc}
-                    </p>
-                  </div>
-                  <button className="w-full py-4 rounded-xl border border-slate-100 bg-slate-50 text-sm font-bold flex items-center justify-center gap-2 group-hover:bg-[#002147] group-hover:text-white transition-all">
-                    포럼 참관기 및 보기
-                    <FileText className="w-4 h-4" />
-                  </button>
-                </motion.div>
-              );
-            })}
+            {filteredForums.map((forum) => (
+              <ForumCard
+                key={`desktop-${forum.id}`}
+                forum={forum}
+                categories={categories}
+                setSelectedForum={setSelectedForum}
+              />
+            ))}
           </AnimatePresence>
         </motion.div>
 

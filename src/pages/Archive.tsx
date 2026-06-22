@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { COLORS } from '../constants';
-import { Landmark, Users, Store, GraduationCap } from 'lucide-react';
+import { Landmark, Users, Store, GraduationCap, Soup, BookOpen, Compass } from 'lucide-react';
 
 // Import the subcomponents representing the 4 modular program areas
 import ForumComponent from './Project/Forum';
@@ -13,10 +13,13 @@ import EducationComponent from './Project/Education';
 export default function Archive() {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentTab = searchParams.get('tab') || 'project';
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
   // Smooth scroll to top when tab changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setSelectedCategory(null);
   }, [currentTab]);
 
   const tabs = [
@@ -54,10 +57,47 @@ export default function Archive() {
     },
   ];
 
+  const projectCategories = [
+    {
+      id: null,
+      name: '전체 보기',
+      tag: 'ALL VIEWS',
+      icon: Landmark,
+      color: '#3a6182',
+    },
+    {
+      id: 'food',
+      name: '식문화',
+      tag: 'FOOD CULTURE',
+      icon: Soup,
+      color: '#98b7a5',
+    },
+    {
+      id: 'book',
+      name: '북클럽',
+      tag: 'BOOK CLUB',
+      icon: BookOpen,
+      color: '#D19D34',
+    },
+    {
+      id: 'local',
+      name: '로컬 탐방',
+      tag: 'LOCAL TOUR',
+      icon: Compass,
+      color: '#d2833d',
+    },
+  ];
+
   const activeTabInfo = tabs.find((t) => t.id === currentTab) || tabs[1];
 
-  const handleTabChange = (id: string) => {
-    setSearchParams({ tab: id });
+  const handleCategoryChange = (catId: string | null) => {
+    setSelectedCategory(catId);
+    setTimeout(() => {
+      if (listRef.current) {
+        const topOfOffset = listRef.current.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: topOfOffset, behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   return (
@@ -70,64 +110,66 @@ export default function Archive() {
               KSEA CORE PROGRAMS
             </span>
             <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight break-keep" style={{ color: COLORS.navy }}>
-              우리 협회 프로그램
+              {activeTabInfo.name}
             </h1>
             <p className="text-sm md:text-lg text-slate-500 max-w-3xl leading-relaxed break-keep">
               {activeTabInfo.description}
             </p>
           </div>
 
-          {/* Master 4-Tab Switcher - Fully Responsive Row of Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 pt-2">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = currentTab === tab.id;
+          {/* Master 4-Tab Switcher (Only shown as local category switcher on Project tab) */}
+          {currentTab === 'project' && (
+            <div className="flex flex-wrap sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 pt-2">
+              {projectCategories.map((cat) => {
+                const Icon = cat.icon;
+                const isActive = selectedCategory === cat.id;
 
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabChange(tab.id)}
-                  className={`relative p-4 md:p-6 rounded-2xl border text-left transition-all flex flex-col justify-between gap-4 cursor-pointer outline-none ${
-                    isActive 
-                      ? 'border-transparent shadow-md text-white' 
-                      : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-xs text-slate-800'
-                  }`}
-                  style={{
-                    backgroundColor: isActive ? tab.color : undefined,
-                  }}
-                >
-                  <div className="flex justify-between items-center w-full">
-                    <div 
-                      className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-colors ${
-                        isActive ? 'bg-white/10' : 'bg-slate-50'
-                      }`}
-                    >
-                      <Icon className="w-5 h-5 md:w-6 md:h-6" style={{ color: isActive ? '#FFFFFF' : tab.color }} />
+                return (
+                  <button
+                    key={cat.id === null ? 'all' : cat.id}
+                    onClick={() => handleCategoryChange(cat.id)}
+                    className={`relative px-4 py-2 sm:p-4 md:p-6 rounded-full sm:rounded-2xl border text-center sm:text-left transition-all flex flex-row sm:flex-col items-center sm:items-start justify-center sm:justify-between gap-2 sm:gap-4 cursor-pointer outline-none shrink-0 grow sm:grow-0 min-w-[110px] sm:min-w-0 ${
+                      isActive 
+                        ? 'border-transparent shadow-sm sm:shadow-md text-white' 
+                        : 'bg-white border-slate-200 hover:border-indigo-100 hover:shadow-xs text-slate-800'
+                    }`}
+                    style={{
+                      backgroundColor: isActive ? cat.color : undefined,
+                    }}
+                  >
+                    <div className="hidden sm:flex justify-between items-center w-full">
+                      <div 
+                        className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-colors ${
+                          isActive ? 'bg-white/10' : 'bg-slate-50'
+                        }`}
+                      >
+                        <Icon className="w-5 h-5 md:w-6 md:h-6" style={{ color: isActive ? '#FFFFFF' : cat.color }} />
+                      </div>
                     </div>
-                  </div>
 
-                  <div>
-                    <span className={`text-[11px] font-bold uppercase tracking-wider block opacity-70 ${
-                      isActive ? 'text-white' : 'text-slate-400'
-                    }`}>
-                      {tab.id === 'forum' ? 'FORUM' : tab.id === 'project' ? 'PROJECT' : tab.id === 'shopping' ? 'COMMERCE' : 'EDUCATION'}
-                    </span>
-                    <h3 className="text-sm md:text-lg font-black leading-tight break-keep">
-                      {tab.name}
-                    </h3>
-                  </div>
+                    <div>
+                      <span className={`text-[11px] font-bold uppercase tracking-wider block opacity-70 hidden sm:block ${
+                        isActive ? 'text-white' : 'text-slate-400'
+                      }`}>
+                        {cat.tag}
+                      </span>
+                      <h3 className="text-xs sm:text-sm md:text-lg font-extrabold sm:font-black leading-tight break-keep">
+                        {cat.name}
+                      </h3>
+                    </div>
 
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeTabGlow"
-                      className="absolute inset-0 rounded-2xl border-2 pointer-events-none"
-                      style={{ borderColor: tab.color, opacity: 0.15 }}
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </div>
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeTabGlow"
+                        className="absolute inset-0 rounded-full sm:rounded-2xl border-2 pointer-events-none"
+                        style={{ borderColor: cat.color, opacity: 0.15 }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
@@ -142,7 +184,13 @@ export default function Archive() {
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.22, ease: 'easeOut' }}
             >
-              {activeTabInfo.component}
+              {currentTab === 'project' ? (
+                <div ref={listRef}>
+                  <ProjectComponent selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+                </div>
+              ) : (
+                activeTabInfo.component
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
