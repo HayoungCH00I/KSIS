@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { COLORS } from '../../constants';
 import { Store, ArrowUpRight, User, Tag, Globe, ExternalLink } from 'lucide-react';
+import callimHero from '../../images/project/shopping-mall/callim.webp';
 
 export default function ShoppingComponent() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -21,10 +22,10 @@ export default function ShoppingComponent() {
       categoryName: '기타소품 / 디자인',
       tagline: '일상의 작은 순간에 특별한 가치를 더하는 감성 디자인 기업, 캘리엠(Calli-M)입니다.',
       descParagraphs: [
-        `캘리엠(Calli-M)은 감성 디자인 콘텐츠를 기반으로 문구, 굿즈, 관광기념품을 기획·제작하는 디자인 전문기업입니다. 'Little Things, More Precious'라는 브랜드 철학 아래, 일상의 작은 경험과 이야기를 상품과 콘텐츠로 재해석하여 새로운 가치를 만들어가고 있습니다.`,
+        `캘리엠(Calli-M)은 감성 디자인 콘텐츠를 기반으로 문구, 굿즈, 관광기념품을 기획·제작하는 디자인 전문기업입니다. 'Little Things, More Precious'라는 brand 철학 아래, 일상의 작은 경험과 이야기를 상품과 콘텐츠로 재해석하여 새로운 가치를 만들어가고 있습니다.`,
         `자체 브랜드 상품 개발은 물론 기업·기관의 브랜드 굿즈, 홍보물, 관광상품 개발 등 다양한 프로젝트를 수행하고 있으며, 디자인을 통해 사람과 지역, 그리고 비즈니스를 연결하는 역할을 지향합니다. 함께 성장할 수 있는 다양한 협업과 네트워크를 기대합니다.`
       ],
-      image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=1200',
+      image: callimHero,
       link: 'https://smartstore.naver.com/callim1014'
     }
   ];
