@@ -455,7 +455,7 @@ export default function Home() {
                       </p>
                     </div>
                   </div>
-                  <Link to={ROUTES.ARCHIVE} className="block w-full">
+                  <Link to={`${ROUTES.ARCHIVE}?tab=${program.category === 'Forum' ? 'forum' : program.category === 'Project' ? 'project' : program.category === 'Platform' ? 'shopping' : 'education'}`} className="block w-full">
                     <button className={`w-full py-4 rounded-xl border ${currentStyle.buttonClass} text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer`}>
                       프로그램 자세히 보기
                       <FileText className="w-4 h-4" />
