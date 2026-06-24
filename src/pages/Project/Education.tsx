@@ -2,9 +2,107 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { COLORS } from '../../constants';
 import { BookOpen, Calendar, Mail, FileText, Award, Layers, X } from 'lucide-react';
+import ai1 from '../../images/project/AI/1.jpg';
+import ai2 from '../../images/project/AI/2.jpg';
+import ai3 from '../../images/project/AI/3.jpg';
+import ai4 from '../../images/project/AI/4.jpg';
+import ai5 from '../../images/project/AI/5.jpg';
+import ai6 from '../../images/project/AI/6.jpg';
+
+interface EducationCardProps {
+  clas: any;
+  categories: any[];
+  setSelectedClass: any;
+  key?: any;
+}
+
+function EducationCard({ clas, categories, setSelectedClass }: EducationCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const catInfo = categories.find((c) => c.id === clas.category);
+  const iconColor = catInfo ? catInfo.color : '#64748B';
+
+  return (
+    <motion.div
+      layout
+      key={`desktop-${clas.id}`}
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.98, y: 10 }}
+      transition={{ duration: 0.28, ease: 'easeOut' }}
+      onClick={() => setSelectedClass(clas)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="bg-white rounded-[24px] overflow-hidden border transition-all duration-300 flex flex-col sm:flex-row cursor-pointer group min-h-[220px]"
+      style={{
+        borderColor: isHovered ? iconColor : '#E2E8F0',
+        boxShadow: isHovered 
+          ? `0 16px 32px -8px ${iconColor}20, 0 4px 12px -3px ${iconColor}10` 
+          : '0 4px 10px -2px rgba(15, 23, 42, 0.02), 0 2px 4px -1px rgba(15, 23, 42, 0.02)',
+      }}
+    >
+      {/* 왼쪽에 4:3 비율 썸네일 */}
+      {clas.image && (
+        <div 
+          className="w-full sm:w-[293px] relative overflow-hidden shrink-0 bg-slate-50 border-r border-slate-100"
+          style={{ aspectRatio: '4/3' }}
+        >
+          <img 
+            src={clas.image} 
+            alt={clas.name}
+            className="w-full h-full object-cover transition-transform duration-500"
+            style={{
+              transform: isHovered ? 'scale(1.06)' : 'scale(1)',
+            }}
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0 bg-black/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        </div>
+      )}
+
+      {/* 오른쪽에 제목(강조) / 강사 이름 / 본문 설명 */}
+      <div className="flex-1 p-6 md:p-8 flex flex-col justify-between min-w-0">
+        <div className="space-y-3.5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500">
+                {clas.duration}
+              </span>
+            </div>
+            <span className="text-[11px] text-slate-400 font-bold font-mono">
+              {clas.date || '2026.06.14'}
+            </span>
+          </div>
+
+          <div className="space-y-[11px]">
+            {/* 제목(강조) */}
+            <h3 
+              className="text-xl md:text-[30px] font-black leading-snug break-keep transition-colors duration-300 text-slate-900 line-clamp-2"
+              style={{ color: isHovered ? iconColor : '#002147' }}
+            >
+              {clas.name}
+            </h3>
+
+            {/* 작성자 이름 */}
+            <p 
+              className="text-xs md:text-[14px] font-extrabold transition-colors duration-300 flex items-center gap-1.5" 
+              style={{ color: isHovered ? iconColor : COLORS.gold }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: isHovered ? iconColor : COLORS.gold }} />
+              작성자: {clas.specialty}
+            </p>
+          </div>
+        </div>
+
+        {/* 본문 설명 */}
+        <p className="mt-4 text-[13.5px] md:text-[14.5px] text-slate-500 leading-relaxed font-medium break-keep line-clamp-3">
+          {clas.desc}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function EducationComponent() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedClass, setSelectedClass] = useState<any | null>(null);
 
   const categories = [
@@ -15,254 +113,95 @@ export default function EducationComponent() {
   const classes = [
     {
       id: 1,
-      name: '[AI 아카데미] 시니어를 위한 생성형 AI 프롬프트 엔지니어링 실무',
+      name: '제1회 AI+SaaS 실전 비즈니스 프로젝트 발표회',
       category: 'marketing',
-      specialty: '최현우 AI 솔루션 아키텍트 (전 카카오 팀장)',
+      specialty: '김길태',
       duration: '4주 과정 (매주 토요일)',
-      desc: '복잡한 코딩 지식 없이도 ChatGPT, Claude 등 생성형 AI를 활용하여 일상 기획, 이메일 초안 작성, 발표자료 일러스트 생성 등 실물 비즈니스 도구를 연계 장악해 냅니다.',
+      desc: '시니어의 도전, AI+SaasS를 비즈니스에 접목하다. 7주간의 AI+SaaS 실전 과정을 습득하여 발표하는 자리입니다.',
       categoryName: '디지털 역량 강화',
-      image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800',
-      date: '2026.06.14 대개강',
+      image: ai1,
+      date: '2025.07.19',
       contentBlocks: [
         {
           type: 'text',
-          text: '기술의 속도에 당황하셨나요? 생성형 AI는 숙련된 시니어들의 논리적 정합성 및 문법적 깊이와 시너지를 낼 때 최고의 유용함을 보여줍니다.\n네잎클로버처럼 내 커리어를 지지해줄 최고의 AI 프롬프팅 스킬을 체계적으로 실습, 검증하는 완벽 입문 코스입니다.'
+          text: '“시니어의 도전, AI+SaaS를 비즈니스에 접목하다”\n\nAI는 알겠는데 SaaS는 또 뭐야?\nAI를 아무리 잘 해도 SaaS를 모르면 표현할 수 없다.'
         },
         {
-          type: 'heading',
-          text: '매주 학습 커리큘럼'
-        },
-        {
-          type: 'quote',
-          text: '• 1주차: 생성형 AI 기본 프리스펙 및 명확한 프롬프트 규칙 실습\n• 2주차: 업무 생산성을 극대화시키는 프롬프트 템플릿 설계\n• 3주차: 프레젠테이션용 중소 규모 AI 그래픽 및 시각물 생성 가이드\n• 4주차: 블로그/SNS 배포용 콘텐츠 톤앤매너 튜닝 자동화 실전'
+          type: 'image',
+          src: ai1,
+          alt: '시니어의 도전 이미지 1'
         },
         {
           type: 'text',
-          text: '노트북 하나만 지참해 방문해 주시면 셰르파 역할을 해 줄 전문 멘토진이 일대일 밀착 코칭 및 수강 완료 라이선스 발급을 친절히 도와드립니다.'
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: '[1인 매체 스쿨] 퍼스널 브랜딩을 위한 네이버 블로그 & 유튜브 개설',
-      category: 'digital',
-      specialty: '정은아 매체 컨설팅 그룹 대표',
-      duration: '6주 완료 (매주 목요일)',
-      desc: '개인의 축적된 완숙 경륜 노하우를 글, 영상 콘텐츠로 포맷화하여 내 채널에 올리고, 진성 팬덤을 형성해 나가며 수익까지 창출해내는 1인 미디어 창작 핵심 워크숍.',
-      categoryName: '실무교육',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800',
-      date: '2026.06.28 개강',
-      contentBlocks: [
+          text: '🧠 처음 AI를 만나다\n\nAI와 SaaS를 어떻게 비즈니스에 적용해야 할지 몰랐던 한국시니어교류협회 회원 8명이 7주간 「AI+SaaS 실전 비즈니스 창출 과정」을 수료한 후 자신의 비즈니스 아이템을 기획하고, 콘텐츠를 제작하며, 자동화 시스템까지 구축한 내용을 직접 발표합니다. 이제 그 도전의 결과를 직접 확인해 보세요.'
+        },
+        {
+          type: 'image',
+          src: ai2,
+          alt: '시니어의 도전 이미지 2'
+        },
         {
           type: 'text',
-          text: '소규모 자본 and 내 지식만으로 스스로 영향력 있는 미디어가 되는 기초 체력을 다집니다.\n네이버 블로그 알고리즘 지식부터 스마트폰 하나로 시작하는 고화질 유튜브 촬영 및 컷편집, 썸네일 핵심 제작 이론까지 현업 최고 미디어 대가가 체계적으로 설명합니다.'
+          text: '📅 행사 개요\n\n행사명: 제1회 AI+SaaS 실전 비즈니스 프로젝트 발표회\n일시: 2025년 7월 24일(목) 오후 3:00 ~ 5:00\n장소: 서울 종로구 창신길 55, 라라포토샵 2층 공유독도\n대상: 누구나 참여 가능 (선착순 30명)\n참가비: 무료'
         },
         {
-          type: 'heading',
-          text: '핵심 혜택'
+          type: 'image',
+          src: ai3,
+          alt: '시니어의 도전 이미지 3'
         },
         {
-          type: 'quote',
-          text: '• 전 수강생 개인 브랜드 컨셉 튜닝 1회 무료 진단\n• 유튜브 편집용 유료 폰트 및 모션 소스 필수팩 평생 무료 제공\n• 협력 브랜드 마케터와의 일대일 채널 방향성 비즈니스 피칭 기회 부여'
+          type: 'text',
+          text: '🎯 발표 프로그램 개요\n\n• 발표자: 한국시니어교류협회 소속 회원 8명\n• 발표 형식: 개인별 5~7분 발표 영상 + 현장 설명\n• 특별 프로그램: 발표 후 Q&A 및 발표자와의 네트워킹 타임 운영'
+        },
+        {
+          type: 'image',
+          src: ai4,
+          alt: '시니어의 도전 이미지 4'
+        },
+        {
+          type: 'text',
+          text: '💡 어떤 발표인가요?\n\n• AI+SaaS를 활용한 카드뉴스, 영상, 상품 콘텐츠 등 비즈니스 적용 사례\n• 고객 피드백 수집 및 대응을 위한 설문 및 자동화 시스템 구축\n• ChatGPT, Perplexity, Gamma, Google Forms, Brew, Sora 등 다양한 생성형 AI 도구 실전 활용기\n• 1인 창업, 지역 커뮤니티, 콘텐츠 비즈니스로의 확장 아이디어 제시'
+        },
+        {
+          type: 'image',
+          src: ai5,
+          alt: '시니어의 도전 이미지 5'
+        },
+        {
+          type: 'text',
+          text: '🙋 이런 분께 추천합니다\n\n• AI를 어디서부터 시작해야 할지 막막한 분\n• 시니어 세대의 도전과 변화를 직접 보고 싶은 분\n• 교육기관, 커뮤니티, 지자체 관계자 (AI+비즈니스 확산에 관심 있는 분)\n• 비즈니스에 AI 활용 사례를 체험하고 싶은 누구나'
+        },
+        {
+          type: 'image',
+          src: ai6,
+          alt: '시니어의 도전 이미지 6'
+        },
+        {
+          type: 'text',
+          text: '📄 참가 안내\n\n• 참가 신청: 본 카페 게시글 아래 댓글로 신청\n• 기재 내용: 성명/소속/전화번호/이메일\n• 문의처: ☎️ 한국시니어교류협회 길태 수석부회장 (010-6320-3131)\n\n🎬 시니어가 AI 시대에 대응하는 용기와 변화의 시작.\n지금, 직접 확인하세요!'
         }
       ]
     }
   ];
 
-const categoryLabels: Record<string, string> = {
-  digital: 'PRACTICAL TRAINING',
-  marketing: 'DIGITAL CAPACITY',
-};
-
-  const filteredClasses = selectedCategory
-    ? classes.filter((c) => c.category === selectedCategory)
-    : classes;
-
   return (
     <div className="bg-slate-50 min-h-[500px]">
-      {/* Category Cards */}
-      <div className="flex flex-row items-center gap-2 overflow-x-auto pb-4 sm:pb-10 sm:grid sm:grid-cols-3 sm:gap-4 md:gap-5 scrollbar-none">
-        <button
-          onClick={() => setSelectedCategory(null)}
-          className={`group rounded-full sm:rounded-2xl border px-4 py-2 sm:px-6 sm:pt-6 sm:pb-7 h-auto sm:h-[154px] flex flex-row sm:flex-col items-center sm:items-start justify-center sm:justify-start shrink-0 transition-all duration-300 cursor-pointer select-none ${
-            selectedCategory === null
-              ? 'bg-[#3a6182] text-white border-[#3a6182] shadow-sm sm:shadow-lg shadow-slate-300/60'
-              : 'bg-white text-[#002147] border-slate-200 hover:border-[#3a6182] sm:hover:-translate-y-1'
-          }`}
-        >
-          <div
-            className={`w-12 h-12 rounded-xl hidden sm:flex items-center justify-center mb-5 transition-colors ${
-              selectedCategory === null ? 'bg-white/15' : 'bg-slate-50'
-            }`}
-          >
-            <BookOpen
-              className="w-6 h-6"
-              style={{ color: selectedCategory === null ? '#FFFFFF' : '#3a6182' }}
-            />
-          </div>
-
-          <div
-            className={`text-[11px] font-extrabold tracking-wider uppercase mb-1 hidden sm:block ${
-              selectedCategory === null ? 'text-white/70' : 'text-slate-400'
-            }`}
-          >
-            ALL VIEWS
-          </div>
-
-          <div className="text-xs sm:text-lg font-extrabold leading-tight break-keep font-sans">전체 보기</div>
-        </button>
-
-        {categories.map((cat) => {
-          const Icon = cat.icon;
-          const isActive = selectedCategory === cat.id;
-
-          return (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(isActive ? null : cat.id)}
-              className="group rounded-full sm:rounded-2xl border px-4 py-2 sm:px-6 sm:pt-6 sm:pb-7 h-auto sm:h-[154px] flex flex-row sm:flex-col items-center sm:items-start justify-center sm:justify-start shrink-0 transition-all duration-300 cursor-pointer sm:hover:-translate-y-1 select-none"
-              style={{
-                backgroundColor: isActive ? cat.color : '#FFFFFF',
-                borderColor: isActive ? cat.color : '#E2E8F0',
-                color: isActive ? '#FFFFFF' : COLORS.navy,
-                boxShadow: isActive ? `0 16px 30px ${cat.color}25` : undefined,
-              }}
-            >
-              <div
-                className="w-12 h-12 rounded-xl hidden sm:flex items-center justify-center mb-5 transition-colors"
-                style={{
-                  backgroundColor: isActive ? 'rgba(255,255,255,0.16)' : `${cat.color}10`,
-                }}
-              >
-                <Icon
-                  className="w-6 h-6"
-                  style={{ color: isActive ? '#FFFFFF' : cat.color }}
-                />
-              </div>
-
-              <div
-                className="text-[11px] font-extrabold tracking-wider uppercase mb-1 hidden sm:block"
-                style={{ color: isActive ? 'rgba(255,255,255,0.72)' : '#CBD5E1' }}
-              >
-                {categoryLabels[cat.id]}
-              </div>
-
-              <div className="text-xs sm:text-lg font-extrabold leading-tight break-keep font-sans">{cat.name}</div>
-            </button>
-          );
-        })}
-      </div>
-
       {/* Grid Content */}
       <div className="mt-1.5 sm:mt-4">
-        {/* Desktop/Tablet Grid */}
-        <motion.div 
-          layout
-          className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+        <div className="space-y-6">
           <AnimatePresence mode="popLayout">
-            {filteredClasses.map((clas) => {
-              const catInfo = categories.find((c) => c.id === clas.category);
-              const Icon = catInfo ? catInfo.icon : BookOpen;
-              const iconColor = catInfo ? catInfo.color : '#64748B';
-
-              return (
-                <motion.div
-                  layout
-                  key={`desktop-${clas.id}`}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                  transition={{ duration: 0.25 }}
-                  onClick={() => setSelectedClass(clas)}
-                  className="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 group hover:shadow-xl transition-all flex flex-col justify-between cursor-pointer"
-                >
-                  <div>
-                    <div className="flex justify-between items-start mb-6">
-                      <div 
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center transition-colors"
-                        style={{ backgroundColor: `${iconColor}15` }}
-                      >
-                        <Icon className="w-6 h-6" style={{ color: iconColor }} />
-                      </div>
-                      <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest bg-slate-100 text-slate-500 uppercase">
-                        {clas.duration}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 text-[#002147] leading-normal break-keep">{clas.name}</h3>
-                    <p className="text-sm font-bold mb-4" style={{ color: COLORS.gold }}>{clas.specialty}</p>
-                    <p className="text-sm text-slate-500 leading-relaxed min-h-[72px] line-clamp-3 mb-8">
-                      {clas.desc}
-                    </p>
-                  </div>
-                  <button className="w-full py-4 rounded-xl border border-slate-100 bg-slate-50 text-sm font-bold flex items-center justify-center gap-2 group-hover:bg-[#002147] group-hover:text-white transition-all">
-                    상세 강의계획서 확인
-                    <FileText className="w-4 h-4" />
-                  </button>
-                </motion.div>
-              );
-            })}
+            {classes.map((clas) => (
+              <EducationCard
+                key={clas.id}
+                clas={clas}
+                categories={categories}
+                setSelectedClass={setSelectedClass}
+              />
+            ))}
           </AnimatePresence>
-        </motion.div>
+        </div>
 
-        {/* Mobile View */}
-        <motion.div 
-          layout
-          className="block md:hidden divide-y divide-slate-100"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredClasses.map((clas) => {
-              const catInfo = categories.find((c) => c.id === clas.category);
-              const iconColor = catInfo ? catInfo.color : '#00a896';
-
-              return (
-                <motion.div
-                  layout
-                  key={`mobile-${clas.id}`}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.22 }}
-                  onClick={() => setSelectedClass(clas)}
-                  className="flex justify-between items-start py-5.5 cursor-pointer active:bg-slate-100/40 transition-colors gap-4"
-                >
-                  <div className="flex-1 min-w-0 space-y-1.5">
-                    <span 
-                      className="text-[11px] font-bold underline underline-offset-4 decoration-1 tracking-wider uppercase inline-block"
-                      style={{ color: iconColor, textDecorationColor: `${iconColor}50` }}
-                    >
-                      {clas.categoryName}
-                    </span>
-                    <h3 className="text-[15.5px] font-bold text-slate-900 leading-snug break-keep line-clamp-2 pt-0.5">
-                      {clas.name}
-                    </h3>
-                    <p className="text-[12.5px] text-slate-500 leading-relaxed line-clamp-2 font-normal font-sans break-keep pt-0.5">
-                      {clas.desc}
-                    </p>
-                    <div className="flex items-center gap-1.5 pt-1 text-[11px] text-slate-400 font-medium font-sans">
-                      <span>{clas.specialty}</span>
-                      <span>•</span>
-                      <span>{clas.duration}</span>
-                    </div>
-                  </div>
-
-                  {clas.image && (
-                    <div className="w-[76px] h-[76px] rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-100 shadow-3xs self-center">
-                      <img 
-                        src={clas.image} 
-                        alt={clas.name}
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                    </div>
-                  )}
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </motion.div>
-
-        {filteredClasses.length === 0 && (
+        {classes.length === 0 && (
           <div className="text-center py-24 text-slate-400">
             해당 등급의 교육 과정이 존재하지 않습니다.
           </div>
@@ -329,9 +268,6 @@ const categoryLabels: Record<string, string> = {
                 <div className="p-6 md:p-10 pt-4 md:pt-10 space-y-6 md:space-y-8">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2.5">
-                      <span className="px-3 py-1.5 rounded-full text-xs font-bold tracking-widest bg-slate-100 text-slate-500 uppercase">
-                        {selectedClass.categoryName}
-                      </span>
                       {selectedClass.date && (
                         <span className="text-xs font-semibold text-slate-400 font-mono flex items-center gap-1">
                           <Calendar className="w-3.5 h-3.5" />
@@ -348,7 +284,6 @@ const categoryLabels: Record<string, string> = {
                   </div>
                   
                   <div className="space-y-2 md:space-y-3">
-                    <span className="text-xs font-extrabold text-blue-600 uppercase tracking-widest block">실무 역량개발 코스</span>
                     <h3 className="text-xl md:text-3xl font-extrabold text-[#002147] leading-snug break-keep">
                       {selectedClass.name}
                     </h3>
@@ -357,11 +292,9 @@ const categoryLabels: Record<string, string> = {
                   <hr className="border-slate-100" />
                   
                   <div className="flex items-center gap-4 bg-slate-50/70 p-4 rounded-2xl border border-slate-100/80">
-                    <div className="w-10 h-10 rounded-full bg-[#002147]/5 flex items-center justify-center shrink-0">
-                      <Award className="w-5 h-5 text-[#002147]" />
-                    </div>
+
                     <div>
-                      <span className="text-[11px] font-bold text-slate-400 block tracking-wider uppercase">대표 강사진 및 조교진</span>
+                      <span className="text-[11px] font-bold text-slate-400 block tracking-wider uppercase">작성자</span>
                       <p className="text-sm font-extrabold text-[#002147]">{selectedClass.specialty}</p>
                     </div>
                   </div>
@@ -402,22 +335,19 @@ const categoryLabels: Record<string, string> = {
                               </div>
                             );
                           }
+                          if (block.type === 'image') {
+                            return (
+                              <div key={idx} className="my-6 overflow-hidden rounded-[24px] border border-slate-100 shadow-sm">
+                                <img src={block.src} alt={block.alt || '강연 이미지'} className="w-full h-auto object-cover" />
+                              </div>
+                            );
+                          }
                           return null;
                         })}
                       </div>
                     )}
                   </div>
                 </div>
-              </div>
-
-              <div className="p-4 md:p-6 bg-slate-50 border-t border-slate-100 shrink-0 flex items-center gap-4 pb-6 md:pb-6">
-                <button 
-                  onClick={() => setSelectedClass(null)}
-                  className="w-full py-4 bg-[#002147] hover:bg-[#003366] text-white font-bold rounded-2xl transition-colors text-sm cursor-pointer shadow-md flex items-center justify-center gap-2"
-                >
-                  <Mail className="w-4 h-4" />
-                  수강 신청 및 정정 상담 접수하기
-                </button>
               </div>
             </motion.div>
           </div>

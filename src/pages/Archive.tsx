@@ -103,8 +103,8 @@ export default function Archive() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Premium Unified Header Section */}
-      <section className="pt-12 pb-6 md:pt-28 md:pb-16 px-4 md:px-6 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+      <section className="pt-12 pb-6 md:pt-28 md:pb-16 px-6 md:px-12 lg:px-16 xl:px-20 bg-white border-b border-slate-200">
+        <div className="max-w-[1720px] mx-auto space-y-6 md:space-y-8">
           <div className="space-y-2 md:space-y-4">
             <span className="text-xs md:text-sm font-extrabold text-amber-600 tracking-wider uppercase block">
               KSEA CORE PROGRAMS
@@ -117,65 +117,13 @@ export default function Archive() {
             </p>
           </div>
 
-          {/* Master 4-Tab Switcher (Only shown as local category switcher on Project tab) */}
-          {currentTab === 'project' && (
-            <div className="flex flex-wrap sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 pt-2">
-              {projectCategories.map((cat) => {
-                const Icon = cat.icon;
-                const isActive = selectedCategory === cat.id;
-
-                return (
-                  <button
-                    key={cat.id === null ? 'all' : cat.id}
-                    onClick={() => handleCategoryChange(cat.id)}
-                    className={`relative px-4 py-2 sm:p-4 md:p-6 rounded-full sm:rounded-2xl border text-center sm:text-left transition-all flex flex-row sm:flex-col items-center sm:items-start justify-center sm:justify-between gap-2 sm:gap-4 cursor-pointer outline-none shrink-0 grow sm:grow-0 min-w-[110px] sm:min-w-0 ${
-                      isActive 
-                        ? 'border-transparent shadow-sm sm:shadow-md text-white' 
-                        : 'bg-white border-slate-200 hover:border-indigo-100 hover:shadow-xs text-slate-800'
-                    }`}
-                    style={{
-                      backgroundColor: isActive ? cat.color : undefined,
-                    }}
-                  >
-                    <div className="hidden sm:flex justify-between items-center w-full">
-                      <div 
-                        className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-colors ${
-                          isActive ? 'bg-white/10' : 'bg-slate-50'
-                        }`}
-                      >
-                        <Icon className="w-5 h-5 md:w-6 md:h-6" style={{ color: isActive ? '#FFFFFF' : cat.color }} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <span className={`text-[11px] font-bold uppercase tracking-wider block opacity-70 hidden sm:block ${
-                        isActive ? 'text-white' : 'text-slate-400'
-                      }`}>
-                        {cat.tag}
-                      </span>
-                      <h3 className="text-xs sm:text-sm md:text-lg font-extrabold sm:font-black leading-tight break-keep">
-                        {cat.name}
-                      </h3>
-                    </div>
-
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeTabGlow"
-                        className="absolute inset-0 rounded-full sm:rounded-2xl border-2 pointer-events-none"
-                        style={{ borderColor: cat.color, opacity: 0.15 }}
-                      />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          {/* Master 4-Tab Switcher removed as we now use a dedicated visual Portal page inside Project Component */}
         </div>
       </section>
 
       {/* Primary Container with Fade/Animate transitions */}
-      <main className="flex-grow pt-8 pb-20 px-4 md:px-6">
-        <div className="max-w-7xl mx-auto">
+      <main className="flex-grow pt-8 pb-20 px-6 md:px-12 lg:px-16 xl:px-20">
+        <div className="max-w-[1720px] mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentTab}

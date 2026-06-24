@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight, ChevronLeft, Archive, Users, BarChart3, ArrowUpRight, Handshake, ChartNoAxesCombined, UsersRound, FileText } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { COLORS, ROUTES } from '../constants';
 import heroImg1 from '../images/hero-01.webp';
 import heroImg2 from '../images/hero-02.webp';
@@ -108,6 +108,7 @@ const programs = [
 ];
 
 export default function Home() {
+  const location = useLocation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number>(0);
   const [touchEndX, setTouchEndX] = useState<number>(0);
@@ -148,6 +149,26 @@ export default function Home() {
     }, 5000);
     return () => clearInterval(timer);
   }, [currentSlide]);
+
+  useEffect(() => {
+    const handleScrollToProject = () => {
+      const isProjectGoto = window.location.hash === '#project-section' || 
+                            location.search.includes('goto=project') ||
+                            window.location.href.includes('goto=project');
+      if (isProjectGoto) {
+        const element = document.getElementById('project-section');
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 150);
+        }
+      }
+    };
+
+    handleScrollToProject();
+    window.addEventListener('hashchange', handleScrollToProject);
+    return () => window.removeEventListener('hashchange', handleScrollToProject);
+  }, [location.search]);
 
   const coreValues = [
     {
@@ -383,7 +404,7 @@ export default function Home() {
       </section>
 
       {/* Competency Archive Section */}
-      <section className="pt-12 pb-24 md:py-24 px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: COLORS.offWhite }}>
+      <section id="project-section" className="pt-12 pb-24 md:py-24 px-6 md:px-12 lg:px-16 xl:px-20" style={{ backgroundColor: COLORS.offWhite }}>
         <div className="max-w-[1720px] mx-auto space-y-16">
           <div className="flex flex-col items-center justify-center gap-6 text-center w-full">
             <div className="space-y-4 flex flex-col items-center w-full">

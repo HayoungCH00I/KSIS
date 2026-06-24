@@ -1,7 +1,7 @@
+import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Menu, X, ChevronRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import { COLORS, ROUTES } from '../constants';
 import symbolLogo from '../images/logo/symbol.png';
 import typoLogo from '../images/logo/typo.png';
@@ -22,10 +22,33 @@ const Navbar = () => {
   const navItems = [
     { name: 'HOME', path: ROUTES.HOME },
     { name: 'ABOUT', path: ROUTES.ABOUT },
-    { name: 'PROJECT', path: ROUTES.ARCHIVE },
+    { name: 'PROJECT', path: '/?goto=project', isHash: true },
     { name: 'CALENDAR', path: ROUTES.CALENDAR },
     { name: 'BOARD', path: ROUTES.COMMUNITY },
   ];
+
+  const isLinkActive = (item: typeof navItems[0]) => {
+    if (item.isHash) {
+      return location.pathname === ROUTES.HOME && location.search.includes('goto=project');
+    }
+    if (item.path === ROUTES.HOME) {
+      return location.pathname === ROUTES.HOME && !location.search.includes('goto=project');
+    }
+    return location.pathname === item.path;
+  };
+
+  const handleLinkClick = (item: typeof navItems[0], e: React.MouseEvent) => {
+    if (item.isHash) {
+      if (location.pathname === ROUTES.HOME) {
+        e.preventDefault();
+        const element = document.getElementById('project-section');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          window.history.pushState(null, '', '/#/?goto=project');
+        }
+      }
+    }
+  };
 
   return (
     <nav 
@@ -42,20 +65,21 @@ const Navbar = () => {
             className="h-10 w-auto object-contain" 
           />
         </Link>
-
+ 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           {navItems.map((item) => (
             <Link
-              key={item.path}
+              key={item.name}
               to={item.path}
+              onClick={(e) => handleLinkClick(item, e)}
               className={`text-sm font-medium transition-colors hover:opacity-100 ${
-                location.pathname === item.path ? 'opacity-100' : 'opacity-60'
+                isLinkActive(item) ? 'opacity-100' : 'opacity-60'
               }`}
               style={{ color: COLORS.navy }}
             >
               {item.name}
-              {location.pathname === item.path && (
+              {isLinkActive(item) && (
                 <motion.div
                   layoutId="underline"
                   className="h-0.5 mt-0.5"
@@ -74,13 +98,13 @@ const Navbar = () => {
             네이버 카페
           </a>
         </div>
-
+ 
         {/* Mobile Toggle */}
         <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X color={COLORS.navy} /> : <Menu color={COLORS.navy} />}
         </button>
       </div>
-
+ 
       {/* Mobile Nav */}
       {isOpen && (
         <motion.div 
@@ -90,9 +114,12 @@ const Navbar = () => {
         >
           {navItems.map((item) => (
             <Link
-              key={item.path}
+              key={item.name}
               to={item.path}
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => {
+                setIsOpen(false);
+                handleLinkClick(item, e);
+              }}
               className="text-lg font-medium py-2 border-b border-slate-100"
               style={{ color: COLORS.navy }}
             >

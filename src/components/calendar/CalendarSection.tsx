@@ -11,7 +11,8 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [rsvpName, setRsvpName] = useState('');
-  const [rsvpRole, setRsvpRole] = useState('');
+  const [rsvpPhone, setRsvpPhone] = useState('');
+  const [rsvpCount, setRsvpCount] = useState('1');
   const [showRsvpSuccess, setShowRsvpSuccess] = useState(false);
 
   // States for Mobile Quick Optimization
@@ -25,7 +26,8 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
 
   const [expandedMobileEventId, setExpandedMobileEventId] = useState<string | null>(null);
   const [mobileRsvpName, setMobileRsvpName] = useState('');
-  const [mobileRsvpRole, setMobileRsvpRole] = useState('');
+  const [mobileRsvpPhone, setMobileRsvpPhone] = useState('');
+  const [mobileRsvpCount, setMobileRsvpCount] = useState('1');
   const [mobileSuccessId, setMobileSuccessId] = useState<string | null>(null);
 
   // Dynamic Year and Month State (Default to today's date)
@@ -84,13 +86,13 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
 
   const handleRsvpSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!selectedEvent || !rsvpName.trim()) return;
+    if (!selectedEvent || !rsvpName.trim() || !rsvpPhone.trim()) return;
 
-    const formattedRsvp = rsvpRole.trim() ? `${rsvpName.trim()}(${rsvpRole.trim()})` : rsvpName.trim();
+    const formattedRsvp = `${rsvpName.trim()} (${rsvpPhone.trim()}, ${rsvpCount}명)`;
     
     // Check if duplicate
     if (selectedEvent.rsvps.includes(formattedRsvp)) {
-      alert('이미 상기 성명으로 신청을 완료해주셨습니다.');
+      alert('이미 신청을 완료해주셨습니다.');
       return;
     }
 
@@ -106,19 +108,20 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
 
     saveEvents(updatedEvents);
     setRsvpName('');
-    setRsvpRole('');
+    setRsvpPhone('');
+    setRsvpCount('1');
     setShowRsvpSuccess(true);
     setTimeout(() => setShowRsvpSuccess(false), 3000);
   };
 
   const handleMobileRsvpSubmit = (e: FormEvent, eventId: string) => {
     e.preventDefault();
-    if (!mobileRsvpName.trim()) return;
+    if (!mobileRsvpName.trim() || !mobileRsvpPhone.trim()) return;
 
     const targetEvent = events.find((ev) => ev.id === eventId);
     if (!targetEvent) return;
 
-    const formattedRsvp = mobileRsvpRole.trim() ? `${mobileRsvpName.trim()}(${mobileRsvpRole.trim()})` : mobileRsvpName.trim();
+    const formattedRsvp = `${mobileRsvpName.trim()} (${mobileRsvpPhone.trim()}, ${mobileRsvpCount}명)`;
 
     if (targetEvent.rsvps.includes(formattedRsvp)) {
       alert('이미 해당 성명으로 신청을 완료해주셨습니다.');
@@ -137,7 +140,8 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
 
     saveEvents(updatedEvents);
     setMobileRsvpName('');
-    setMobileRsvpRole('');
+    setMobileRsvpPhone('');
+    setMobileRsvpCount('1');
     setMobileSuccessId(eventId);
     
     // If we're updating current selectedEvent as well
@@ -414,12 +418,12 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
                 </div>
                 <div className="flex items-start gap-2 pt-1">
                   <Users size={13} className="text-emerald-400 flex-none mt-0.5" />
-                  <div>
-                    <span className="block mb-1 font-extrabold text-white">대상 :</span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-extrabold text-white shrink-0">대상 :</span>
                     {selectedEvent.rsvps.length === 0 ? (
                       <span className="text-white/40 italic">첫 신청자를 기다리고 있습니다.</span>
                     ) : (
-                      <div className="flex flex-wrap gap-1 mt-1">
+                      <div className="flex flex-wrap gap-1">
                         {selectedEvent.rsvps.map((name, idx) => (
                           <span key={idx} className="bg-white/10 text-[10px] px-2 py-0.5 rounded-md font-bold text-white">
                             {name}
@@ -436,21 +440,33 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
                 <span className="block text-[11px] font-black tracking-wider text-white/50">
                   실시간 간편 동맹 참가 신청
                 </span>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="text"
+                      required
+                      placeholder="성함"
+                      value={rsvpName}
+                      onChange={(e) => setRsvpName(e.target.value)}
+                      className="bg-white/10 select-none border border-white/10 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-emerald-400 text-white placeholder-white/40 font-bold"
+                    />
+                    <input
+                      type="number"
+                      required
+                      min="1"
+                      placeholder="신청인원수"
+                      value={rsvpCount}
+                      onChange={(e) => setRsvpCount(e.target.value)}
+                      className="bg-white/10 select-none border border-white/10 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-emerald-400 text-white placeholder-white/40 font-bold"
+                    />
+                  </div>
                   <input
                     type="text"
                     required
-                    placeholder="성명 (예: 백승일)"
-                    value={rsvpName}
-                    onChange={(e) => setRsvpName(e.target.value)}
-                    className="bg-white/10 select-none border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-400 text-white placeholder-white/40 font-bold"
-                  />
-                  <input
-                    type="text"
-                    placeholder="전문직종 (예: IT)"
-                    value={rsvpRole}
-                    onChange={(e) => setRsvpRole(e.target.value)}
-                    className="bg-white/10 select-none border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-400 text-white placeholder-white/40 font-bold"
+                    placeholder="연락처 (예: 010-1234-5678)"
+                    value={rsvpPhone}
+                    onChange={(e) => setRsvpPhone(e.target.value)}
+                    className="w-full bg-white/10 select-none border border-white/10 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-emerald-400 text-white placeholder-white/40 font-bold"
                   />
                 </div>
 
@@ -590,21 +606,33 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
                           <span className="block text-[10px] font-black tracking-wider text-slate-400 uppercase">
                             이 행사 실시간 참가 신청하기
                           </span>
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="space-y-2">
+                            <div className="grid grid-cols-2 gap-2">
+                              <input
+                                type="text"
+                                required
+                                placeholder="성함"
+                                value={mobileRsvpName}
+                                onChange={(e) => setMobileRsvpName(e.target.value)}
+                                className="bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
+                              />
+                              <input
+                                type="number"
+                                required
+                                min="1"
+                                placeholder="신청인원수"
+                                value={mobileRsvpCount}
+                                onChange={(e) => setMobileRsvpCount(e.target.value)}
+                                className="bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
+                              />
+                            </div>
                             <input
                               type="text"
                               required
-                              placeholder="성명 (예: 백승일)"
-                              value={mobileRsvpName}
-                              onChange={(e) => setMobileRsvpName(e.target.value)}
-                              className="bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
-                            />
-                            <input
-                              type="text"
-                              placeholder="전문권역 (예: IT)"
-                              value={mobileRsvpRole}
-                              onChange={(e) => setMobileRsvpRole(e.target.value)}
-                              className="bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
+                              placeholder="연락처 (예: 010-1234-5678)"
+                              value={mobileRsvpPhone}
+                              onChange={(e) => setMobileRsvpPhone(e.target.value)}
+                              className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold"
                             />
                           </div>
                           <button
@@ -772,45 +800,39 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
                   </div>
                 </div>
 
-                <div>
-                  <div className="flex items-center gap-1.5 text-xs font-black text-slate-800 mb-1.5">
-                    <Users size={12} className="text-[#0d34a6]" />
-                    <span>대상</span>
-                  </div>
-                  {selectedEvent.rsvps.length === 0 ? (
-                    <p className="text-[10px] text-slate-400 font-bold italic">첫 번째 비즈니스 동맹 참가자가 되어 보세요.</p>
-                  ) : (
-                    <div className="flex flex-wrap gap-1">
-                      {selectedEvent.rsvps.map((name, idx2) => (
-                        <span key={idx2} className="bg-slate-100 border border-slate-200/50 text-slate-700 text-[10px] px-2 py-0.5 rounded-md font-bold">
-                          {name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* RSVP Form */}
+                        {/* RSVP Form */}
                 <div className="pt-3 border-t border-slate-100">
                   <form onSubmit={(e) => handleMobileRsvpSubmit(e, selectedEvent.id)} className="space-y-2">
                     <span className="block text-[10px] font-black tracking-wider text-slate-400 uppercase">
                       해당 행사 간편 참가 신청
                     </span>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-2">
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          type="text"
+                          required
+                          placeholder="성함"
+                          value={mobileRsvpName}
+                          onChange={(e) => setMobileRsvpName(e.target.value)}
+                          className="bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
+                        />
+                        <input
+                          type="number"
+                          required
+                          min="1"
+                          placeholder="신청인원수"
+                          value={mobileRsvpCount}
+                          onChange={(e) => setMobileRsvpCount(e.target.value)}
+                          className="bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
+                        />
+                      </div>
                       <input
                         type="text"
                         required
-                        placeholder="성명 (예: 백승일)"
-                        value={mobileRsvpName}
-                        onChange={(e) => setMobileRsvpName(e.target.value)}
-                        className="bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
-                      />
-                      <input
-                        type="text"
-                        placeholder="전문권역 (예: IT)"
-                        value={mobileRsvpRole}
-                        onChange={(e) => setMobileRsvpRole(e.target.value)}
-                        className="bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
+                        placeholder="연락처 (예: 010-1234-5678)"
+                        value={mobileRsvpPhone}
+                        onChange={(e) => setMobileRsvpPhone(e.target.value)}
+                        className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold"
                       />
                     </div>
                     <button

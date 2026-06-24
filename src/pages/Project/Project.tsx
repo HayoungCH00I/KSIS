@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { COLORS } from '../../constants';
-import { Soup, BookOpen, Compass, FileText, Users, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Soup, BookOpen, Compass, FileText, Users, User, X, ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 
 function GallerySlider({ images }: { images: Array<{ url: string; caption?: string }> }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -195,6 +195,169 @@ function ExpertCard({ exp, categories, setSelectedExpert }: ExpertCardProps) {
         <FileText className="w-4 h-4" />
       </button>
     </motion.div>
+  );
+}
+
+interface ProjectPortalProps {
+  onSelectCategory: (cat: string) => void;
+}
+
+function ProjectPortal({ onSelectCategory }: ProjectPortalProps) {
+  const portalCategories = [
+    {
+      id: 'food',
+      name: '식문화',
+      engName: 'FOOD CULTURE',
+      description: '음식을 매개로 다양한 분야의 사람들과 교류하는 네트워킹 모임입니다. 함께 식사하며 경험과 정보를 나누고 새로운 협업의 기회를 만들어갑니다. 즐거운 만남이 비즈니스와 지역사회 성장으로 이어지는 연결의 장입니다.',
+      icon: Soup,
+      color: '#98b7a5',
+      leader: '이선진 대표',
+      company: '어니스트케이(주) 대표이사',
+    },
+    {
+      id: 'book',
+      name: '북클럽',
+      engName: 'BOOK CLUB',
+      description: '북클럽책을 통해 배우고 성장하며 인적 네트워크를 넓혀가는 독서 모임입니다. 독서와 토론을 통해 다양한 경험과 전문성을 공유합니다. 지식의 교류를 넘어 새로운 아이디어와 협업의 기회를 만들어갑니다.',
+      icon: BookOpen,
+      color: '#D19D34',
+      leader: '원동업 대표',
+      company: '돌멩이국 출판사 대표',
+    },
+    {
+      id: 'local',
+      name: '로컬탐방',
+      engName: 'LOCAL TOUR',
+      description: '지역의 문화와 자원을 함께 탐방하며 새로운 가치를 발견하는 모임입니다. 로컬 공간과 사람을 연결하고 지역 기반의 다양한 정보를 공유합니다. 탐방과 교류를 통해 협업과 비즈니스 기회를 발굴해 나갑니다.',
+      icon: Compass,
+      color: '#d2833d',
+      leader: '박현정 대표',
+      company: '북촌탁구',
+    },
+  ];
+
+  return (
+    <div className="space-y-6 md:space-y-12 max-w-[1720px] mx-auto py-4 md:py-8 font-sans">
+      <div className="text-center space-y-2 md:space-y-3 max-w-2xl mx-auto pb-4">
+        <h2 className="text-2xl md:text-4.5xl font-black text-[#002147] tracking-tight break-keep leading-tight">
+          어떤 소모임의 이야기를 함께 들어볼까요?
+        </h2>
+        <p className="text-xs md:text-sm text-slate-500 font-medium leading-relaxed break-keep max-w-lg mx-auto">
+          관심 있는 분야의 카테고리를 선택해 보세요. 멤버들의 생생한 지혜와 따뜻한 동행이 깃든 탐방 타임라인 카드로 이동합니다.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        {portalCategories.map((cat, idx) => {
+          const Icon = cat.icon;
+          return (
+            <motion.div
+              key={cat.id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: idx * 0.08, ease: 'easeOut' }}
+              whileHover={{ 
+                y: -8, 
+                boxShadow: `0 20px 40px -10px rgba(15, 23, 42, 0.08), 0 0 15px -3px ${cat.color}15`, 
+                borderColor: `${cat.color}45` 
+              }}
+              onClick={() => onSelectCategory(cat.id)}
+              className="group relative flex flex-col justify-between overflow-hidden rounded-3xl p-6 md:p-8 transition-all duration-300 cursor-pointer h-full min-h-[300px] md:min-h-[340px]"
+              style={{
+                background: `linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.45) 100%)`,
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                borderColor: `${cat.color}25`,
+                boxShadow: `0 8px 32px 0 rgba(15, 23, 42, 0.03), inset 0 1px 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.1)`,
+              }}
+            >
+              {/* 카드 상단 컬러 라인 포인트 */}
+              <div 
+                className="absolute top-0 left-0 right-0 h-[5px] w-full z-20 transition-transform duration-300 origin-top group-hover:scale-y-[1.2]"
+                style={{ backgroundColor: cat.color }}
+              />
+
+              <div className="space-y-5">
+                {/* Visual Category Color Patch */}
+                <div 
+                  className="absolute -top-10 -right-10 w-28 h-28 rounded-full blur-2xl opacity-20 group-hover:opacity-35 group-hover:scale-110 transition-all duration-500" 
+                  style={{ backgroundColor: cat.color }}
+                />
+
+                {/* Left Bottom Sub-glow for Glassmorphic depth */}
+                <div 
+                  className="absolute -bottom-16 -left-16 w-32 h-32 rounded-full blur-3xl opacity-12 group-hover:opacity-25 transition-all duration-500" 
+                  style={{ backgroundColor: cat.color }}
+                />
+
+                {/* Icon Row */}
+                <div className="flex justify-between items-center relative z-10">
+                  <div 
+                    className="w-11 h-11 md:w-12 md:h-12 rounded-2xl flex items-center justify-center transition-all bg-white/80 backdrop-blur-md border border-white/60 group-hover:scale-110 shadow-3xs"
+                    style={{ color: cat.color }}
+                  >
+                    <Icon className="w-5.5 h-5.5 md:w-6 md:h-6" style={{ color: cat.color }} />
+                  </div>
+                </div>
+
+                {/* Category Text Description */}
+                <div className="space-y-2 relative z-10">
+                  <h3 className="text-[30px] font-black text-[#002147] tracking-wide group-hover:text-amber-500 transition-colors">
+                    {cat.name}
+                  </h3>
+                  
+                  {/* 담당자 정보 */}
+                  <div className="py-3.5 border-t border-b border-slate-100/60 my-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 bg-slate-50/40 -mx-6 md:-mx-8 px-6 md:px-8 transition-colors duration-300">
+                    <div className="flex items-center gap-2">
+                      {/* 사람 모양 컬러 미니 인디케이터 */}
+                      <span 
+                        className="w-5.5 h-5.5 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                        style={{ 
+                          backgroundColor: `${cat.color}15`, 
+                          color: cat.color 
+                        }}
+                      >
+                        <User className="w-3.5 h-3.5 stroke-[2.5]" />
+                      </span>
+                      <span className="text-[#002147] font-black text-sm md:text-[15px] tracking-tight">{cat.leader}</span>
+                    </div>
+                    <div 
+                      className="text-[11px] md:text-[11.5px] px-2.5 py-1 rounded-lg font-extrabold border transition-all duration-300 shadow-3xs"
+                      style={{
+                        color: cat.color,
+                        borderColor: `${cat.color}35`,
+                        backgroundColor: `${cat.color}08`,
+                      }}
+                    >
+                      {cat.company}
+                    </div>
+                  </div>
+
+                  <p className="text-[14px] text-slate-500 leading-relaxed font-medium break-keep">
+                    {cat.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Enter Button */}
+              <div className="pt-6 relative z-10">
+                <div 
+                  className="w-full py-3.5 rounded-2xl text-center text-xs font-extrabold transition-all border shadow-3xs flex items-center justify-center gap-1.5"
+                  style={{
+                    backgroundColor: '#F8FAFC',
+                    borderColor: '#E2E8F0',
+                    color: '#1E293B',
+                  }}
+                >
+                  {cat.name} 더보기
+                  <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -577,46 +740,34 @@ export default function ProjectComponent({
     ? experts.filter((exp) => exp.category === selectedCategory)
     : experts;
 
+  if (selectedCategory === null) {
+    return (
+      <ProjectPortal onSelectCategory={setSelectedCategory} />
+    );
+  }
+
+  const activeCatInfo = categories.find((c) => c.id === selectedCategory);
+
   return (
     <div className="bg-slate-50 min-h-[500px]">
-      {/* Category Chips */}
-      {propCategory === undefined && (
-        <div className="flex flex-nowrap md:flex-wrap items-center gap-2 md:gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-6 no-scrollbar">
-          <button
-            onClick={() => setSelectedCategory(null)}
-            className={`whitespace-nowrap px-3.5 py-2 md:px-6 md:py-3 rounded-full border transition-all md:hover:translate-y-[-2px] text-xs md:text-sm font-bold flex items-center gap-1.5 cursor-pointer shrink-0 shadow-sm ${
-              selectedCategory === null
-                ? 'bg-[#002147] text-white border-[#002147]'
-                : 'bg-white text-[#002147] border-slate-200 hover:border-[#002147]'
-            }`}
-          >
-            전체 보기
-          </button>
-
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            const isActive = selectedCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(isActive ? null : cat.id)}
-                className="whitespace-nowrap px-3.5 py-2 md:px-6 md:py-3 rounded-full border shadow-sm flex items-center gap-2 text-xs md:text-sm font-bold transition-all md:hover:translate-y-[-2px] cursor-pointer shrink-0"
-                style={{
-                  backgroundColor: isActive ? cat.color : '#FFFFFF',
-                  color: isActive ? '#FFFFFF' : COLORS.navy,
-                  borderColor: isActive ? cat.color : '#E2E8F0',
-                }}
-              >
-                <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                {cat.name}
-              </button>
-            );
-          })}
+      {/* Category Navigation Bar / Custom Breadcrumb Back Button */}
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/60 pb-6">
+        <button 
+          onClick={() => setSelectedCategory(null)}
+          className="group flex items-center justify-center gap-2 px-5 py-3.5 bg-white hover:bg-slate-50 text-slate-700 font-extrabold rounded-2xl border border-slate-200 hover:border-slate-300 shadow-3xs transition-all text-sm cursor-pointer w-full sm:w-auto"
+        >
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5 text-slate-500" />
+          뒤로 가기 (소모임 카테고리)
+        </button>
+        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400 self-end sm:self-auto uppercase tracking-wide">
+          <span>소모임 프로젝트</span>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
+          <span className="text-slate-800" style={{ color: activeCatInfo?.color }}>{activeCatInfo?.name}</span>
         </div>
-      )}
+      </div>
 
       {/* Grid Content */}
-      <div className="mt-4">
+      <div className="mt-2">
         {/* Desktop/Tablet Grid View */}
         <motion.div 
           layout

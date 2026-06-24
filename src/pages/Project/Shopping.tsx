@@ -20,7 +20,7 @@ export default function ShoppingComponent() {
       ],
       image: callimHero,
       logo: callimLogo,
-      link: 'https://smartstore.naver.com/callim1014'
+      link: 'https://calli-m.com'
     }
   ];
 
