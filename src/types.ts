@@ -7,4 +7,5 @@ export interface CalendarEvent {
   time: string;
   location: string;
   rsvps: string[];
+  link?: string;
 }

@@ -112,7 +112,6 @@ function ForumCard({ forum, categories, setSelectedForum }: ForumCardProps) {
 }
 
 export default function ForumComponent() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedForum, setSelectedForum] = useState<any | null>(null);
 
   const categories = [
@@ -121,17 +120,123 @@ export default function ForumComponent() {
   ];
 
   const forums = forumsData;
-
-const categoryLabels: Record<string, string> = {
-  regular: 'BUSINESS NETWORKING',
-  special: 'CAPACITY BUILDING',
-};
-
   const filteredForums = forums;
+
+  const handleSelectForum = (forum: any) => {
+    setSelectedForum(forum);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (selectedForum) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 15 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+        className="bg-transparent border-0 shadow-none"
+      >
+        {/* Back navigation header - Frameless & Transparent */}
+        <div className="py-4 border-b border-slate-200/60 flex items-center justify-between bg-transparent">
+          <button
+            onClick={() => setSelectedForum(null)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 font-extrabold text-xs md:text-sm hover:bg-slate-50 hover:text-[#002147] hover:border-slate-300 transition-all cursor-pointer shadow-xs"
+          >
+            ← 목록으로 돌아가기
+          </button>
+          
+          {selectedForum.date && (
+            <span className="text-xs font-semibold text-slate-400 font-mono flex items-center gap-1">
+              <Calendar className="w-3.5 h-3.5" />
+              {selectedForum.date}
+            </span>
+          )}
+        </div>
+
+        {/* Content area - Expanded to max-w-6xl & Frameless */}
+        <div className="max-w-6xl mx-auto py-8 md:py-12 space-y-8 px-4 sm:px-6 md:px-8">
+          <div className="space-y-4">
+            <h1 className="text-2xl md:text-4xl font-black text-[#002147] leading-tight break-keep">
+              {selectedForum.name}
+            </h1>
+            
+            <div className="flex items-center gap-3 bg-slate-100/50 p-4 rounded-2xl border border-slate-200/40 w-fit">
+              <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 shrink-0 font-extrabold text-xs">
+                {selectedForum.specialty ? selectedForum.specialty[0] : '포'}
+              </div>
+              <div>
+                <span className="text-[10px] font-bold text-slate-400 block tracking-wider uppercase">작성자</span>
+                <p className="text-sm font-extrabold text-[#002147]">{selectedForum.specialty}</p>
+              </div>
+            </div>
+          </div>
+
+          <hr className="border-slate-200/60" />
+          
+          {/* Body Text Blocks */}
+          <div className="space-y-6">
+            {selectedForum.contentBlocks && (
+              <div className="space-y-8">
+                {selectedForum.contentBlocks.map((block: any, idx: number) => {
+                  if (block.type === 'heading') {
+                    return (
+                      <h2 
+                        key={idx} 
+                        className="text-base md:text-xl font-extrabold text-[#002147] border-l-4 pl-3.5 md:pl-4 py-0.5 mt-8 first:mt-0"
+                        style={{ borderColor: COLORS.gold }}
+                      >
+                        {block.text}
+                      </h2>
+                    );
+                  }
+                  if (block.type === 'text') {
+                    return (
+                      <p 
+                        key={idx} 
+                        className="text-slate-600 text-[17px] md:text-[18.5px] leading-relaxed md:leading-loose font-medium break-keep whitespace-pre-line"
+                      >
+                        {block.text}
+                      </p>
+                    );
+                  }
+                  if (block.type === 'quote') {
+                    return (
+                      <div 
+                        key={idx}
+                        className="my-6 p-5 md:p-7 rounded-3xl border-l-[5px] border-[#002147] text-slate-800 italic font-semibold text-xs md:text-sm leading-relaxed md:leading-loose bg-slate-100/50 border border-slate-200/30 whitespace-pre-line"
+                      >
+                        {block.text}
+                      </div>
+                    );
+                  }
+                  if (block.type === 'image') {
+                    return (
+                      <div key={idx} className="my-6 overflow-hidden rounded-3xl border border-slate-200/40 shadow-sm max-w-4xl">
+                        <img src={block.src} alt={block.alt || '강연 이미지'} className="w-full h-auto object-cover" />
+                      </div>
+                    );
+                  }
+                  return null;
+                })}
+              </div>
+            )}
+          </div>
+
+          <div className="pt-8 border-t border-slate-200/60 flex justify-center">
+            <button 
+              onClick={() => setSelectedForum(null)}
+              className="px-8 py-3.5 bg-[#002147] hover:bg-[#003366] text-white font-extrabold rounded-2xl transition-colors text-sm cursor-pointer shadow-md"
+            >
+              목록으로 돌아가기
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <div className="bg-slate-50 min-h-[500px]">
-
       {/* List Content */}
       <div className="mt-6 md:mt-8">
         {/* Unified Responsive 1-Column List View */}
@@ -145,7 +250,7 @@ const categoryLabels: Record<string, string> = {
                 key={String(forum.id)}
                 forum={forum}
                 categories={categories}
-                setSelectedForum={setSelectedForum}
+                setSelectedForum={handleSelectForum}
               />
             ))}
           </AnimatePresence>
@@ -157,161 +262,6 @@ const categoryLabels: Record<string, string> = {
           </div>
         )}
       </div>
-
-      {/* Detail Modal */}
-      <AnimatePresence>
-        {selectedForum && (
-          <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedForum(null)}
-              className="fixed inset-0 bg-slate-900/45 backdrop-blur-xs"
-            />
-            
-            <motion.div
-              initial={
-                window.innerWidth < 768 
-                  ? { opacity: 0, y: "100%" } 
-                  : { opacity: 0, scale: 0.96, y: 15 }
-              }
-              animate={
-                window.innerWidth < 768 
-                  ? { opacity: 1, y: 0 } 
-                  : { opacity: 1, scale: 1, y: 0 }
-              }
-              exit={
-                window.innerWidth < 768 
-                  ? { opacity: 0, y: "100%" } 
-                  : { opacity: 0, scale: 0.96, y: 15 }
-              }
-              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="relative w-full md:max-w-3xl bg-white rounded-t-[32px] md:rounded-[32px] shadow-2xl overflow-hidden z-10 border border-slate-100 flex flex-col max-h-[92vh] md:max-h-[85vh]"
-            >
-              <div className="md:hidden flex justify-center py-3 shrink-0 bg-white">
-                <div className="w-12 h-1 bg-slate-200 rounded-full" />
-              </div>
-
-              <div className="hidden md:block h-2 shrink-0" style={{ background: `linear-gradient(90deg, ${COLORS.navy} 0%, ${COLORS.gold} 100%)` }} />
-              
-              <div className="overflow-y-auto flex-1 custom-scrollbar">
-                {selectedForum.image && (
-                  <div className="relative w-full h-48 sm:h-72 md:h-80 overflow-hidden bg-slate-100 shrink-0">
-                    <img 
-                      src={selectedForum.image} 
-                      alt={selectedForum.name}
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
-                    
-                    <button 
-                      onClick={() => setSelectedForum(null)}
-                      className="md:hidden absolute top-4 right-4 p-2 rounded-full bg-slate-900/40 backdrop-blur-md text-white border border-white/20 hover:bg-slate-900/60 transition-colors cursor-pointer"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  </div>
-                )}
-
-                <div className="p-6 md:p-10 pt-4 md:pt-10 space-y-6 md:space-y-8">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2.5">
-                      {selectedForum.date && (
-                        <span className="text-xs font-semibold text-slate-400 font-mono flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5" />
-                          {selectedForum.date}
-                        </span>
-                      )}
-                    </div>
-                    <button 
-                      onClick={() => setSelectedForum(null)}
-                      className={`${selectedForum.image ? 'hidden md:flex' : 'flex'} p-2 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer`}
-                    >
-                      <X className="w-6 h-6" />
-                    </button>
-                  </div>
-                  
-                  <div className="space-y-2 md:space-y-3">
-                    <h3 className="text-xl md:text-3xl font-extrabold text-[#002147] leading-snug break-keep">
-                      {selectedForum.name}
-                    </h3>
-                  </div>
-
-                  <hr className="border-slate-100" />
-                  
-                  <div className="flex items-center gap-4 bg-slate-50/70 p-4 rounded-2xl border border-slate-100/80">
-
-                    <div>
-                      <span className="text-[11px] font-bold text-slate-400 block tracking-wider uppercase">작성자</span>
-                      <p className="text-sm font-extrabold text-[#002147]">{selectedForum.specialty}</p>
-                    </div>
-                  </div>
-
-                  {/* Body Text Blocks */}
-                  <div className="space-y-6">
-                    {selectedForum.contentBlocks && (
-                      <div className="space-y-8">
-                        {selectedForum.contentBlocks.map((block: any, idx: number) => {
-                          if (block.type === 'heading') {
-                            return (
-                              <h4 
-                                key={idx} 
-                                className="text-base md:text-xl font-extrabold text-[#002147] border-l-4 pl-3.5 md:pl-4 py-0.5 mt-8 first:mt-0"
-                                style={{ borderColor: COLORS.gold }}
-                              >
-                                {block.text}
-                              </h4>
-                            );
-                          }
-                          if (block.type === 'text') {
-                            return (
-                              <p 
-                                key={idx} 
-                                className="text-slate-600 text-sm md:text-[15px] leading-relaxed md:leading-loose font-medium break-keep whitespace-pre-line"
-                              >
-                                {block.text}
-                              </p>
-                            );
-                          }
-                          if (block.type === 'quote') {
-                            return (
-                              <div 
-                                key={idx}
-                                className="my-6 p-5 md:p-7 rounded-3xl border-l-[5px] border-[#002147] text-slate-800 italic font-semibold text-xs md:text-sm leading-relaxed md:leading-loose bg-slate-50 whitespace-pre-line"
-                              >
-                                {block.text}
-                              </div>
-                            );
-                          }
-                          if (block.type === 'image') {
-                            return (
-                              <div key={idx} className="my-6 overflow-hidden rounded-3xl border border-slate-100 shadow-sm">
-                                <img src={block.src} alt={block.alt || '강연 이미지'} className="w-full h-auto object-cover" />
-                              </div>
-                            );
-                          }
-                          return null;
-                        })}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 md:p-6 bg-slate-50 border-t border-slate-100 shrink-0 flex items-center gap-4 pb-6 md:pb-6">
-                <button 
-                  onClick={() => setSelectedForum(null)}
-                  className="w-full py-4 bg-[#002147] hover:bg-[#003366] text-white font-bold rounded-2xl transition-colors text-sm cursor-pointer shadow-md"
-                >
-                  닫기
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

@@ -9,7 +9,8 @@ export const INITIAL_EVENTS: CalendarEvent[] = [
     category: 'education',
     time: '08:00 - 10:00',
     location: '한국시니어교류협회 사무실 (마포구 신촌로 200-1, 황금바늘빌딩 2층, 이대역에서 100m)',
-    rsvps: ['한국시니어교류협회 회원및 추천동반인,일반인']
+    rsvps: ['한국시니어교류협회 회원및 추천동반인,일반인'],
+    link: 'https://cafe.naver.com/ksis1/632'
   },
   {
     id: '2',
@@ -19,7 +20,8 @@ export const INITIAL_EVENTS: CalendarEvent[] = [
     category: 'other',
     time: '17:00 -',
     location: '메가박스 동대문 8관 (중구 장충단로 247굿모닝시티 9층, 동대문역사문화공원역(DDP) 14번 출구)',
-    rsvps: ['한국시니어교류협회 회원, 추천동반인']
+    rsvps: ['한국시니어교류협회 회원, 추천동반인'],
+    link: 'https://cafe.naver.com/ksis1/635'
   },
   {
     id: '3',
@@ -29,6 +31,7 @@ export const INITIAL_EVENTS: CalendarEvent[] = [
     category: 'other',
     time: '15:00 - 18:00',
     location: '글로벌 스타트업 허브 타워 3층',
-    rsvps: ['한국시니어교류협회 회원']
+    rsvps: ['한국시니어교류협회 회원'],
+    link: 'https://cafe.naver.com/ksis1/634'
   }
 ];

@@ -60,7 +60,17 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
     const saved = localStorage.getItem('kisis_events');
     if (saved) {
       try {
-        setEvents(JSON.parse(saved));
+        const parsed: CalendarEvent[] = JSON.parse(saved);
+        // Merge the latest links from INITIAL_EVENTS so changes take effect immediately
+        const merged = parsed.map(ev => {
+          const initEvent = INITIAL_EVENTS.find(ie => ie.id === ev.id);
+          if (initEvent) {
+            return { ...ev, link: initEvent.link };
+          }
+          return ev;
+        });
+        setEvents(merged);
+        localStorage.setItem('kisis_events', JSON.stringify(merged));
       } catch (e) {
         setEvents(INITIAL_EVENTS);
       }
@@ -433,64 +443,31 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
                     )}
                   </div>
                 </div>
+                <div className="flex items-center gap-2 pt-1">
+                  <Compass size={13} className="text-emerald-400 flex-none" />
+                  <span className="font-extrabold text-white shrink-0">신청 링크 :</span>
+                  {selectedEvent.link ? (
+                    <a
+                      href={selectedEvent.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-300 hover:text-emerald-400 underline font-bold"
+                    >
+                      바로가기 ↗
+                    </a>
+                  ) : (
+                    <span className="text-white/40 italic">준비 중</span>
+                  )}
+                </div>
               </div>
 
-              {/* RSVP Form */}
-              <form onSubmit={handleRsvpSubmit} className="mt-5.5 pt-4 border-t border-white/10 space-y-3">
-                <span className="block text-[11px] font-black tracking-wider text-white/50">
-                  실시간 간편 동맹 참가 신청
-                </span>
-                <div className="space-y-2">
-                  <div className="grid grid-cols-2 gap-2">
-                    <input
-                      type="text"
-                      required
-                      placeholder="성함"
-                      value={rsvpName}
-                      onChange={(e) => setRsvpName(e.target.value)}
-                      className="bg-white/10 select-none border border-white/10 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-emerald-400 text-white placeholder-white/40 font-bold"
-                    />
-                    <input
-                      type="number"
-                      required
-                      min="1"
-                      placeholder="신청인원수"
-                      value={rsvpCount}
-                      onChange={(e) => setRsvpCount(e.target.value)}
-                      className="bg-white/10 select-none border border-white/10 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-emerald-400 text-white placeholder-white/40 font-bold"
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    required
-                    placeholder="연락처 (예: 010-1234-5678)"
-                    value={rsvpPhone}
-                    onChange={(e) => setRsvpPhone(e.target.value)}
-                    className="w-full bg-white/10 select-none border border-white/10 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-emerald-400 text-white placeholder-white/40 font-bold"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-black py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <Check size={14} />
-                  주말/포럼 참가 명단 등록
-                </button>
-
-                {showRsvpSuccess && (
-                  <p className="text-center text-[11px] text-emerald-400 font-bold animate-pulse">
-                    ✓ 리스트 등록 및 좌석 매칭이 성공했습니다!
-                  </p>
-                )}
-              </form>
             </div>
           ) : (
             <div className="flex bg-slate-100/50 border border-dashed border-slate-300 rounded-3xl p-6 text-center flex-col items-center justify-center py-10 flex-1">
               <CalendarIcon size={32} className="text-slate-400 mb-2.5 animate-pulse" />
-              <p className="text-slate-500 font-bold text-sm">일정을 맵핑하여 신청하기</p>
+              <p className="text-slate-500 font-bold text-sm">일정을 맵핑하여 확인하기</p>
               <p className="text-slate-400 text-xs leading-relaxed mt-1 max-w-[200px]">
-                좌측 달력에서 일정(푸른 테두리)을 선택하시면 간편 참가 등록 및 기수인단 신청 폼이 활성화됩니다.
+                좌측 달력에서 일정(푸른 테두리)을 선택하시면 상세 정보가 활성화됩니다.
               </p>
             </div>
           )}
@@ -570,14 +547,34 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
                         </p>
                       </div>
 
-                      {/* Location Map Check */}
+                      {/* Location Detail */}
                       <div className="p-3 bg-white border border-slate-100 rounded-xl space-y-1.5">
                         <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
                           <MapPin size={12} className="text-[#0d34a6]" />
                           <span>장소: {ev.location}</span>
                         </div>
                         <div className="flex items-start gap-1.5 text-xs text-slate-500 font-semibold pl-4">
-                          <span>신청서 작성 후 기재된 정해진 장소로 정각 참여 바라며, 주차 및 대기 공지는 오픈 메신저로 개별 통보 드립니다.</span>
+                          <span>기재된 정해진 장소로 정각 참여 바라며, 주차 및 대기 공지는 오픈 메신저로 개별 통보 드립니다.</span>
+                        </div>
+                      </div>
+
+                      {/* Application Link */}
+                      <div className="p-3 bg-white border border-slate-100 rounded-xl">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+                          <Compass size={12} className="text-[#0d34a6]" />
+                          <span>신청 링크: </span>
+                          {ev.link ? (
+                            <a
+                              href={ev.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#0d34a6] hover:underline font-extrabold"
+                            >
+                              바로가기 ↗
+                            </a>
+                          ) : (
+                            <span className="text-slate-400 italic">준비 중</span>
+                          )}
                         </div>
                       </div>
 
@@ -598,57 +595,6 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
                             ))}
                           </div>
                         )}
-                      </div>
-
-                      {/* RSVP Dynamic Submission */}
-                      <div className="pt-4 border-t border-slate-200/60">
-                        <form onSubmit={(e) => handleMobileRsvpSubmit(e, ev.id)} className="space-y-2.5">
-                          <span className="block text-[10px] font-black tracking-wider text-slate-400 uppercase">
-                            이 행사 실시간 참가 신청하기
-                          </span>
-                          <div className="space-y-2">
-                            <div className="grid grid-cols-2 gap-2">
-                              <input
-                                type="text"
-                                required
-                                placeholder="성함"
-                                value={mobileRsvpName}
-                                onChange={(e) => setMobileRsvpName(e.target.value)}
-                                className="bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
-                              />
-                              <input
-                                type="number"
-                                required
-                                min="1"
-                                placeholder="신청인원수"
-                                value={mobileRsvpCount}
-                                onChange={(e) => setMobileRsvpCount(e.target.value)}
-                                className="bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
-                              />
-                            </div>
-                            <input
-                              type="text"
-                              required
-                              placeholder="연락처 (예: 010-1234-5678)"
-                              value={mobileRsvpPhone}
-                              onChange={(e) => setMobileRsvpPhone(e.target.value)}
-                              className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold"
-                            />
-                          </div>
-                          <button
-                            type="submit"
-                            className="w-full bg-blue-900 hover:bg-blue-950 text-white text-xs font-black py-3 rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
-                          >
-                            <Check size={14} />
-                            해당 위켄드·포럼 참가 확정
-                          </button>
-
-                          {isSuccess && (
-                            <p className="text-center text-[11px] text-emerald-600 font-bold animate-pulse mt-1.5">
-                              ✓ 참가 명단에 성공적으로 등록되었습니다!
-                            </p>
-                          )}
-                        </form>
                       </div>
                     </div>
                   )}
@@ -798,62 +744,27 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
                     <MapPin size={12} className="text-[#0d34a6]" />
                     <span>장소: {selectedEvent.location}</span>
                   </div>
-                </div>
-
-                        {/* RSVP Form */}
-                <div className="pt-3 border-t border-slate-100">
-                  <form onSubmit={(e) => handleMobileRsvpSubmit(e, selectedEvent.id)} className="space-y-2">
-                    <span className="block text-[10px] font-black tracking-wider text-slate-400 uppercase">
-                      해당 행사 간편 참가 신청
-                    </span>
-                    <div className="space-y-2">
-                      <div className="grid grid-cols-2 gap-2">
-                        <input
-                          type="text"
-                          required
-                          placeholder="성함"
-                          value={mobileRsvpName}
-                          onChange={(e) => setMobileRsvpName(e.target.value)}
-                          className="bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
-                        />
-                        <input
-                          type="number"
-                          required
-                          min="1"
-                          placeholder="신청인원수"
-                          value={mobileRsvpCount}
-                          onChange={(e) => setMobileRsvpCount(e.target.value)}
-                          className="bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold flex-1"
-                        />
-                      </div>
-                      <input
-                        type="text"
-                        required
-                        placeholder="연락처 (예: 010-1234-5678)"
-                        value={mobileRsvpPhone}
-                        onChange={(e) => setMobileRsvpPhone(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-blue-900 text-slate-900 placeholder-slate-400 font-bold"
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full bg-blue-900 hover:bg-blue-950 text-white text-xs font-black py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                    >
-                      <Check size={12} />
-                      참가 확정 등록하기
-                    </button>
-
-                    {mobileSuccessId === selectedEvent.id && (
-                      <p className="text-center text-[10px] text-emerald-600 font-bold animate-pulse mt-1">
-                        ✓ 참가 명단에 등록되었습니다!
-                      </p>
+                  <div className="flex items-center gap-1.5 text-slate-800 font-bold">
+                    <Compass size={12} className="text-[#0d34a6]" />
+                    <span>신청 링크: </span>
+                    {selectedEvent.link ? (
+                      <a
+                        href={selectedEvent.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#0d34a6] hover:underline font-extrabold"
+                      >
+                        바로가기 ↗
+                      </a>
+                    ) : (
+                      <span className="text-slate-400 italic">준비 중</span>
                     )}
-                  </form>
+                  </div>
                 </div>
               </div>
             ) : (
               <p className="text-[10.5px] text-slate-400 font-extrabold text-center leading-relaxed py-4 border-t border-slate-100">
-                💡 달력에서 푸른 동그라미(혹은 테두리)가 있는 행사 날짜를 클릭하시면, 하단에 즉시 상세 일정 정보와 간편 참여 신청 폼이 활성화됩니다.
+                💡 달력에서 푸른 동그라미(혹은 테두리)가 있는 행사 날짜를 클릭하시면, 하단에 즉시 상세 일정 정보가 활성화됩니다.
               </p>
             )}
           </div>
