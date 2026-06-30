@@ -58,7 +58,7 @@ const Navbar = () => {
     >
       <div className="max-w-[1720px] mx-auto px-6 md:px-12 lg:px-16 xl:px-20 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-3">
-          <img src={symbolLogo} alt="KSEA" className="h-10 w-auto object-contain" />
+          <img src={symbolLogo} alt="KSIS" className="h-10 w-auto object-contain" />
           <img 
             src={typoLogo} 
             alt="한국시니어교류협회" 
@@ -148,7 +148,7 @@ const Footer = () => {
       <div className="max-w-[1720px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
         <div className="space-y-6">
           <div className="flex items-center gap-2">
-            <img src={symbolLogo} alt="KSEA" className="h-8 w-auto object-contain" />
+            <img src={symbolLogo} alt="KSIS" className="h-8 w-auto object-contain" />
             <span className="font-bold text-lg">한국시니어교류협회</span>
           </div>
           <p className="hidden md:block text-sm opacity-60 leading-relaxed max-w-sm">
@@ -161,7 +161,7 @@ const Footer = () => {
           <ul className="space-y-4 text-sm opacity-70">
             <li>서울특별시 서울시 마포구 신촌로 200-1</li>
             <li>대표번호: 02-363-8777</li>
-            <li>이메일: contact@ksea.org</li>
+            <li>이메일: contact@ksis1.org</li>
           </ul>
         </div>
 

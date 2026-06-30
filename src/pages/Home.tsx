@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ChevronRight, ChevronLeft, Archive, Users, BarChart3, ArrowUpRight, Handshake, ChartNoAxesCombined, UsersRound, FileText } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Archive, Users, BarChart3, ArrowUpRight, Handshake, ChartNoAxesCombined, UsersRound, FileText, ClipboardList, ExternalLink } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { COLORS, ROUTES } from '../constants';
 import heroImg1 from '../images/hero-01.webp';
@@ -361,7 +361,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-8 w-full">
             {coreValues.map((value, idx) => {
-              const mobileBg = idx === 1 ? 'bg-white' : 'bg-[#F1F3F5]';
+              const mobileBg = idx === 1 ? 'bg-white' : 'bg-[#edf3ff]';
               return (
                 <motion.div
                   key={idx}
@@ -369,7 +369,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.2 }}
-                  className={`group flex flex-col items-center md:items-start justify-center md:justify-between text-center md:text-left w-screen h-[300px] md:w-full md:h-[350px] relative left-1/2 -translate-x-1/2 md:static md:translate-x-0 border-0 ${mobileBg} px-8 py-8 md:p-10 rounded-none md:rounded-[32px] ${idx === 1 ? 'md:border md:border-[#f1f3f5] md:border-solid' : ''}`}
+                  className={`group flex flex-col items-center md:items-start justify-center md:justify-between text-center md:text-left w-screen h-[240px] md:w-full md:h-[350px] relative left-1/2 -translate-x-1/2 md:static md:translate-x-0 border-0 ${mobileBg} px-8 py-8 md:p-10 rounded-none md:rounded-[32px] ${idx === 1 ? 'md:border md:border-[#f1f3f5] md:border-solid' : ''}`}
                 >
                   <div className="flex flex-col gap-[2px] w-full md:contents">
                     {/* Header layout: stacked on mobile, ordered as div -> h3 -> span via flex order; ordered as div -> span -> h3 on desktop */}
@@ -521,19 +521,19 @@ export default function Home() {
         {
           label: '공지사항',
           description: '협회 운영 소식과 주요 안내사항을 확인할 수 있습니다.',
-          link: ROUTES.COMMUNITY,
+          link: `${ROUTES.COMMUNITY}?tab=notice`,
           icon: Archive
         },
         {
           label: '인사이트',
           description: '시니어 비즈니스, AI, 창업, 마케팅 관련 콘텐츠를 제공합니다.',
-          link: ROUTES.ABOUT,
+          link: `${ROUTES.COMMUNITY}?tab=insight`,
           icon: BarChart3
         },
         {
           label: '갤러리',
           description: '포럼, 소모임, 교육 등 협회 활동 현장을 기록합니다.',
-          link: ROUTES.ACTIVITIES,
+          link: `${ROUTES.COMMUNITY}?goto=gallery`,
           icon: Users
         }
       ].map((item, i) => {
@@ -569,6 +569,40 @@ export default function Home() {
     </div>
   </div>
 </section>
+
+      {/* Archiving Section */}
+      <section className="py-24 px-6 md:px-12 lg:px-16 xl:px-20 border-t border-slate-200 bg-white">
+        <div className="max-w-[1720px] mx-auto space-y-12">
+          {/* Section Header styled exactly like BOARD */}
+          <div className="flex flex-col items-center justify-center gap-6 text-center w-full">
+            <div className="space-y-4 flex flex-col items-center w-full">
+              <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] md:opacity-10 md:pt-[20px] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 w-full text-center self-center mb-0">
+                ARCHIVE
+              </h2>
+              <p className="text-[14px] md:text-lg text-slate-700 max-w-2xl md:max-w-none font-medium text-center mx-auto break-keep" style={{ lineHeight: '1.6', letterSpacing: '-0.02em' }}>
+                회원님의 경험을 협회의 자산으로 남깁니다.<br className="hidden md:block" />
+                협회가 회원님의 경험과 전문성을 더 잘 이해하고, 필요할 때 회원 간 연결을 돕기 위한 간단한 설문입니다.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex justify-center">
+            <motion.a 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfD6UlCs7viWi2XEdh66bMSQMENsLlON0p0fCQgpBg7d1_Dsw/viewform?pli=1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-10 py-5 bg-[#002147] hover:bg-[#003366] text-white font-extrabold rounded-2xl transition-all text-base md:text-lg cursor-pointer shadow-md hover:shadow-lg active:scale-95 group"
+            >
+              <span>구글 폼 입력하러 가기</span>
+              <ExternalLink className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </motion.a>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

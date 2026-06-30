@@ -12,6 +12,5 @@ export const ROUTES = {
   ABOUT: '/about',
   ARCHIVE: '/archive',
   CALENDAR: '/calendar',
-  ACTIVITIES: '/activities',
   COMMUNITY: '/community',
 };

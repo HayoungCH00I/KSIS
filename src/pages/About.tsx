@@ -28,14 +28,14 @@ export default function About() {
   return (
     <div className="bg-white min-h-screen">
       {/* 1. Hero / Title Section */}
-      <section className="pt-24 pb-12 md:pt-[150px] md:pb-16 px-6 md:px-12 lg:px-16 xl:px-20 bg-white flex flex-col justify-center" style={{ minHeight: '340px' }}>
-        <div className="max-w-[1200px] mx-auto w-full text-center space-y-6">
+      <section className="pt-4 pb-4 md:pt-[150px] md:pb-16 px-4 md:px-12 lg:px-16 xl:px-20 bg-white flex flex-col justify-center min-h-[120px] md:min-h-[340px]">
+        <div className="max-w-[1200px] mx-auto w-full text-center space-y-1.5 md:space-y-6">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-[15vw] md:text-[96px] text-[#002147] opacity-[0.10] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 w-full text-center mb-0 leading-none select-none">
+            <h2 className="text-[10vw] md:text-[96px] text-[#002147] opacity-[0.10] font-bold tracking-tight md:tracking-[-0.05em] whitespace-nowrap overflow-visible relative left-0 w-full text-center mb-0 leading-none select-none">
               IDENTITY
             </h2>
           </motion.div>
@@ -44,13 +44,12 @@ export default function About() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="space-y-4 text-slate-700 max-w-4xl mx-auto"
-            style={{ marginTop: '18px' }}
+            className="space-y-1 md:space-y-4 text-slate-700 max-w-4xl mx-auto mt-1 md:mt-[18px]"
           >
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-[#002147] break-keep leading-tight">
+            <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#002147] break-keep leading-tight">
               한국시니어교류협회 CI
             </h1>
-            <p className="text-sm md:text-base text-slate-500 font-semibold tracking-wider uppercase">
+            <p className="text-sm md:text-lg text-slate-500 font-semibold tracking-wider uppercase">
               K SENIOR INTERACTION SOCIETY
             </p>
           </motion.div>
@@ -65,12 +64,12 @@ export default function About() {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="w-full max-w-[500px] flex justify-center items-center"
+            className="w-full max-w-[1000px] flex justify-center items-center"
           >
             <img 
               src={ciLogo} 
               alt="한국시니어교류협회 CI" 
-              className="w-full max-w-full h-auto max-h-[140px] object-contain"
+              className="w-full max-w-full h-auto max-h-[280px] object-contain"
               referrerPolicy="no-referrer"
             />
           </motion.div>

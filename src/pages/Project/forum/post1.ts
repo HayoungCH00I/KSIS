@@ -1,8 +1,8 @@
-import image1 from '../../../images/project/forum/1.jpg';
-import image2 from '../../../images/project/forum/2.jpg';
-import image3 from '../../../images/project/forum/3.jpg';
-import image4 from '../../../images/project/forum/4.jpg';
-import image5 from '../../../images/project/forum/5.jpg';
+import image1 from '../../../images/project/forum/1_1/1.jpg';
+import image2 from '../../../images/project/forum/1_1/2.jpg';
+import image3 from '../../../images/project/forum/1_1/3.jpg';
+import image4 from '../../../images/project/forum/1_1/4.jpg';
+import image5 from '../../../images/project/forum/1_1/5.jpg';
 
 export const post1 = {
   id: 1,

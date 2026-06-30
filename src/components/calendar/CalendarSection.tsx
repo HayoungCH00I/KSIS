@@ -61,13 +61,18 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
     if (saved) {
       try {
         const parsed: CalendarEvent[] = JSON.parse(saved);
-        // Merge the latest links from INITIAL_EVENTS so changes take effect immediately
-        const merged = parsed.map(ev => {
-          const initEvent = INITIAL_EVENTS.find(ie => ie.id === ev.id);
-          if (initEvent) {
-            return { ...ev, link: initEvent.link };
+        // Ensure all events in INITIAL_EVENTS are loaded with their latest information,
+        // while preserving local registrations (RSVPs) saved in localStorage.
+        const merged = INITIAL_EVENTS.map(initEvent => {
+          const savedEvent = parsed.find(ev => ev.id === initEvent.id);
+          if (savedEvent) {
+            return {
+              ...initEvent,
+              // Merge local RSVPs with initial RSVPs, removing duplicates
+              rsvps: Array.from(new Set([...initEvent.rsvps, ...savedEvent.rsvps]))
+            };
           }
-          return ev;
+          return initEvent;
         });
         setEvents(merged);
         localStorage.setItem('kisis_events', JSON.stringify(merged));
@@ -346,49 +351,76 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
           <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex-1">
             <h4 className="font-extrabold text-slate-900 text-base mb-4 flex items-center gap-1.5">
               <span className="w-1.5 h-4.5 rounded-full bg-blue-900 inline-block" />
-              다가오는 교류 행사 리스트
+              해당 달의 전체 일정 ({currentMonth}월)
             </h4>
 
-            <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1">
-              {events.map((ev) => {
-                const [yStr, mStr, dayStr] = ev.date.split('-');
-                const isSelected = selectedEvent?.id === ev.id;
+            <div className="space-y-2.5 max-h-[240px] overflow-y-auto pr-1 custom-scrollbar">
+              {(() => {
+                const currentMonthEvents = events.filter((ev) => {
+                  const [yStr, mStr] = ev.date.split('-');
+                  return Number(yStr) === currentYear && Number(mStr) === currentMonth;
+                });
 
-                return (
-                  <div
-                    key={ev.id}
-                    onClick={() => setSelectedEvent(ev)}
-                    className={`p-3.5 rounded-2xl border text-left cursor-pointer transition-all ${
-                      isSelected
-                        ? 'bg-blue-900/5 border-blue-900'
-                        : 'bg-slate-50 border-slate-200/60 hover:border-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-[10px] font-black px-2 py-0.5 rounded-md text-white bg-slate-400 flex items-center">
-                        {Number(mStr)}월 {Number(dayStr)}일
-                      </span>
-                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm uppercase ${
-                        ev.category === 'forum'
-                          ? 'bg-blue-900 text-white'
-                          : ev.category === 'education'
-                          ? 'bg-violet-600 text-white'
-                          : ev.category === 'monetize'
-                          ? 'bg-emerald-600 text-white'
-                          : 'bg-amber-600 text-white'
-                      }`}>
-                        {ev.category === 'forum' ? '정기 포럼' : ev.category === 'education' ? '교육 특강' : ev.category === 'monetize' ? '수익 실무' : '친목 소모임'}
-                      </span>
+                if (currentMonthEvents.length === 0) {
+                  return (
+                    <div className="text-center py-8 text-slate-400 font-bold text-xs">
+                      이번 달에는 등록된 일정이 없습니다.
                     </div>
-                    <h5 className="font-bold text-slate-900 text-sm line-clamp-1 hover:text-blue-900">
-                      {ev.title}
-                    </h5>
-                    <p className="text-slate-400 text-xs font-semibold mt-1 flex items-center gap-1">
-                      <Clock size={11} /> {ev.time}
-                    </p>
-                  </div>
-                );
-              })}
+                  );
+                }
+
+                // Sort events by day
+                const sortedEvents = [...currentMonthEvents].sort((a, b) => {
+                  const dayA = Number(a.date.split('-')[2]);
+                  const dayB = Number(b.date.split('-')[2]);
+                  return dayA - dayB;
+                });
+
+                return sortedEvents.map((ev) => {
+                  const [, , dayStr] = ev.date.split('-');
+                  const isSelected = selectedEvent?.id === ev.id;
+
+                  return (
+                    <div
+                      key={ev.id}
+                      onClick={() => setSelectedEvent(ev)}
+                      className={`p-3 rounded-2xl border text-left cursor-pointer transition-all flex items-center gap-3 group ${
+                        isSelected
+                          ? 'bg-blue-900/5 border-blue-900 shadow-xs'
+                          : 'bg-slate-50 border-slate-200/60 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-[10px] font-black px-1.5 py-0.5 rounded-md text-white bg-slate-400 flex items-center shrink-0">
+                          {Number(dayStr)}일
+                        </span>
+                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm uppercase shrink-0 ${
+                          ev.category === 'forum'
+                            ? 'bg-blue-900 text-white'
+                            : ev.category === 'education'
+                            ? 'bg-violet-600 text-white'
+                            : ev.category === 'monetize'
+                            ? 'bg-emerald-600 text-white'
+                            : 'bg-amber-600 text-white'
+                        }`}>
+                          {ev.category === 'forum' ? '정기 포럼' : ev.category === 'education' ? '교육 특강' : ev.category === 'monetize' ? '수익 실무' : '친목 소모임'}
+                        </span>
+                      </div>
+                      <div className="flex-1 min-w-0 overflow-hidden relative py-0.5">
+                        <div className="flex whitespace-nowrap w-max group-hover-marquee">
+                          <h5 className="font-extrabold text-slate-900 text-xs sm:text-sm hover:text-blue-900 pr-12 transition-colors duration-200">
+                            {ev.title}
+                          </h5>
+                          {/* Duplicate for seamless looping on hover */}
+                          <h5 className="font-extrabold text-slate-900 text-xs sm:text-sm hover:text-blue-900 pr-12 transition-colors duration-200 hidden group-hover:block">
+                            {ev.title}
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                });
+              })()}
             </div>
           </div>
 
@@ -396,15 +428,15 @@ export default function CalendarSection({ forceGridView = false }: CalendarSecti
           {selectedEvent ? (
             <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-lg relative overflow-hidden">
               {/* Background design */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
 
-              <div className="flex justify-between items-start">
+              <div className="flex justify-between items-start relative z-10">
                 <span className="text-[10px] uppercase font-black tracking-widest text-emerald-400">
                   ACTIVE EVENT DETAILS
                 </span>
                 <button
                   onClick={() => setSelectedEvent(null)}
-                  className="text-white/40 hover:text-white p-1 rounded-md transition-colors cursor-pointer"
+                  className="text-white/40 hover:text-white p-1 rounded-md transition-colors cursor-pointer relative z-20"
                 >
                   <X size={16} />
                 </button>

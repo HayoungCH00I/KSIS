@@ -28,7 +28,7 @@ function ForumCard({ forum, categories, setSelectedForum }: ForumCardProps) {
       onClick={() => setSelectedForum(forum)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="bg-white rounded-[24px] overflow-hidden border transition-all duration-300 flex flex-col sm:flex-row cursor-pointer group min-h-[220px]"
+      className="bg-white rounded-none overflow-hidden border transition-all duration-300 flex flex-col sm:flex-row cursor-pointer group min-h-[220px]"
       style={{
         borderColor: isHovered ? iconColor : '#E2E8F0',
         boxShadow: isHovered 
@@ -45,7 +45,7 @@ function ForumCard({ forum, categories, setSelectedForum }: ForumCardProps) {
           <img 
             src={forum.image} 
             alt={forum.name}
-            className="w-full h-full object-cover transition-transform duration-500"
+            className="w-full h-full object-cover object-top transition-transform duration-500"
             style={{
               transform: isHovered ? 'scale(1.06)' : 'scale(1)',
             }}
@@ -160,7 +160,7 @@ export default function ForumComponent() {
               {selectedForum.name}
             </h1>
             
-            <div className="flex items-center gap-3 bg-slate-100/50 p-4 rounded-2xl border border-slate-200/40 w-fit">
+            <div className="flex items-center gap-3 bg-slate-100/50 p-4 rounded-none border border-slate-200/40 w-fit">
               <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 shrink-0 font-extrabold text-xs">
                 {selectedForum.specialty ? selectedForum.specialty[0] : '포'}
               </div>
@@ -203,7 +203,7 @@ export default function ForumComponent() {
                     return (
                       <div 
                         key={idx}
-                        className="my-6 p-5 md:p-7 rounded-3xl border-l-[5px] border-[#002147] text-slate-800 italic font-semibold text-xs md:text-sm leading-relaxed md:leading-loose bg-slate-100/50 border border-slate-200/30 whitespace-pre-line"
+                        className="my-6 p-5 md:p-7 rounded-none border-l-[5px] border-[#002147] text-slate-800 italic font-semibold text-xs md:text-sm leading-relaxed md:leading-loose bg-slate-100/50 border border-slate-200/30 whitespace-pre-line"
                       >
                         {block.text}
                       </div>
@@ -211,7 +211,7 @@ export default function ForumComponent() {
                   }
                   if (block.type === 'image') {
                     return (
-                      <div key={idx} className="my-6 overflow-hidden rounded-3xl border border-slate-200/40 shadow-sm max-w-4xl">
+                      <div key={idx} className="my-6 overflow-hidden rounded-none border border-slate-200/40 shadow-sm max-w-4xl">
                         <img src={block.src} alt={block.alt || '강연 이미지'} className="w-full h-auto object-cover" />
                       </div>
                     );
@@ -225,7 +225,7 @@ export default function ForumComponent() {
           <div className="pt-8 border-t border-slate-200/60 flex justify-center">
             <button 
               onClick={() => setSelectedForum(null)}
-              className="px-8 py-3.5 bg-[#002147] hover:bg-[#003366] text-white font-extrabold rounded-2xl transition-colors text-sm cursor-pointer shadow-md"
+              className="px-8 py-3.5 bg-[#002147] hover:bg-[#003366] text-white font-extrabold rounded-none transition-colors text-sm cursor-pointer shadow-md"
             >
               목록으로 돌아가기
             </button>

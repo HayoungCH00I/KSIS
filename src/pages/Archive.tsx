@@ -107,7 +107,7 @@ export default function Archive() {
         <div className="max-w-[1720px] mx-auto space-y-6 md:space-y-8">
           <div className="space-y-2 md:space-y-4">
             <span className="text-xs md:text-sm font-extrabold text-amber-600 tracking-wider uppercase block">
-              KSEA CORE PROGRAMS
+              KSIS CORE PROGRAMS
             </span>
             <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight break-keep" style={{ color: COLORS.navy }}>
               {activeTabInfo.name}
